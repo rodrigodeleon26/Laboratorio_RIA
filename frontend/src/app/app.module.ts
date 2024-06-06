@@ -16,8 +16,8 @@ import { ProductosComponent } from './Components/productos/productos.component';
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent,,
-    ProductosComponent
+    RegisterComponent,
+    ProductosComponent,
   ],
   imports: [
     BrowserModule,
