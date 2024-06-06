@@ -1,15 +1,49 @@
-<nav class="navbar navbar-dark bg-primary">
-    <a class="navbar-brand" href="/">
-        Pan inc.
-    </a>
-</nav>
 
-<router-outlet>
-    <a [routerLink]="['/productos']">Productos</a>
-</router-outlet>
-
-<h1>Angular con Bootstrap</h1>
-<h2>RIA 2024</h2>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Pan inc.</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <router-outlet>
+              <a [routerLink]="['/productos']" class="nav-link">Productos</a>
+            </router-outlet>
+          </li>
+        </ul>
+      </div>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <!-- <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Features</a>
+          </li> -->
+          <li *ngIf="email" class="nav-item">
+            <a class="nav-link disabled" href="#">Bienvenido, {{ email }}</a>
+          </li>
+          <li *ngIf="!email" class="nav-item">
+            <a class="nav-link" href="/login">Iniciar Sesión</a>
+          </li>
+          <li *ngIf="email" class="nav-item">
+            <button class="btn btn-link nav-link" (click)="logout()">Logout</button>
+          </li>
+          <!-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown link
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Act ion</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  </nav>
 
 <router-outlet></router-outlet>
-
