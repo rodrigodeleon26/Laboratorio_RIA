@@ -18,4 +18,22 @@ export class AuthService {
   register(email: string, password: string, telefono: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/usuarios/register`, { email, password, telefono });
   }
+
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  getEmail(): string | null {
+    return localStorage.getItem('email');
+  }
+
+  public isAuthenticated(): boolean {
+    const token = this.getToken();
+    return token !== null;
+  }
 }

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
   email: string = '';
@@ -14,14 +14,18 @@ export class RegisterComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  onSubmit(): void {
-    this.authService.register(this.email, this.password, this.telefono).subscribe(
-      response => {
-        alert('Registration successful');
-      },
-      error => {
-        alert(error.error.message); 
-      }
-    );
+  onSubmit(registerForm: any): void {
+    if (registerForm.valid) {
+      this.authService.register(this.email, this.password, this.telefono).subscribe(
+        response => {
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('email', this.email);
+          this.router.navigate(['/dashboard']);
+        },
+        error => {
+          alert(error.error.message);
+        }
+      );
+    } 
   }
 }

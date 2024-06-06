@@ -38,12 +38,13 @@ const register = async (req, res) => {
     id: usuarios.length ? usuarios[usuarios.length - 1].id + 1 : 1,
     email,
     password: hashedPassword,
-    role : 'USER',
+    role: role || 'USER',
     telefono,
     enabled: true,
   };
   usuarios.push(newUser);
-  res.status(201).json(newUser);
+  const token = generateToken(newUser); 
+  res.status(201).json({ newUser, token }); 
 };
 
 const login = async (req, res) => {

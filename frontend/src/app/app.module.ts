@@ -9,8 +9,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './Components/login/login.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-import { RegisterComponent } from './Components/register/register.component';
-import { ProductosComponent } from './Components/productos/productos.component';
+
+import { ProductosComponent } from './components/productos/productos.component';
+import { RegisterComponent } from './components/register/register.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { ProductosComponent } from './Components/productos/productos.component';
     LoginComponent,
     RegisterComponent,
     ProductosComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
