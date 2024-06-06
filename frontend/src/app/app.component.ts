@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { Producto } from './models/producto';
 import { AuthService } from './services/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-root',

@@ -12,7 +12,6 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 
 import { ProductosComponent } from './Components/productos/productos.component';
 import { RegisterComponent } from './Components/register/register.component';
-import { DashboardComponent } from './Components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,6 @@ import { DashboardComponent } from './Components/dashboard/dashboard.component';
     LoginComponent,
     RegisterComponent,
     ProductosComponent,
-    DashboardComponent,
   ],
   imports: [
     BrowserModule,
