@@ -3,21 +3,21 @@ const router = express.Router();
 const productosController = require('../controllers/productosController');
 const { verifyToken, isAdmin, isUser } = require('../middleware/auth');
 
-router.get('/', verifyToken, isUser, (req, res) => {
-  /* #swagger.summary = 'Obtiene la lista de productos' */
+router.get('/', (req, res) => {
+  /* #swagger.summary = 'Obtiene la lista de productos' verifyToken, isUser, */
   /* #swagger.tags = ['Productos'] */
   productosController.getProductos(req, res);
 });
 
-router.get('/:id', verifyToken, isAdmin, (req, res) => {
-  /* #swagger.summary = 'Obtiene un producto por ID' */
+router.get('/:id', (req, res) => {
+  /* #swagger.summary = 'Obtiene un producto por ID'  verifyToken, isAdmin, */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.parameters['id'] = { description: 'ID del producto', type: 'integer', required: true } */
   productosController.getProductoById(req, res);
 });
 
-router.post('/', verifyToken, isAdmin, (req, res) => {
-  /* #swagger.summary = 'Agrega un nuevo producto' */
+router.post('/', (req, res) => {
+  /* #swagger.summary = 'Agrega un nuevo producto' verifyToken, isAdmin,  */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
   /* #swagger.parameters['body'] = {
@@ -28,8 +28,8 @@ router.post('/', verifyToken, isAdmin, (req, res) => {
   productosController.createProducto(req, res);
 });
 
-router.put('/:id', verifyToken, isAdmin, (req, res) => {
-  /* #swagger.summary = 'Actualiza un producto existente' */
+router.put('/:id', (req, res) => {
+  /* #swagger.summary = 'Actualiza un producto existente' verifyToken, isAdmin,  */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
   /* #swagger.parameters['id'] = { description: 'ID del producto', type: 'integer', required: true } */
@@ -41,8 +41,8 @@ router.put('/:id', verifyToken, isAdmin, (req, res) => {
   productosController.updateProducto(req, res);
 });
 
-router.delete('/:id', verifyToken, isAdmin, (req, res) => {
-  /* #swagger.summary = 'Elimina un producto' */
+router.delete('/:id', (req, res) => {
+  /* #swagger.summary = 'Elimina un producto'  verifyToken, isAdmin,  */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
   /* #swagger.parameters['id'] = { description: 'ID del producto', type: 'integer', required: true } */

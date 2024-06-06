@@ -1,0 +1,38 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mt-4">
+            <ul class="list-group">
+                <li 
+                    *ngFor="let producto of productos"
+                    class="list-group-item list-group-item-action"
+                    (click)="openForEdit(producto)"
+                    [class.active]="producto == selectedProducto">
+                    <span class="badge rounded-pill text-bg-primary">{{producto.id}}</span> {{ producto.nombre }} - ${{ producto.precio }}
+                </li>
+            </ul>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <div class="card-title">
+                        Insetar nuevo producto
+                    </div>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="selectedProducto.nombre" placeholder="Inserte nombre" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" [(ngModel)]="selectedProducto.precio" placeholder="Inserte precio" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" [(ngModel)]="selectedProducto.descripcion" placeholder="inserte descripcion" class="form-control">
+                    </div>
+                    <button (click)="addOrEdit()" class="btn btn-primary">
+                        submit
+                    </button>
+                    <button *ngIf="selectedProducto.id !== 0" class="btn btn-danger" (click)="delete()" >delete</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            cosa
+        </div>
+    </div>
+</div>
