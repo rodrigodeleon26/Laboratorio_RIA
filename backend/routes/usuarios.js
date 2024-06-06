@@ -13,6 +13,17 @@ router.post('/register', (req, res) => {
   usuariosController.register(req, res);
 });
 
+router.post('/updateUser', (req, res) => {
+  /* #swagger.summary = 'Actualiza un usuario' */
+  /* #swagger.tags = ['Usuarios'] */
+  /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Actualización de usuario.',
+        schema: { $ref: '#/definitions/UpdateUser' }
+    } */
+  usuariosController.updateUser(req, res);
+});
+
 router.post('/login', (req, res) => {
   /* #swagger.summary = 'Inicia sesión' */
   /* #swagger.tags = ['Usuarios'] */
