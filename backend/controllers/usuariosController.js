@@ -47,6 +47,18 @@ const register = async (req, res) => {
   res.status(201).json({ newUser, token }); 
 };
 
+const update = async (req, res) => {
+  const { email, telefono } = req.body;
+  const user = usuarios.find(u => u.id == id);
+  if (user) {
+    user.email = email;
+    user.telefono = telefono;
+    res.json({ message: 'User updated' });
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+};
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   const user = usuarios.find(u => u.email === email);
@@ -104,6 +116,7 @@ const disableUser = (req, res) => {
 
 module.exports = {
   register,
+  update,
   login,
   changePassword,
   forgotPassword,
