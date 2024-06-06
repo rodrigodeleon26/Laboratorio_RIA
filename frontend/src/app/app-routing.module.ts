@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './Components/login/login.component';
+import { RegisterComponent } from './Components/register/register.component';
+import { ProductosComponent } from './Components/productos/productos.component';
 
 const routes: Routes = [
   { 
@@ -12,6 +13,11 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+
+  {
+    path: 'productos',
+    component: ProductosComponent
   }
 ];
 
@@ -19,4 +25,8 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+
+
+
+}

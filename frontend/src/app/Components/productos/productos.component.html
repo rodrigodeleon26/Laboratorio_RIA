@@ -24,7 +24,7 @@
                     <div class="form-group">
                         <input type="text" [(ngModel)]="selectedProducto.descripcion" placeholder="inserte descripcion" class="form-control">
                     </div>
-                    <button (click)="addOrEdit()" class="btn btn-primary">
+                    <button (click)="edit()" class="btn btn-primary">
                         submit
                     </button>
                     <button *ngIf="selectedProducto.id !== 0" class="btn btn-danger" (click)="delete()" >delete</button>
