@@ -13,11 +13,20 @@ export class AppComponent {
   title = 'frontend';
 
   email: string | null = '';
+  role: string | null = '';
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.email = this.authService.getEmail();
+    this.authService.user.subscribe(user => {
+      this.email = user.email;
+      this.role = user.role;
+    });
+  }
+
+  setUser(email: string, role: any) {
+    this.email = email;
+    this.role = role;
   }
 
   logout(): void {

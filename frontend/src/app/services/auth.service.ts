@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000'; 
+
+  user = new BehaviorSubject<{ email: string; role: string }>({ email: '', role: '' });
 
   constructor(private http: HttpClient) {}
 
@@ -19,9 +21,14 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/usuarios/register`, { email, password, telefono });
   }
 
+  updateUser(email: string, role: string) {
+    this.user.next({email, role});
+  }
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
+    localStorage.removeItem('role');
   }
 
   getToken(): string | null {
@@ -30,6 +37,10 @@ export class AuthService {
 
   getEmail(): string | null {
     return localStorage.getItem('email');
+  }
+
+  getRole(): string | null {
+    return localStorage.getItem('role');
   }
 
   public isAuthenticated(): boolean {
