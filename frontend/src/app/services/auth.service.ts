@@ -10,7 +10,17 @@ export class AuthService {
 
   user = new BehaviorSubject<{ email: string; role: string }>({ email: '', role: '' });
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.loadUserFromLocalStorage();
+  }
+
+  private loadUserFromLocalStorage() {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const email = localStorage.getItem('email') || '';
+      const role = localStorage.getItem('role') || '';
+      this.user.next({ email, role });
+    }
+  }
 
   login(email: string, password: string): Observable<any> {
     const url = `${this.apiUrl}/usuarios/login`;
@@ -23,12 +33,15 @@ export class AuthService {
 
   updateUser(email: string, role: string) {
     this.user.next({email, role});
+    localStorage.setItem('email', email);
+    localStorage.setItem('role', role);
   }
 
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
     localStorage.removeItem('role');
+    this.user.next({email: '', role: ''});
   }
 
   getToken(): string | null {

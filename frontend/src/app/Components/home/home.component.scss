@@ -1,0 +1,13 @@
+
+.carousel-item img {
+    object-fit: cover; /* Esto hará que la imagen cubra el área disponible sin estirarse */
+    height: 50vh; /* Esto establece la altura de la imagen al 50% de la altura de la ventana del navegador */
+}
+
+.carousel-indicators button {
+    background-color: rgb(50,50,50); /* Cambia esto al color que desees */
+}
+
+.carousel-indicators .active {
+    background-color: black; /* Cambia esto al color que desees para el indicador activo */
+}
