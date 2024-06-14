@@ -55,6 +55,10 @@
         <li *ngIf="role != 'PANADERO' && role != 'ADMIN'" class="nav-item">
           <a class="nav-link" href="#">Productos</a>
         </li>
+        <li *ngIf="role != 'PANADERO' && role != 'ADMIN'" class="nav-item">
+          <a class="nav-link" href="#">Ordenar!</a>
+        </li>
+
       </ul>
     </div>
 
@@ -91,8 +95,31 @@
             <li><a class="dropdown-item" href="#">Modificar Producto</a></li>
           </ul>
         </li>
+        <li *ngIf="role === 'PANADERO' || role === 'ADMIN'" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Ordenes
+          </a>
+          <ul class="dropdown-menu dropdown-menu-start">
+            <li><a class="dropdown-item" href="#">Ver Ordenes</a></li>
+            <li><a [routerLink]="['/productos']" class="dropdown-item">Ordenes sin Asignar</a></li>
+          </ul>
+        </li>
+        <li *ngIf="role === 'PANADERO' || role === 'ADMIN'" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Insumos
+          </a>
+          <ul class="dropdown-menu dropdown-menu-start">
+            <li><a class="dropdown-item" href="#">Ver Stock</a></li>
+            <li><a [routerLink]="['/productos']" class="dropdown-item">Otra Opcion</a></li>
+          </ul>
+        </li>
+
+        <!-- Opciones para cliente -->
         <li *ngIf="role != 'PANADERO' && role != 'ADMIN'" class="nav-item">
           <a class="nav-link" href="#">Productos</a>
+        </li>
+        <li *ngIf="role != 'PANADERO' && role != 'ADMIN'" class="nav-item">
+          <a class="nav-link" href="#">Ordenar!</a>
         </li>
 
         <!-- Opciones de usuario -->
@@ -113,3 +140,6 @@
 
 
 <router-outlet></router-outlet>
+
+<br>
+<br>

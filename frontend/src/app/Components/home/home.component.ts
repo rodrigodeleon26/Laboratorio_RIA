@@ -4,6 +4,8 @@ import { ProductosService } from '../../services/productos.service';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
+declare var bootstrap: any;
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,6 +14,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 export class HomeComponent implements OnInit {
 
   productos: Producto[] = [];
+  selectedProduct: any;
 
   constructor(private productoService: ProductosService, private router: Router, private sanitizer: DomSanitizer) {}
 
@@ -31,4 +34,11 @@ export class HomeComponent implements OnInit {
   getSafeImageUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
+
+  openProductModal(product: any) {
+    this.selectedProduct = product;
+    var myModal = new bootstrap.Modal(document.getElementById('productModal'), {});
+    myModal.show();
+  }
+
 }

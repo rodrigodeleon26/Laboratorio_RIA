@@ -1,5 +1,5 @@
 <h2 class="letraCoqueta" >NUESTROS PRODUCTOS</h2>
-<div class="container col-12 col-lg-7 carusel">
+<div class="container col-12 col-lg-7 carusel mb-5">
     <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" *ngFor="let producto of productos; let i = index" data-bs-target="#productCarousel" attr.data-bs-slide-to="{{i}}" [class.active]="i === 0" aria-label="Slide 3"></button>
@@ -23,4 +23,43 @@
         </button>
     </div>
 </div>
+
+<!-- MODAL -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalLabel">{{ selectedProduct?.nombre }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img [src]="getSafeImageUrl(selectedProduct?.imagen)" class="card-img-top" [alt]="selectedProduct?.nombre">
+                <p>Desde: ${{ selectedProduct?.precio }}</p>
+                <p>{{selectedProduct?.descripcion}}</p>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- TARJETAS -->
+<div class="container col-lg-10">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let producto of productos">
+            <div class="card h-100" (click)="openProductModal(producto)">
+                <img [src]="getSafeImageUrl(producto.imagen)" class="card-img-top" [alt]="producto.nombre">
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text">Desde: ${{ producto.precio }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
   
