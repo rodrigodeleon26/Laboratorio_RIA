@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,19 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:3000'; 
 
-  constructor(private http: HttpClient) {}
+  user = new BehaviorSubject<{ email: string; role: string }>({ email: '', role: '' });
+
+  constructor(private http: HttpClient) {
+    this.loadUserFromLocalStorage();
+  }
+
+  private loadUserFromLocalStorage() {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const email = localStorage.getItem('email') || '';
+      const role = localStorage.getItem('role') || '';
+      this.user.next({ email, role });
+    }
+  }
 
   login(email: string, password: string): Observable<any> {
     const url = `${this.apiUrl}/usuarios/login`;
@@ -19,9 +31,17 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/usuarios/register`, { email, password, telefono });
   }
 
+  updateUser(email: string, role: string) {
+    this.user.next({email, role});
+    localStorage.setItem('email', email);
+    localStorage.setItem('role', role);
+  }
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('email');
+    localStorage.removeItem('role');
+    this.user.next({email: '', role: ''});
   }
 
   getToken(): string | null {
@@ -30,6 +50,10 @@ export class AuthService {
 
   getEmail(): string | null {
     return localStorage.getItem('email');
+  }
+
+  getRole(): string | null {
+    return localStorage.getItem('role');
   }
 
   public isAuthenticated(): boolean {

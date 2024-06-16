@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,10 @@ export class LoginComponent {
         response => {
           localStorage.setItem('token', response.token);
           localStorage.setItem('email', this.email);
-          this.router.navigate(['/dashboard']);
+          localStorage.setItem('role', response.role);
+          // Actualiza el BehaviorSubject con el nuevo email y rol del usuario
+          this.authService.updateUser(this.email, response.role);
+          this.router.navigate(['/home']);
         },
         error => {
           alert(error.error.message);

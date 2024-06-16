@@ -3,9 +3,29 @@
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
 
-body {
-    background: #F2994A;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #F2C94C, #F2994A);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #F2C94C, #F2994A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    height: 100vh;
+// body {
+//     background: #F2994A;  /* fallback for old browsers */
+//     background: -webkit-linear-gradient(to right, #F2C94C, #F2994A);  /* Chrome 10-25, Safari 5.1-6 */
+//     background: linear-gradient(to right, #F2C94C, #F2994A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+//     height: 100vh;
+// }
+
+.orange-navbar {
+    background-color: rgb(213,92,38);
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+  
+.orange-navbar .nav-link {
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    font-size: 1rem; /* Puedes ajustar el tamaño de la fuente según tu preferencia */
+}
+
+.letraCoqueta {
+    font-family: 'Trabuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; /* Puedes cambiar la fuente si lo deseas */
+    color: rgb(135,86,56);
+    text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
