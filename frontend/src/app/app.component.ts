@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { Producto } from './models/producto';
 import { AuthService } from './services/auth/auth.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ export class AppComponent {
   email: string | null = '';
   role: string | null = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.authService.user.subscribe(user => {
@@ -31,6 +31,6 @@ export class AppComponent {
 
   logout(): void {
     this.authService.logout();
-    window.location.reload();
+    this.router.navigate(['/home']);
   }
 }

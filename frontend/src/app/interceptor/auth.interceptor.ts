@@ -15,20 +15,20 @@ export class AuthInterceptor implements HttpInterceptor {
     if (token) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `${token}`,
         },
       });
     }
 
     return next.handle(request).pipe(
       catchError((error) => {
-        const CODES = [401, 403];
+        const CODES = [403, 500];
         if (CODES.includes(error.status)) {
           this.authService.logout();
           this.router.navigate(['/login']);
-          alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
+          alert(error.error.message);
         }
-        return throwError(error); // Devuelve el error para que pueda ser manejado más adelante
+        return throwError(() => error); 
       })
     );
   }
