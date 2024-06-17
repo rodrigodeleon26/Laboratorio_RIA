@@ -21,41 +21,42 @@
     
     <div class="flex-grow-0">
       <ul class="navbar-nav">
-        <!-- OPCIONES PARA ADMIN Y PANADERO -->
-        <li *ngIf="role === 'PANADERO' || role === 'ADMIN'" class="nav-item dropdown">
+        <!-- Opciones de ADMIN -->
+        <li *ngIf="role === 'ADMIN'" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Productos
           </a>
-          <ul class="dropdown-menu dropdown-menu-start">
-            <li><a class="dropdown-item" href="#">Ver Productos</a></li>
+          <ul class="dropdown-menu">
+            <li><a [routerLink]="['/productos']" class="dropdown-item">Ver Productos</a></li>
             <li><a [routerLink]="['/productos']" class="dropdown-item">Agregar Producto</a></li>
-            <li><a class="dropdown-item" href="#">Modificar Producto</a></li>
           </ul>
         </li>
-        <li *ngIf="role === 'PANADERO' || role === 'ADMIN'" class="nav-item dropdown">
+
+        <li *ngIf="role === 'ADMIN'" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Ordenes
           </a>
           <ul class="dropdown-menu dropdown-menu-start">
             <li><a class="dropdown-item" href="#">Ver Ordenes</a></li>
-            <li><a [routerLink]="['/productos']" class="dropdown-item">Ordenes sin Asignar</a></li>
-          </ul>
-        </li>
-        <li *ngIf="role === 'PANADERO' || role === 'ADMIN'" class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Insumos
-          </a>
-          <ul class="dropdown-menu dropdown-menu-start">
-            <li><a class="dropdown-item" href="#">Ver Stock</a></li>
-            <li><a [routerLink]="['/productos']" class="dropdown-item">Otra Opcion</a></li>
           </ul>
         </li>
 
-        <!-- OPCIONES PARA CLIENTE -->
-        <li *ngIf="role != 'PANADERO' && role != 'ADMIN'" class="nav-item">
+        <!-- Opciones de PANADERO -->
+        <li *ngIf="role === 'PANADERO'" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Ordenes
+          </a>
+          <ul class="dropdown-menu dropdown-menu-start">
+            <li><a class="dropdown-item" href="#">Ver Ordenes</a></li>
+            <li><a [routerLink]="['/productos']" class="dropdown-item">Ordenes Pendientes</a></li>
+          </ul>
+        </li>
+
+        <!-- Opciones para cliente -->
+        <li *ngIf="role === 'USER'" class="nav-item">
           <a class="nav-link" href="#">Productos</a>
         </li>
-        <li *ngIf="role != 'PANADERO' && role != 'ADMIN'" class="nav-item">
+        <li *ngIf="role === 'USER'" class="nav-item">
           <a class="nav-link" href="#">Ordenar!</a>
         </li>
 
@@ -105,7 +106,7 @@
         </li>
 
         <!-- Opciones de PANADERO -->
-        <li *ngIf="role === 'PANADERO' || role === 'ADMIN'" class="nav-item dropdown">
+        <li *ngIf="role === 'PANADERO'" class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Ordenes
           </a>
@@ -116,10 +117,10 @@
         </li>
 
         <!-- Opciones para cliente -->
-        <li *ngIf="role != 'PANADERO' && role != 'ADMIN'" class="nav-item">
+        <li *ngIf="role === 'USER'" class="nav-item">
           <a class="nav-link" href="#">Productos</a>
         </li>
-        <li *ngIf="role != 'PANADERO' && role != 'ADMIN'" class="nav-item">
+        <li *ngIf="role === 'USER'" class="nav-item">
           <a class="nav-link" href="#">Ordenar!</a>
         </li>
 
