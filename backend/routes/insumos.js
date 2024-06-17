@@ -1,23 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const insumosController = require('../controllers/insumosController');
-const { verifyToken, isAdmin, isUser } = require('../middleware/auth');
+const { verifyToken, isAdmin, isPanadero } = require('../middleware/auth');
 
-router.get('/', (req, res) => {
-  /* #swagger.summary = 'Obtiene la lista de insumos' verifyToken, isUser, */
+router.get('/', verifyToken, isAdmin, (req, res) => {
+  /* #swagger.summary = 'Obtiene la lista de insumos' */
   /* #swagger.tags = ['Insumos'] */
   insumosController.getInsumos(req, res);
 });
 
-router.get('/:id', (req, res) => {
-  /* #swagger.summary = 'Obtiene un insumo por ID' verifyToken, isAdmin, */
+router.get('/:id', verifyToken, isAdmin, (req, res) => {
+  /* #swagger.summary = 'Obtiene un insumo por ID' */
   /* #swagger.tags = ['Insumos'] */
   /* #swagger.parameters['id'] = { description: 'ID del insumo', type: 'integer', required: true } */
   insumosController.getInsumoById(req, res);
 });
 
-router.post('/', (req, res) => {
-  /* #swagger.summary = 'Agrega un nuevo insumo' verifyToken, isAdmin,  */
+router.post('/', verifyToken, isAdmin, (req, res) => {
+  /* #swagger.summary = 'Agrega un nuevo insumo' */
   /* #swagger.tags = ['Insumos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
   /* #swagger.parameters['body'] = {
@@ -28,8 +28,8 @@ router.post('/', (req, res) => {
   insumosController.createInsumo(req, res);
 });
 
-router.put('/:id', (req, res) => {
-  /* #swagger.summary = 'Actualiza un insumo existente' verifyToken, isAdmin,  */
+router.put('/:id', verifyToken, isAdmin, (req, res) => {
+  /* #swagger.summary = 'Actualiza un insumo existente' */
   /* #swagger.tags = ['Insumos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
   /* #swagger.parameters['id'] = { description: 'ID del insumo', type: 'integer', required: true } */
@@ -41,8 +41,8 @@ router.put('/:id', (req, res) => {
   insumosController.updateInsumo(req, res);
 });
 
-router.delete('/:id', (req, res) => {
-  /* #swagger.summary = 'Elimina un insumo'  verifyToken, isAdmin,  */
+router.delete('/:id', verifyToken, isAdmin, (req, res) => {
+  /* #swagger.summary = 'Elimina un insumo' */
   /* #swagger.tags = ['Insumos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
   /* #swagger.parameters['id'] = { description: 'ID del insumo', type: 'integer', required: true } */
