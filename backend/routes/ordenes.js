@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const productosController = require('../controllers/productosController');
+const ordenesController = require('../controllers/ordenesController');
 const { verifyToken, isAdmin, isUser } = require('../middleware/auth');
 
 router.get('/', (req, res) => {
   /* #swagger.summary = 'Obtiene la lista de productos' verifyToken, isUser, */
   /* #swagger.tags = ['Productos'] */
-  productosController.getProductos(req, res);
+  ordenesController.getOrdenes(req, res);
 });
 
 router.get('/:id', (req, res) => {
   /* #swagger.summary = 'Obtiene un producto por ID'  verifyToken, isAdmin, */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.parameters['id'] = { description: 'ID del producto', type: 'integer', required: true } */
-  productosController.getProductoById(req, res);
+  ordenesController.getOrdenById(req, res);
 });
 
 router.post('/', (req, res) => {
@@ -25,7 +25,7 @@ router.post('/', (req, res) => {
         description: 'Add new product.',
         schema: { $ref: '#/definitions/Producto' }
     } */
-  productosController.createProducto(req, res);
+  ordenesController.createOrden(req, res);
 });
 
 router.put('/:id', (req, res) => {
@@ -38,7 +38,7 @@ router.put('/:id', (req, res) => {
         description: 'Update product.',
         schema: { $ref: '#/definitions/Producto' }
     } */
-  productosController.updateProducto(req, res);
+  ordenesController.updateOrden(req, res);
 });
 
 router.delete('/:id', (req, res) => {
@@ -46,14 +46,14 @@ router.delete('/:id', (req, res) => {
   /* #swagger.tags = ['Productos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
   /* #swagger.parameters['id'] = { description: 'ID del producto', type: 'integer', required: true } */
-  productosController.deleteProducto(req, res);
+  ordenesController.deleteOrden(req, res);
 });
 
-router.get('/getProductoInsumos/:id', (req, res) => {
-  /* #swagger.summary = 'Obtiene los insumos de un producto' verifyToken, isUser, */
+router.get('/getProductosOrden/:id', (req, res) => {
+  /* #swagger.summary = 'Obtiene los productos de una orden' verifyToken, isUser, */
   /* #swagger.tags = ['Productos'] */
-  /* #swagger.parameters['id'] = { description: 'ID del producto', type: 'integer', required: true } */
-  productosController.getProductoInsumos(req, res);
+  /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
+  ordenesController.getProductosOrden(req, res);
 });
 
 module.exports = router;
