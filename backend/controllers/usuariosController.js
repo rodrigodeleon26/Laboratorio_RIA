@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const usuarios = [];
+const {usuarios} = require('../mockData')
 
 const generateToken = (user) => {
   return jwt.sign({ id: user.id, role: user.role }, 'your_secret_key', { expiresIn: '1h' });

@@ -1,7 +1,4 @@
-let panaderias = [
-    { id: 1, nombre: 'Don Francisco'},
-    { id: 2, nombre: 'Colonial'}
-  ];
+  const { panaderias } = require('../mockData');
   
   exports.getPanaderias = (req, res) => {
       res.json(panaderias);
@@ -46,4 +43,3 @@ let panaderias = [
           res.status(404).json({ message: 'Panaderia no encontrada' });
       }
   };
-    

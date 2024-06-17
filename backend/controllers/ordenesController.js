@@ -1,11 +1,4 @@
-let ordenes = [
-    { id: 1, fechaEntrega: '2024-07-10', descripcion: 'Descripción 1', estado: 'PENDIENTE', importe: 450.0, panadero: 1, cliente: 2, productos: [1, 2]},
-    { id: 2, fechaEntrega: '2024-06-29', descripcion: 'Descripción 2', imagen: 'EN PREPARACION', precio: 746.0, panadero: 1, cliente: 2, productos: [2]},
-    { id: 3, fechaEntrega: '2024-06-22', descripcion: 'Descripción 3', imagen: 'LISTO APRA RECOGER', precio: 1068.0, panadero: 1, cliente: 2, productos: [1]}
-  ];
-
-  const { productos } = require('./productosController');
-  const { usuarios } = require('./usuariosController');
+  const {ordenes, usuarios, productos} = require('../mockData');
 
   exports.ordenes = ordenes;
   
@@ -64,6 +57,3 @@ let ordenes = [
       res.status(404).json({ message: 'Orden no encontrada' });
     }
   };
-
-
-  

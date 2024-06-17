@@ -1,9 +1,4 @@
-let insumos = [
-    { id: 1, nombre: 'Insumo 1', descripcion: 'Descripción 1', imagen: 'data:image/jpeg;base64,/9j/...', precio: 10.0, stock: 2},
-    { id: 2, nombre: 'Insumo 2', descripcion: 'Descripción 2', imagen: 'data:image/jpeg;base64,/9j/...', precio: 20.0, stock:10 }
-  ];
-  
-  exports.insumos = insumos;
+  const {insumos} = require('../mockData');
 
   exports.getInsumos = (req, res) => {
     res.json(insumos);
@@ -48,4 +43,3 @@ let insumos = [
       res.status(404).json({ message: 'insumo no encontrado' });
     }
   };
-  
