@@ -36,7 +36,9 @@ const routes: Routes = [
   {
     path: 'insumos',
     component: InsumosComponent
-  }
+  },
+  
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 
 ];
 
