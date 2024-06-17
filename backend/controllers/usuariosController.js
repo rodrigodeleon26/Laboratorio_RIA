@@ -31,6 +31,8 @@ const createDefaultUsers = async () => {
 // Llama a la función para crear usuarios por defecto al inicio
 createDefaultUsers();
 
+exports.usuarios = usuarios;
+
 const register = async (req, res) => {
   const { email, password, role, telefono } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
