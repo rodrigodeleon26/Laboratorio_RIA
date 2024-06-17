@@ -3,7 +3,6 @@ let panaderias = [
     { id: 2, nombre: 'Colonial'}
   ];
   
-
   exports.getPanaderias = (req, res) => {
       res.json(panaderias);
   };

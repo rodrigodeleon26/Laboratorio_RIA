@@ -56,6 +56,27 @@ const doc = {
       descripcion: "Descripción del producto",
       imagen: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
       precio: 9.99
+    },
+    Insumo: {
+      id: 1,
+      nombre: "Insumo Ejemplo",
+      descripcion: "Descripción del insumo",
+      imagen: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
+      precio: 9.99
+    },
+    Orden: {
+      id: 1,
+      fechaEntrega: "2024-06-22",
+      descripcion: "Descripción de la orden",
+      estado: "LISTO PARA RECOGER",
+      importe: 9.99,
+      panadero: 1,
+      cliente: 2,
+      productos: [1]
+    },
+    Panaderia: {
+      id: 1,
+      nombre: "Panadería Ejemplo",
     }
   }
 };
