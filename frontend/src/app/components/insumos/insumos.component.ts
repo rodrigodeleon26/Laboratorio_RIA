@@ -20,6 +20,9 @@ export class InsumosComponent implements OnInit {
   insumoForm: FormGroup;
   insumoEdit: Insumo = { id: 0, nombre: '', descripcion: '', precio: 0.0 };
 
+  alertMessage: string = '';
+  alertType: 'success' | 'danger' = 'success';
+
   constructor(private insumosService: InsumosService, private modalService: NgbModal) {
     this.insumoForm = new FormGroup({
       nombre: new FormControl('', Validators.required),
@@ -104,20 +107,30 @@ export class InsumosComponent implements OnInit {
       this.insumosService.updateInsumo(this.insumoEdit).subscribe(
         updatedInsumo => {
           this.loadInsumos();
+          this.alertMessage = 'Insumo actualizado correctamente';
+          this.alertType = 'success';
           this.modalService?.dismissAll();
+          this.setAutoCloseAlert(3000); // Cerrar alert después de 3 segundos
         },
         error => {
           console.error('Error al actualizar el insumo:', error);
+          this.alertMessage = 'Error al actualizar el insumo';
+          this.alertType = 'danger';
         }
       );
     } else {
       this.insumosService.createInsumo(this.insumoEdit).subscribe(
         newInsumo => {
           this.loadInsumos();
+          this.alertMessage = 'Insumo creado correctamente';
+          this.alertType = 'success';
           this.modalService?.dismissAll();
+          this.setAutoCloseAlert(3000); // Cerrar alert después de 3 segundos
         },
         error => {
           console.error('Error al crear el insumo:', error);
+          this.alertMessage = 'Error al crear el insumo';
+          this.alertType = 'danger';
         }
       );
     }
@@ -127,11 +140,22 @@ export class InsumosComponent implements OnInit {
     this.insumosService.deleteInsumo(id).subscribe(
       () => {
         this.loadInsumos();
+        this.alertMessage = 'Insumo eliminado correctamente';
+        this.alertType = 'success';
         this.modalService?.dismissAll();
+        this.setAutoCloseAlert(3000); // Cerrar alert después de 3 segundos
       },
       error => {
         console.error('Error al eliminar el insumo:', error);
+        this.alertMessage = 'Error al eliminar el insumo';
+        this.alertType = 'danger';
       }
     );
+  }
+
+  setAutoCloseAlert(timeout: number) {
+    setTimeout(() => {
+      this.alertMessage = '';
+    }, timeout);
   }
 }
