@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { startWith, map, switchMap } from 'rxjs/operators';
 import { Insumo } from '../../models/insumo';
 import { InsumosService } from '../../services/insumos/insumos.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./insumos.component.scss']
 })
 export class InsumosComponent implements OnInit {
-  insumos$: Observable<Insumo[]> | undefined;
+  insumos$: BehaviorSubject<Insumo[]> = new BehaviorSubject<Insumo[]>([]);
   insumosSorted$: Observable<Insumo[]> | undefined;
   filter = new FormControl('');
   sortDirection = new BehaviorSubject<string>('asc');
@@ -28,13 +28,15 @@ export class InsumosComponent implements OnInit {
   }
 
   loadInsumos() {
-    this.insumos$ = this.insumosService.getInsumos();
+    this.insumosService.getInsumos().subscribe(insumos => {
+      this.insumos$.next(insumos);
+    });
   }
 
   setupFilter() {
-    this.insumos$ = combineLatest([
+    this.insumosSorted$ = combineLatest([
       this.filter.valueChanges.pipe(startWith('')),
-      this.insumosService.getInsumos()
+      this.insumos$
     ]).pipe(
       map(([filterValue, insumos]) => this.search(filterValue ? filterValue : '', insumos))
     );
@@ -42,7 +44,7 @@ export class InsumosComponent implements OnInit {
 
   setupSorting() {
     this.insumosSorted$ = combineLatest([
-      this.insumos$ || of([]),
+      this.insumos$,
       this.sortDirection,
       this.sortColumn
     ]).pipe(
@@ -71,50 +73,43 @@ export class InsumosComponent implements OnInit {
 
   sortBy(column: string) {
     if (column === this.sortColumn.value) {
-      // Si ya estamos ordenando por esta columna, cambiamos la dirección
       this.sortDirection.next(this.sortDirection.value === 'asc' ? 'desc' : 'asc');
     } else {
-      // Si estamos ordenando por una nueva columna, la establecemos como columna de ordenamiento
       this.sortColumn.next(column);
-      this.sortDirection.next('asc'); // Orden ascendente por defecto
+      this.sortDirection.next('asc');
     }
   }
 
   openEditarInsumoModal(insumo: Insumo, content: TemplateRef<any>) {
-    this.insumoEdit = { ...insumo }; // Hacemos una copia del insumo para evitar mutaciones
-    console.log(this.insumoEdit);
+    this.insumoEdit = { ...insumo };
     this.modalService.open(content, { centered: true });
   }
 
   editarInsumo() {
     if (this.insumoEdit.id) {
-      this.insumosService.updateInsumo(this.insumoEdit).subscribe(updatedInsumo => {
-        // Aquí puedes manejar el resultado de la actualización
-        console.log('Insumo actualizado:', updatedInsumo);
-        // Recargar la lista de insumos
-        this.loadInsumos();
-        // Cerrar modal
-        this.modalService?.dismissAll();
-      });
-    }
-  }
-  
-  eliminarInsumo(id: number) {
-    if (confirm('¿Estás seguro de eliminar este insumo?')) {
-      this.insumosService.deleteInsumo(id).subscribe(
-        () => {
-          // Eliminación exitosa, puedes actualizar la lista de insumos
-          // Volver a cargar la lista de insumos después de la eliminación
+      this.insumosService.updateInsumo(this.insumoEdit).subscribe(
+        updatedInsumo => {
           this.loadInsumos();
           this.modalService?.dismissAll();
         },
         error => {
-          // Manejar el error si la eliminación falla
+          console.error('Error al actualizar el insumo:', error);
+        }
+      );
+    }
+  }
+
+  eliminarInsumo(id: number) {
+    if (confirm('¿Estás seguro de eliminar este insumo?')) {
+      this.insumosService.deleteInsumo(id).subscribe(
+        () => {
+          this.loadInsumos();
+          this.modalService?.dismissAll();
+        },
+        error => {
           console.error('Error al eliminar el insumo:', error);
         }
       );
     }
   }
-  
-  
 }
