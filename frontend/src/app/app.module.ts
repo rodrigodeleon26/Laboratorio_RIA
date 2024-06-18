@@ -17,6 +17,7 @@ import { RegisterComponent } from './Components/register/register.component';
 import { HomeComponent } from './Components/home/home.component';
 import { InsumosComponent } from './Components/insumos/insumos.component';
 import { CrearProductoComponent } from './Components/crear-producto/crear-producto.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { CrearProductoComponent } from './Components/crear-producto/crear-produc
     ProductosComponent,
     HomeComponent,
     CrearProductoComponent,
+    InsumosComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +36,7 @@ import { CrearProductoComponent } from './Components/crear-producto/crear-produc
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule
   ],
   providers: [
     provideClientHydration(),

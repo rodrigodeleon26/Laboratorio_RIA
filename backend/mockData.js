@@ -7,10 +7,19 @@ let panaderias = [
     { id: 2, nombre: 'Colonial'}
 ];
 
-//  Insumos
 let insumos = [
-    { id: 1, nombre: 'Insumo 1', descripcion: 'Descripción 1', imagen: 'data:image/jpeg;base64,/9j/...', precio: 10.0 },
-    { id: 2, nombre: 'Insumo 2', descripcion: 'Descripción 2', imagen: 'data:image/jpeg;base64,/9j/...', precio: 20.0 }
+    { id: 1, nombre: 'Harina de trigo', descripcion: 'Harina refinada de trigo 000', precio: 30.0 },
+    { id: 2, nombre: 'Levadura', descripcion: 'Levadura seca instantánea', precio: 15.0 },
+    { id: 3, nombre: 'Azúcar', descripcion: 'Azúcar blanca refinada', precio: 25.0 },
+    { id: 4, nombre: 'Sal', descripcion: 'Sal fina', precio: 5.0 },
+    { id: 5, nombre: 'Mantequilla', descripcion: 'Mantequilla sin sal', precio: 50.0 },
+    { id: 6, nombre: 'Huevos', descripcion: 'Huevos frescos', precio: 40.0 },
+    { id: 7, nombre: 'Leche', descripcion: 'Leche entera', precio: 20.0 },
+    { id: 8, nombre: 'Aceite vegetal', descripcion: 'Aceite de girasol', precio: 35.0 },
+    { id: 9, nombre: 'Esencia de vainilla', descripcion: 'Esencia de vainilla pura', precio: 60.0 },
+    { id: 10, nombre: 'Polvo de hornear', descripcion: 'Polvo de hornear para repostería', precio: 10.0 },
+    { id: 11, nombre: 'Chocolate para repostería', descripcion: 'Chocolate amargo para fundir', precio: 80.0 },
+    { id: 12, nombre: 'Frutas confitadas', descripcion: 'Mezcla de frutas confitadas', precio: 70.0 }
 ];
 
 //  Ordenes
