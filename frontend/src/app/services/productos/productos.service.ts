@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Producto } from '../../models/producto';
 import { Observable } from 'rxjs';
+import { InsumoProducto } from '../../interfaces/InsumoProducto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,12 @@ export class ProductosService {
   // }
 
   //agregar un producto
-  post(producto: Producto): Observable<Producto> {
+  /*post(producto: Producto): Observable<Producto> {
     return this.http.post<Producto>(this.apiUrl, producto);
+  }*/
+
+  post(productoData: { producto: Producto; insumosProducto: InsumoProducto[]; }): Observable<any> {
+    return this.http.post<Producto>(this.apiUrl, productoData);
   }
 
   //actualizar un producto
