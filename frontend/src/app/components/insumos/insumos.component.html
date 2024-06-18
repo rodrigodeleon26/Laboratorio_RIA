@@ -7,16 +7,14 @@
       <th>Descripción</th>
       <th>Stock</th>
       <th>Precio</th>
-      <th>Proveedor</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let insumo of filteredInsumos$ | async">
+    <tr *ngFor="let insumo of (insumos$ | async) ?? []">
       <td>{{insumo.nombre}}</td>
       <td>{{insumo.descripcion}}</td>
       <td>{{insumo.stock}}</td>
       <td>{{insumo.precio}}</td>
-      <td>{{insumo.proveedor}}</td>
     </tr>
   </tbody>
 </table>

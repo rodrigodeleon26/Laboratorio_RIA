@@ -36,9 +36,22 @@
         ],
         "summary": "Obtiene la lista de hospitales",
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -184,7 +197,12 @@
           "201": {
             "description": "Created"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/usuarios/login": {
@@ -211,7 +229,12 @@
           "401": {
             "description": "Unauthorized"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/usuarios/change-password": {
@@ -238,7 +261,12 @@
           "400": {
             "description": "Bad Request"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/usuarios/forgot-password": {
@@ -265,7 +293,12 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/usuarios/enable-user": {
@@ -292,7 +325,12 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/usuarios/disable-user": {
@@ -319,7 +357,12 @@
           "404": {
             "description": "Not Found"
           }
-        }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
       }
     },
     "/productos/": {
@@ -329,22 +372,9 @@
         ],
         "summary": "Obtiene la lista de productos",
         "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       },
@@ -355,11 +385,6 @@
         "summary": "Agrega un nuevo producto",
         "description": "",
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
           {
             "name": "body",
             "in": "body",
@@ -372,12 +397,6 @@
         "responses": {
           "201": {
             "description": "Created"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         },
         "security": [
@@ -401,6 +420,189 @@
             "required": true,
             "type": "integer",
             "description": "ID del producto"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Productos"
+        ],
+        "summary": "Actualiza un producto existente",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID del producto"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update product.",
+            "schema": {
+              "$ref": "#/definitions/Producto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Productos"
+        ],
+        "summary": "Elimina un producto",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID del producto"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/productos/getProductoInsumos/{id}": {
+      "get": {
+        "tags": [
+          "Productos"
+        ],
+        "summary": "Obtiene los insumos de un producto",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID del producto"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/insumos/": {
+      "get": {
+        "tags": [
+          "Insumos"
+        ],
+        "summary": "Obtiene la lista de insumos",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Insumos"
+        ],
+        "summary": "Agrega un nuevo insumo",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add new input.",
+            "schema": {
+              "$ref": "#/definitions/Insumo"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/insumos/{id}": {
+      "get": {
+        "tags": [
+          "Insumos"
+        ],
+        "summary": "Obtiene un insumo por ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID del insumo"
           },
           {
             "name": "authorization",
@@ -425,9 +627,9 @@
       },
       "put": {
         "tags": [
-          "Productos"
+          "Insumos"
         ],
-        "summary": "Actualiza un producto existente",
+        "summary": "Actualiza un insumo existente",
         "description": "",
         "parameters": [
           {
@@ -435,7 +637,7 @@
             "in": "path",
             "required": true,
             "type": "integer",
-            "description": "ID del producto"
+            "description": "ID del insumo"
           },
           {
             "name": "authorization",
@@ -445,9 +647,9 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Update product.",
+            "description": "Update input.",
             "schema": {
-              "$ref": "#/definitions/Producto"
+              "$ref": "#/definitions/Insumo"
             }
           }
         ],
@@ -473,9 +675,9 @@
       },
       "delete": {
         "tags": [
-          "Productos"
+          "Insumos"
         ],
-        "summary": "Elimina un producto",
+        "summary": "Elimina un insumo",
         "description": "",
         "parameters": [
           {
@@ -483,7 +685,7 @@
             "in": "path",
             "required": true,
             "type": "integer",
-            "description": "ID del producto"
+            "description": "ID del insumo"
           },
           {
             "name": "authorization",
@@ -503,6 +705,298 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/ordenes/": {
+      "get": {
+        "tags": [
+          "Órdenes"
+        ],
+        "summary": "Obtiene la lista de órdenes",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Órdenes"
+        ],
+        "summary": "Agrega una nueva orden",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add new order.",
+            "schema": {
+              "$ref": "#/definitions/Orden"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/ordenes/{id}": {
+      "get": {
+        "tags": [
+          "Órdenes"
+        ],
+        "summary": "Obtiene una orden por ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la orden"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Órdenes"
+        ],
+        "summary": "Actualiza una orden existente",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la orden"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update order.",
+            "schema": {
+              "$ref": "#/definitions/Orden"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Órdenes"
+        ],
+        "summary": "Elimina una orden",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la orden"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/ordenes/getProductosOrden/{id}": {
+      "get": {
+        "tags": [
+          "Órdenes"
+        ],
+        "summary": "Obtiene los productos de una orden",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la orden"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/panaderias/": {
+      "get": {
+        "tags": [
+          "Panaderías"
+        ],
+        "summary": "Obtiene la lista de panaderías",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Panaderías"
+        ],
+        "summary": "Agrega una nueva panadería",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add new bakery.",
+            "schema": {
+              "$ref": "#/definitions/Producto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/panaderias/{id}": {
+      "get": {
+        "tags": [
+          "Panaderías"
+        ],
+        "summary": "Obtiene una panadería por ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la panadería"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Panaderías"
+        ],
+        "summary": "Actualiza una panadería existente",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la panadería"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update bakery.",
+            "schema": {
+              "$ref": "#/definitions/Producto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Panaderías"
+        ],
+        "summary": "Elimina una panadería",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID de la panadería"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           }
         },
         "security": [
@@ -651,6 +1145,86 @@
         "precio": {
           "type": "number",
           "example": 9.99
+        }
+      }
+    },
+    "Insumo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "nombre": {
+          "type": "string",
+          "example": "Insumo Ejemplo"
+        },
+        "descripcion": {
+          "type": "string",
+          "example": "Descripción del insumo"
+        },
+        "imagen": {
+          "type": "string",
+          "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+        },
+        "precio": {
+          "type": "number",
+          "example": 9.99
+        }
+      }
+    },
+    "Orden": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "fechaEntrega": {
+          "type": "string",
+          "example": "2024-06-22"
+        },
+        "descripcion": {
+          "type": "string",
+          "example": "Descripción de la orden"
+        },
+        "estado": {
+          "type": "string",
+          "example": "LISTO PARA RECOGER"
+        },
+        "importe": {
+          "type": "number",
+          "example": 9.99
+        },
+        "panadero": {
+          "type": "number",
+          "example": 1
+        },
+        "cliente": {
+          "type": "number",
+          "example": 2
+        },
+        "productos": {
+          "type": "array",
+          "example": [
+            1
+          ],
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "Panaderia": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "nombre": {
+          "type": "string",
+          "example": "Panadería Ejemplo"
         }
       }
     }
