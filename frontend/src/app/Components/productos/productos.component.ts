@@ -30,7 +30,11 @@ export class ProductosComponent {
   }
 
   add() {
-    this.productoService.post(this.selectedProducto).subscribe({
+    let requestBody = {
+      producto: this.selectedProducto,
+      insumosProducto: []
+    };
+    this.productoService.post(requestBody).subscribe({
       next: (data) => {
         console.log(data);
       },

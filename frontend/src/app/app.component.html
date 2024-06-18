@@ -6,7 +6,7 @@
         <a class="nav-link disabled" href="#">Bienvenido, {{ email }}</a>
       </li>
       <li *ngIf="!email" class="nav-item">
-        <a class="nav-link" href="/login">Iniciar Sesión</a>
+        <a class="nav-link" [routerLink]="['/login']">Iniciar Sesión</a>
       </li>
       <li *ngIf="email" class="nav-item">
         <button class="btn btn-link nav-link" (click)="logout()">Logout</button>
@@ -28,7 +28,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a [routerLink]="['/productos']" class="dropdown-item">Ver Productos</a></li>
-            <li><a [routerLink]="['/productos']" class="dropdown-item">Agregar Producto</a></li>
+            <li><a [routerLink]="['/crearProducto']" class="dropdown-item">Agregar Producto</a></li>
           </ul>
         </li>
 
@@ -101,7 +101,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a [routerLink]="['/productos']" class="dropdown-item">Ver Productos</a></li>
-            <li><a [routerLink]="['/productos']" class="dropdown-item">Agregar Producto</a></li>
+            <li><a [routerLink]="['/crearProducto']" class="dropdown-item">Agregar Producto</a></li>
           </ul>
         </li>
 
