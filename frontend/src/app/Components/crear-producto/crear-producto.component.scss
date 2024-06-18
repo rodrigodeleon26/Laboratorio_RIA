@@ -1,0 +1,17 @@
+.fondoForm {
+    background-color: rgba(245, 159, 119, 1);
+    background: linear-gradient(0deg,rgba(245, 159, 119, 1) 75%, rgb(255, 255, 255) 90%);
+    padding: 20px;
+
+}
+//rgba(245, 159, 119, 1) es el color de fondo
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+
+    th {
+        background-color: #ebebeb; // Ajusta este valor a tus necesidades
+    }
+}
