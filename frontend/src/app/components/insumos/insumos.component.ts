@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { Insumo } from '../../models/insumo';
@@ -17,9 +17,16 @@ export class InsumosComponent implements OnInit {
   filter = new FormControl('');
   sortDirection = new BehaviorSubject<string>('asc');
   sortColumn = new BehaviorSubject<string>('nombre');
+  insumoForm: FormGroup;
   insumoEdit: Insumo = { id: 0, nombre: '', descripcion: '', precio: 0.0 };
 
-  constructor(private insumosService: InsumosService, private modalService: NgbModal) {}
+  constructor(private insumosService: InsumosService, private modalService: NgbModal) {
+    this.insumoForm = new FormGroup({
+      nombre: new FormControl('', Validators.required),
+      precio: new FormControl(0, [Validators.required, Validators.min(1)]),
+      descripcion: new FormControl('', Validators.required),
+    });
+  }
 
   ngOnInit(): void {
     this.loadInsumos();
@@ -76,15 +83,23 @@ export class InsumosComponent implements OnInit {
 
   openEditarInsumoModal(insumo: Insumo, content: TemplateRef<any>) {
     this.insumoEdit = { ...insumo };
+    this.insumoForm.patchValue(this.insumoEdit);
     this.modalService.open(content, { centered: true });
   }
 
   openAgregarInsumoModal(content: TemplateRef<any>) {
     this.insumoEdit = { id: 0, nombre: '', descripcion: '', precio: 0.0 };
+    this.insumoForm.reset(this.insumoEdit);
     this.modalService.open(content, { centered: true });
   }
 
   editarInsumo() {
+    if (this.insumoForm.invalid) {
+      this.insumoForm.markAllAsTouched();
+      return;
+    }
+    this.insumoEdit = { ...this.insumoEdit, ...this.insumoForm.value };
+
     if (this.insumoEdit.id) {
       this.insumosService.updateInsumo(this.insumoEdit).subscribe(
         updatedInsumo => {

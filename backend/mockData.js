@@ -4,7 +4,15 @@ let usuarios = []
 //  Panaderias
 let panaderias = [
     { id: 1, nombre: 'Don Francisco'},
-    { id: 2, nombre: 'Colonial'}
+    { id: 2, nombre: 'Colonial'},
+    { id: 3, nombre: 'El Pato'},
+    { id: 4, nombre: 'Delicias'},
+    { id: 5, nombre: 'Lavalleja'},
+    { id: 6, nombre: 'El Triunfo'},
+];
+
+let panaderoPanaderia = [
+    { usuarioId: 2, panaderiaId: 1 }
 ];
 
 let insumos = [
@@ -59,6 +67,17 @@ const productosInsumos = [
     { productoId: 1, insumoId: 1, cantidad: 10 },
     { productoId: 1, insumoId: 2, cantidad: 20 },
     { productoId: 2, insumoId: 1, cantidad: 5 },
+];
+
+let insumosPanaderia = [
+    { insumoId: 1, panaderiaId: 1, stock: 100 },
+    { insumoId: 2, panaderiaId: 1, stock: 200 },
+    { insumoId: 1, panaderiaId: 2, stock: 50 },
+    { insumoId: 2, panaderiaId: 2, stock: 100 },
+    { insumoId: 1, panaderiaId: 3, stock: 150 },
+    { insumoId: 2, panaderiaId: 3, stock: 300 },
+    { insumoId: 1, panaderiaId: 4, stock: 200 },
+    { insumoId: 2, panaderiaId: 4, stock: 400 },
 ];
 
 module.exports = { usuarios, productos, insumos, panaderias, ordenes, productosInsumos };
