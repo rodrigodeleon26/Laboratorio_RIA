@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { Insumo } from '../../models/insumo';
 import { InsumosService } from '../../services/insumos/insumos.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-insumos',
@@ -15,9 +16,10 @@ export class InsumosComponent implements OnInit {
   insumosSorted$: Observable<Insumo[]> | undefined;
   filter = new FormControl('');
   sortDirection = new BehaviorSubject<string>('asc');
-  sortColumn = new BehaviorSubject<string>('nombre'); // Inicialmente ordenado por nombre
+  sortColumn = new BehaviorSubject<string>('nombre');
+  insumoEdit: Insumo = { id: 0, nombre: '', descripcion: '', precio: 0.0 };
 
-  constructor(private insumosService: InsumosService) {}
+  constructor(private insumosService: InsumosService, private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.loadInsumos();
@@ -78,8 +80,41 @@ export class InsumosComponent implements OnInit {
     }
   }
 
-  editarInsumo(insumo: Insumo): void {
-    console.log('Editar insumo:', insumo);
-    // Aquí puedes agregar la lógica para editar el insumo
+  openEditarInsumoModal(insumo: Insumo, content: TemplateRef<any>) {
+    this.insumoEdit = { ...insumo }; // Hacemos una copia del insumo para evitar mutaciones
+    console.log(this.insumoEdit);
+    this.modalService.open(content, { centered: true });
   }
+
+  editarInsumo() {
+    if (this.insumoEdit.id) {
+      this.insumosService.updateInsumo(this.insumoEdit).subscribe(updatedInsumo => {
+        // Aquí puedes manejar el resultado de la actualización
+        console.log('Insumo actualizado:', updatedInsumo);
+        // Recargar la lista de insumos
+        this.loadInsumos();
+        // Cerrar modal
+        this.modalService?.dismissAll();
+      });
+    }
+  }
+  
+  eliminarInsumo(id: number) {
+    if (confirm('¿Estás seguro de eliminar este insumo?')) {
+      this.insumosService.deleteInsumo(id).subscribe(
+        () => {
+          // Eliminación exitosa, puedes actualizar la lista de insumos
+          // Volver a cargar la lista de insumos después de la eliminación
+          this.loadInsumos();
+          this.modalService?.dismissAll();
+        },
+        error => {
+          // Manejar el error si la eliminación falla
+          console.error('Error al eliminar el insumo:', error);
+        }
+      );
+    }
+  }
+  
+  
 }
