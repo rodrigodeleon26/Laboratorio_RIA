@@ -20,6 +20,7 @@ export class CrearProductoComponent {
   mostrarInsumo = false;
   insumoSeleccionado = 0;
   cantidadInsumo = 0;
+  imagenBase64: string | ArrayBuffer | null = null;
   
   ngOnInit(): void {
     this.insumosService.getInsumos().subscribe({
@@ -42,6 +43,9 @@ export class CrearProductoComponent {
     if (this.insumoSeleccionado == 0 || this.insumosProducto.find(insumo => insumo.insumoId === this.insumoSeleccionado || this.cantidadInsumo <= 0)) {
       return;
     }
+    if (this.cantidadInsumo <= 0) {
+      return;
+    }
     //crear la relacion insumo con el producto y guardarla en el array
       this.mostrarInsumo = false;
       this.insumosProducto.push({
@@ -49,6 +53,8 @@ export class CrearProductoComponent {
         insumoId: this.insumoSeleccionado,
         cantidad: this.cantidadInsumo 
       });
+      this.insumoSeleccionado = 0; 
+      this.cantidadInsumo = 0;
   }
 
   getInsumoNombre(id: number): string {
@@ -60,12 +66,30 @@ export class CrearProductoComponent {
     this.insumosProducto = this.insumosProducto.filter(insumo => insumo.insumoId !== insumoId);
   }
 
+  onFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagenBase64 = reader.result;
+        console.log(this.imagenBase64);  // Para verificar la conversión
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   enviarForm() {
     let producto = new Producto();
     producto.nombre = (document.getElementById('nombre') as HTMLInputElement).value;
     producto.precio = parseFloat((document.getElementById('precio') as HTMLInputElement).value);
     producto.descripcion = (document.getElementById('descripcion') as HTMLInputElement).value;
-    //TODO: imagen
+    // Verificar que imagenBase64 es de tipo string antes de asignarla
+    if (typeof this.imagenBase64 === 'string') {
+      producto.imagen = this.imagenBase64;
+    } else {
+      producto.imagen = '';  // O manejar el caso donde la imagen no está disponible
+    }
 
     let requestBody = {
       producto: producto,

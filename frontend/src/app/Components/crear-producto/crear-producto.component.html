@@ -1,3 +1,7 @@
+<div class="h-100 fondoForm" >
+  <h1 class="letraCoqueta mb-3">Crear Producto</h1>
+
+
 <div class="container mt-5">
     <form>
       <div class="row justify-content-center">
@@ -12,25 +16,31 @@
           </div>
           <div class="form-group mb-3">
             <label for="precio">Precio</label>
-            <input type="number" class="form-control" id="precio" placeholder="Precio del Producto">
+            <input min="0" type="number" class="form-control" id="precio" placeholder="Precio del Producto">
           </div>
           <div class="form-group mb-3">
             <label for="imagen">Imagen</label>
-            <input type="file" class="form-control" id="imagen" placeholder="Imagen del Producto">
+            <input type="file" class="form-control" id="imagen" placeholder="Imagen del Producto" (change)="onFileChange($event)">
           </div>
         </div>
         <div class="col-md-4">
           <h2>Insumos</h2>
           <div class="btn btn-primary" (click)="mostrarInsumoForm()">Agregar Insumo</div>
           <div *ngIf="mostrarInsumo">
-            <select class="form-select" aria-label="Default select example" name="insumos" id="selectInsumos" [(ngModel)]="insumoSeleccionado">
-              <option [value]="0" selected>Seleccionar Insumo</option>
-              <option *ngFor="let insumo of insumos" [value]="insumo.id">{{insumo.nombre}}</option>
-            </select>
-            <input type="number" class="form-control" id="cantidad" [(ngModel)]="cantidadInsumo" name="cantidadInsumo">
-            <div class="btn-success" (click)="confirmarInsumo()">Agregar</div>
+            <div class="mb-3">
+              <label for="selectInsumos">Insumo</label>
+              <select class="form-select" aria-label="Default select example" name="insumos" id="selectInsumos" [(ngModel)]="insumoSeleccionado">
+                <option [value]="0" selected>Seleccionar Insumo</option>
+                <option *ngFor="let insumo of insumos" [value]="insumo.id">{{insumo.nombre}}</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="cantidad">Cantidad</label>
+              <input type="number" min="0" class="form-control" id="cantidad" [(ngModel)]="cantidadInsumo" name="cantidadInsumo" placeholder="Cantidad necesaria">
+            </div>
+            <div class="btn btn-success" (click)="confirmarInsumo()">Agregar</div>
           </div>
-          <div>
+          <div class="mt-4">
             <table class="table">
               <thead>
                 <tr>
@@ -55,3 +65,5 @@
       </div>
     </form>
   </div>
+
+</div>
