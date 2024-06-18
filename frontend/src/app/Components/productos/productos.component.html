@@ -18,7 +18,7 @@
             </div>
             <div class="col-md-4">
                 <h2>Modificar Producto</h2>
-                <div class="card mt-4"  (click)="$event.stopPropagation()">
+                <div class="card mt-4" (click)="$event.stopPropagation()">
                     <div class="card-body">
                         <div class="form-group mb-3">
                             <input type="text" [(ngModel)]="selectedProducto.nombre" placeholder="Inserte nombre" class="form-control" [disabled]="!selectedProducto.id">
@@ -29,16 +29,75 @@
                         <div class="form-group mb-3">
                             <input type="text" [(ngModel)]="selectedProducto.descripcion" placeholder="inserte descripcion" class="form-control" [disabled]="!selectedProducto.id">
                         </div>
-                        <button *ngIf="selectedProducto.id !== 0" (click)="edit()" class="btn btn-primary" [disabled]="!selectedProducto.id">
-                            Guardar
-                        </button>
-                        <button *ngIf="selectedProducto.id !== 0" class="btn btn-danger" (click)="delete()" [disabled]="!selectedProducto.id">
-                            delete
-                        </button>
+                        <div class="form-group mb-3">
+                            <input type="file" (change)="onFileChange($event)" class="form-control" [disabled]="!selectedProducto.id">
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-center">Nombre</th>
+                                    <th scope="col" class="text-center">Cantidad</th>
+                                    <th scope="col" class="text-center">Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let insumo of insumosProducto" >
+                                    <td>{{getInsumoNombre(insumo.insumoId)}}</td>
+                                    <td class="d-flex justify-content-center h-100"><input class="w-50" style="height: 2.5rem;" min="1" type="number" [(ngModel)]="insumo.cantidad" value="{{insumo.cantidad}}"></td>
+                                    <td><button class="btn btn-danger" (click)="eliminarInsumo(insumo.insumoId)"><i class="bi bi-trash-fill"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="d-flex justify-content-around">                        
+                            <button *ngIf="selectedProducto.id !== 0" (click)="edit()" class="btn btn-primary" [disabled]="!selectedProducto.id">
+                                Guardar
+                            </button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInsumoModal">
+                                Agregar Insumo
+                            </button>
+                            <button *ngIf="selectedProducto.id !== 0" class="btn btn-danger" (click)="delete()" [disabled]="!selectedProducto.id">
+                                Eliminar
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addInsumoModal" tabindex="-1" aria-labelledby="addInsumoModalLabel" aria-hidden="true" (click)="$event.stopPropagation()">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addInsumoModalLabel">Agregar Insumo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="selectInsumos">Insumo</label>
+                                <select class="form-select" aria-label="Default select example" name="insumos" id="selectInsumos" [(ngModel)]="insumoSeleccionado">
+                                    <option [value]="0" selected>Seleccionar Insumo</option>
+                                    <option *ngFor="let insumo of insumos" [value]="insumo.id">{{insumo.nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cantidad">Cantidad</label>
+                                <input type="number" min="0" class="form-control" id="cantidad" [(ngModel)]="cantidadInsumo" name="cantidadInsumo" placeholder="Cantidad necesaria">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" (click)="addInsumo()">Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>

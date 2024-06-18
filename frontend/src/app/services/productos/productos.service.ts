@@ -30,12 +30,20 @@ export class ProductosService {
   }
 
   //actualizar un producto
-  put(producto: Producto): Observable<Producto> {
+  /*put(producto: Producto): Observable<Producto> {
     return this.http.put<Producto>(`${this.apiUrl}/${producto.id}`, producto);
+  }*/
+
+  actualizarConInsumos(productoData: { producto: Producto; insumosProducto: InsumoProducto[]; }): Observable<any> {
+      return this.http.put<Producto>(`${this.apiUrl}/${productoData.producto.id}`, productoData);
   }
 
   delete(id: number): Observable<Producto> {
     return this.http.delete<Producto>(`${this.apiUrl}/${id}`);
+  }
+
+  getProductoInsumos(id: number): Observable<InsumoProducto[]> {
+    return this.http.get<InsumoProducto[]>(`${this.apiUrl}/getProductoInsumos/${id}`);
   }
 
 }
