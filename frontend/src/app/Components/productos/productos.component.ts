@@ -3,6 +3,7 @@ import { Producto } from '../../models/producto';
 import { ProductosService } from '../../services/productos/productos.service';
 import { Router } from '@angular/router';
 import { response } from 'express';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-productos',
@@ -11,7 +12,7 @@ import { response } from 'express';
 })
 export class ProductosComponent {
   
-  constructor(private productoService: ProductosService, private router: Router) {
+  constructor(private productoService: ProductosService, private router: Router, private sanitizer: DomSanitizer) {
 
   }
 
@@ -22,21 +23,6 @@ export class ProductosComponent {
     this.productoService.get().subscribe({
       next: (data) => {
         this.productos = data;
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-  }
-
-  add() {
-    let requestBody = {
-      producto: this.selectedProducto,
-      insumosProducto: []
-    };
-    this.productoService.post(requestBody).subscribe({
-      next: (data) => {
-        console.log(data);
       },
       error: (error) => {
         console.error(error);
@@ -55,19 +41,6 @@ export class ProductosComponent {
     });
   }
 
-  addOrEdit() {
-    if(this.selectedProducto.id === 0){
-      this.selectedProducto.id = this.productos.length + 1;
-      this.productos.push(this.selectedProducto);
-    }
-
-    this.selectedProducto = new Producto();
-  }
-
-  openForEdit(producto: Producto) {
-    this.selectedProducto = producto;
-  }
-
   delete() {
     if(confirm('¿Estás seguro de eliminar el producto?')){
       // this.productos = this.productos.filter(x => x != this.selectedProducto);
@@ -83,4 +56,16 @@ export class ProductosComponent {
     }
   }
 
+  getSafeImageUrl(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  seleccionarProducto(producto: Producto, event: Event){
+    event.stopPropagation();
+    this.selectedProducto = producto;
+  }
+
+  deselectProducto(event: Event) {
+      this.selectedProducto = new Producto();
+  }
 }
