@@ -19,8 +19,28 @@ let insumos = [
     { id: 9, nombre: 'Esencia de vainilla', descripcion: 'Esencia de vainilla pura', precio: 60.0 },
     { id: 10, nombre: 'Polvo de hornear', descripcion: 'Polvo de hornear para repostería', precio: 10.0 },
     { id: 11, nombre: 'Chocolate para repostería', descripcion: 'Chocolate amargo para fundir', precio: 80.0 },
-    { id: 12, nombre: 'Frutas confitadas', descripcion: 'Mezcla de frutas confitadas', precio: 70.0 }
+    { id: 12, nombre: 'Frutas confitadas', descripcion: 'Mezcla de frutas confitadas', precio: 70.0 },
+    { id: 13, nombre: 'Nueces', descripcion: 'Nueces picadas para decoración', precio: 100.0 },
+    { id: 14, nombre: 'Miel', descripcion: 'Miel pura de abeja', precio: 90.0 },
+    { id: 15, nombre: 'Canela en polvo', descripcion: 'Canela en polvo fina', precio: 45.0 },
+    { id: 16, nombre: 'Azúcar glas', descripcion: 'Azúcar glas para decoración', precio: 30.0 },
+    { id: 17, nombre: 'Cacao en polvo', descripcion: 'Cacao puro sin azúcar', precio: 85.0 },
+    { id: 18, nombre: 'Leche condensada', descripcion: 'Leche condensada azucarada', precio: 70.0 },
+    { id: 19, nombre: 'Coco rallado', descripcion: 'Coco rallado deshidratado', precio: 55.0 },
+    { id: 20, nombre: 'Almendras', descripcion: 'Almendras fileteadas', precio: 110.0 },
+    { id: 21, nombre: 'Colorante alimentario', descripcion: 'Colorante en gel para repostería', precio: 40.0 },
+    { id: 22, nombre: 'Glucosa', descripcion: 'Jarabe de glucosa', precio: 60.0 },
+    { id: 23, nombre: 'Crema de leche', descripcion: 'Crema de leche para batir', precio: 75.0 },
+    { id: 24, nombre: 'Queso crema', descripcion: 'Queso crema para repostería', precio: 90.0 },
+    { id: 25, nombre: 'Gelatina sin sabor', descripcion: 'Gelatina en polvo sin sabor', precio: 35.0 },
+    { id: 26, nombre: 'Fécula de maíz', descripcion: 'Fécula de maíz refinada', precio: 25.0 },
+    { id: 27, nombre: 'Mermelada', descripcion: 'Mermelada de frutas surtidas', precio: 60.0 },
+    { id: 28, nombre: 'Mantequilla de maní', descripcion: 'Mantequilla de maní natural', precio: 70.0 },
+    { id: 30, nombre: 'Yogurt natural', descripcion: 'Yogurt natural sin azúcar', precio: 25.0 },
+    { id: 31, nombre: 'Dulce de membrillo', descripcion: 'Dulce de membrillo natural', precio: 50.0 },
+    { id: 32, nombre: 'Dulce de leche', descripcion: 'Dulce de leche repostero', precio: 60.0 },
 ];
+
 
 //  Ordenes
 let ordenes = [

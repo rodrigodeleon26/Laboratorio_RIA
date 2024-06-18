@@ -1,4 +1,20 @@
 <div class="container mt-4">
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Modal title</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <p>One fine body&hellip;</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
+    </div>
+  </ng-template>
+  <button class="btn btn-outline-primary mb-2 me-2" (click)="openVerticallyCentered(content)">
+    Modal vertically centered
+  </button>
+
   <div class="row mb-3">
     <div class="col-12 col-md-6">
       <input type="text" [formControl]="filter" class="form-control" placeholder="Buscar insumo">
@@ -11,18 +27,22 @@
           <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
-            <th scope="col">Precio</th>
+            <th scope="col" (click)="sortBy('precio')" id="columna_precio">Precio
+              <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'precio' && sortDirection.value === 'asc',
+                                         'bi-caret-down-fill': sortColumn.value === 'precio' && sortDirection.value === 'desc',
+                                       }"></i>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngIf="(insumos$ | async)?.length; else noInsumos">
-            <tr *ngFor="let insumo of insumos$ | async">
+          <ng-container *ngIf="(insumosSorted$ | async)?.length; else noInsumos">
+            <tr *ngFor="let insumo of insumosSorted$ | async">
               <td>{{insumo.nombre}}</td>
               <td>{{insumo.descripcion}}</td>
               <td>{{insumo.precio | currency}}</td>
               <td>
-                <button class="btn btn-warning btn-sm">
+                <button class="btn btn-warning btn-sm" (click)="editarInsumo(insumo)">
                   <i class="bi bi-pencil"></i>
                 </button>
               </td>
