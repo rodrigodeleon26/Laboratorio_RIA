@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { startWith, map, switchMap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 import { Insumo } from '../../models/insumo';
 import { InsumosService } from '../../services/insumos/insumos.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,7 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class InsumosComponent implements OnInit {
   insumos$: BehaviorSubject<Insumo[]> = new BehaviorSubject<Insumo[]>([]);
-  insumosSorted$: Observable<Insumo[]> | undefined;
+  insumosFilteredAndSorted$: Observable<Insumo[]> | undefined;
   filter = new FormControl('');
   sortDirection = new BehaviorSubject<string>('asc');
   sortColumn = new BehaviorSubject<string>('nombre');
@@ -23,8 +23,7 @@ export class InsumosComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadInsumos();
-    this.setupFilter();
-    this.setupSorting();
+    this.setupFilterAndSorting();
   }
 
   loadInsumos() {
@@ -33,22 +32,17 @@ export class InsumosComponent implements OnInit {
     });
   }
 
-  setupFilter() {
-    this.insumosSorted$ = combineLatest([
-      this.filter.valueChanges.pipe(startWith('')),
-      this.insumos$
-    ]).pipe(
-      map(([filterValue, insumos]) => this.search(filterValue ? filterValue : '', insumos))
-    );
-  }
-
-  setupSorting() {
-    this.insumosSorted$ = combineLatest([
+  setupFilterAndSorting() {
+    this.insumosFilteredAndSorted$ = combineLatest([
       this.insumos$,
+      this.filter.valueChanges.pipe(startWith('')),
       this.sortDirection,
       this.sortColumn
     ]).pipe(
-      map(([insumos, sortDirection, sortColumn]) => this.sort(insumos, sortColumn, sortDirection))
+      map(([insumos, filterValue, sortDirection, sortColumn]) => {
+        let filteredInsumos = this.search(filterValue || '', insumos);
+        return this.sort(filteredInsumos, sortColumn, sortDirection);
+      })
     );
   }
 
@@ -85,6 +79,11 @@ export class InsumosComponent implements OnInit {
     this.modalService.open(content, { centered: true });
   }
 
+  openAgregarInsumoModal(content: TemplateRef<any>) {
+    this.insumoEdit = { id: 0, nombre: '', descripcion: '', precio: 0.0 };
+    this.modalService.open(content, { centered: true });
+  }
+
   editarInsumo() {
     if (this.insumoEdit.id) {
       this.insumosService.updateInsumo(this.insumoEdit).subscribe(
@@ -96,20 +95,28 @@ export class InsumosComponent implements OnInit {
           console.error('Error al actualizar el insumo:', error);
         }
       );
-    }
-  }
-
-  eliminarInsumo(id: number) {
-    if (confirm('¿Estás seguro de eliminar este insumo?')) {
-      this.insumosService.deleteInsumo(id).subscribe(
-        () => {
+    } else {
+      this.insumosService.createInsumo(this.insumoEdit).subscribe(
+        newInsumo => {
           this.loadInsumos();
           this.modalService?.dismissAll();
         },
         error => {
-          console.error('Error al eliminar el insumo:', error);
+          console.error('Error al crear el insumo:', error);
         }
       );
     }
+  }
+
+  eliminarInsumo(id: number) {
+    this.insumosService.deleteInsumo(id).subscribe(
+      () => {
+        this.loadInsumos();
+        this.modalService?.dismissAll();
+      },
+      error => {
+        console.error('Error al eliminar el insumo:', error);
+      }
+    );
   }
 }
