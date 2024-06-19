@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const hospitalesController = require('../controllers/hospitalesController');
-const { verifyToken, isAdmin, isUser } = require('../middleware/auth');
+const { verifyToken, isUser } = require('../middleware/auth');
 
-router.get('/', (req, res) => {
+router.get('/', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Obtiene la lista de hospitales' */
   /* #swagger.tags = ['Hospitales'] */
   hospitalesController.getHospitales(req, res);

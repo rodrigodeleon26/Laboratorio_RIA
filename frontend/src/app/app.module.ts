@@ -3,6 +3,8 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +20,7 @@ import { InsumosComponent } from './Components/insumos/insumos.component';
 import { CrearProductoComponent } from './Components/crear-producto/crear-producto.component';
 import { ModalMovilProductoComponent } from './Components/productos/modal-movil-producto/modal-movil-producto.component';
 import { ModalMovilProductoInsumoComponent } from './Components/productos/modal-movil-producto-insumo/modal-movil-producto-insumo.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,7 @@ import { ModalMovilProductoInsumoComponent } from './Components/productos/modal-
     CrearProductoComponent,
     ModalMovilProductoComponent,
     ModalMovilProductoInsumoComponent,
+    InsumosComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +40,8 @@ import { ModalMovilProductoInsumoComponent } from './Components/productos/modal-
     NgbModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
   ],
   providers: [
     provideClientHydration(),
