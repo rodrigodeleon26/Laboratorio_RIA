@@ -134,7 +134,8 @@
       //const insumosProducto = insumos.filter(i => productoInsumos.some(pi => pi.insumoId == i.id));
       res.json(productoInsumos);
     } else {
-      res.status(404).json({ message: 'Producto no encontrado' });
+      res.json([]);
+      //res.status(404).json({ message: 'Producto no encontrado' });
     }
   }
 

@@ -16,6 +16,8 @@ import { RegisterComponent } from './Components/register/register.component';
 import { HomeComponent } from './Components/home/home.component';
 import { InsumosComponent } from './Components/insumos/insumos.component';
 import { CrearProductoComponent } from './Components/crear-producto/crear-producto.component';
+import { ModalMovilProductoComponent } from './Components/productos/modal-movil-producto/modal-movil-producto.component';
+import { ModalMovilProductoInsumoComponent } from './Components/productos/modal-movil-producto-insumo/modal-movil-producto-insumo.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { CrearProductoComponent } from './Components/crear-producto/crear-produc
     ProductosComponent,
     HomeComponent,
     CrearProductoComponent,
+    ModalMovilProductoComponent,
+    ModalMovilProductoInsumoComponent,
   ],
   imports: [
     BrowserModule,
