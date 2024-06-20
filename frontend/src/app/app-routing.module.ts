@@ -8,6 +8,7 @@ import { HomeComponent } from './Components/home/home.component';
 import { InsumosComponent } from './Components/insumos/insumos.component';
 import { OrdenesComponent } from './components/ordenes/ordenes.component';
 import { GenerarOrdenComponent } from './components/generar-orden/generar-orden.component';
+import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.component';
 
 const routes: Routes = [
 
@@ -54,6 +55,11 @@ const routes: Routes = [
   {
     path: 'ordenar',
     component: GenerarOrdenComponent
+  },
+
+  {
+    path: 'perfil',
+    component: EditarPerfilComponent
   },
   
   { path: '**', redirectTo: '', pathMatch: 'full' },

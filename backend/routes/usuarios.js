@@ -74,4 +74,16 @@ router.post('/disable-user', (req, res) => {
   usuariosController.disableUser(req, res);
 });
 
+router.post('/update', (req, res) => {
+  /* #swagger.summary = 'Actualiza un usuario' */
+  /* #swagger.tags = ['Usuarios'] */
+  /* #swagger.security = [{ "BearerAuth": [] }] */
+  /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Actualización de usuario.',
+        schema: { $ref: '#/definitions/UpdateUser' }
+    } */
+  usuariosController.update(req, res);
+});
+
 module.exports = router;

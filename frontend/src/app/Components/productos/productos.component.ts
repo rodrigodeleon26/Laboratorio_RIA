@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Producto } from '../../models/producto';
 import { ProductosService } from '../../services/productos/productos.service';
 import { InsumosService } from '../../services/insumos/insumos.service';
@@ -8,6 +8,11 @@ import { Insumo } from '../../models/insumo';
 import { InsumoProducto } from '../../interfaces/InsumoProducto';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
+import { ModalMovilProductoComponent } from './modal-movil-producto/modal-movil-producto.component';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConectorModalService } from '../../services/productos/conector-modal.service';
+
+
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.component.html',
@@ -15,16 +20,18 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 })
 export class ProductosComponent {
   
-  constructor(private productoService: ProductosService, private insumosService: InsumosService, private router: Router, private sanitizer: DomSanitizer) {
-
+  constructor(private productoService: ProductosService, private insumosService: InsumosService, private router: Router, private sanitizer: DomSanitizer, private conectorModalService: ConectorModalService) {
+    
   }
-
+  
   productos: Producto[] = [];
   insumos: Insumo[] = [];
   insumosProducto: InsumoProducto[] = [];
   selectedProducto: Producto = new Producto();
   cantidadInsumo = 0;
   insumoSeleccionado = 0;
+
+  private modalService = inject(NgbModal);
 
   ngOnInit(): void {
     this.productoService.get().subscribe({
@@ -46,7 +53,7 @@ export class ProductosComponent {
     });
   }
 
-  edit() {
+  public edit() {
 
     let requestBody = {
       producto: this.selectedProducto,
@@ -63,7 +70,7 @@ export class ProductosComponent {
     });
   }
 
-  delete() {
+  public delete() {
     if(confirm('¿Estás seguro de eliminar el producto?')){
       // this.productos = this.productos.filter(x => x != this.selectedProducto);
       // this.selectedProducto = new Producto();
@@ -78,7 +85,7 @@ export class ProductosComponent {
     }
   }
 
-  getSafeImageUrl(url: string): SafeResourceUrl {
+  public getSafeImageUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
@@ -88,6 +95,9 @@ export class ProductosComponent {
     this.productoService.getProductoInsumos(producto.id).subscribe({
       next: (data) => {
         this.insumosProducto = data;
+        if (window.innerWidth < 768) {
+          this.open();
+        }
       },
       error: (error) => {
         console.error(error);
@@ -100,7 +110,7 @@ export class ProductosComponent {
       this.insumosProducto = [];
   }
 
-  onFileChange(event: Event){
+  public onFileChange(event: Event){
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
@@ -112,18 +122,18 @@ export class ProductosComponent {
     }
   }
 
-  getInsumoNombre(id: number): string {
+  public getInsumoNombre(id: number): string {
     let insumo = this.insumos.find(insumo => insumo.id == id);
     return insumo ? insumo.nombre : '';
   }
 
-  eliminarInsumo(insumoId: number) {
+  public eliminarInsumo(insumoId: number) {
     console.log("insumoID:" + insumoId, this.insumosProducto);
     this.insumosProducto = this.insumosProducto.filter(insumo => insumo.insumoId !== insumoId);
     console.log(this.insumosProducto);
   }
 
-  addInsumo() {
+  public addInsumo() {
     //evitar insumos repetidos y cantidades negativas
     if(this.insumosProducto.find(insumo => insumo.insumoId == this.insumoSeleccionado) || this.cantidadInsumo <= 0){
       return;
@@ -137,4 +147,21 @@ export class ProductosComponent {
     this.insumoSeleccionado = 0;
     this.cantidadInsumo = 0;
   }
+
+  open() {
+      const modalRef = this.modalService.open(ModalMovilProductoComponent);
+      modalRef.componentInstance.selectedProducto = this.selectedProducto;
+      modalRef.componentInstance.insumosProducto = this.insumosProducto;
+      modalRef.componentInstance.insumos = this.insumos;
+      modalRef.componentInstance.getSafeImageUrl = this.getSafeImageUrl.bind(this);
+      modalRef.componentInstance.onFileChange = this.onFileChange.bind(this);
+      modalRef.componentInstance.getInsumoNombre = this.getInsumoNombre.bind(this);
+      modalRef.componentInstance.eliminarInsumo = this.eliminarInsumo.bind(this);
+      modalRef.componentInstance.addInsumo = this.addInsumo.bind(this);
+      modalRef.componentInstance.edit = this.edit.bind(this);
+      modalRef.componentInstance.delete = this.delete.bind(this);
+      modalRef.componentInstance.cantidadInsumo = this.cantidadInsumo;
+      modalRef.componentInstance.insumoSeleccionado = this.insumoSeleccionado;
+  }
+
 }

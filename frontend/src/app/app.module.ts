@@ -18,9 +18,12 @@ import { RegisterComponent } from './Components/register/register.component';
 import { HomeComponent } from './Components/home/home.component';
 import { InsumosComponent } from './Components/insumos/insumos.component';
 import { CrearProductoComponent } from './Components/crear-producto/crear-producto.component';
+import { ModalMovilProductoComponent } from './Components/productos/modal-movil-producto/modal-movil-producto.component';
+import { ModalMovilProductoInsumoComponent } from './Components/productos/modal-movil-producto-insumo/modal-movil-producto-insumo.component';
 import { CommonModule } from '@angular/common';
 import { OrdenesComponent } from './components/ordenes/ordenes.component';
 import { GenerarOrdenComponent } from './components/generar-orden/generar-orden.component';
+import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,11 @@ import { GenerarOrdenComponent } from './components/generar-orden/generar-orden.
     CrearProductoComponent,
     InsumosComponent,
     OrdenesComponent,
-    GenerarOrdenComponent
+    GenerarOrdenComponent,
+    ModalMovilProductoComponent,
+    ModalMovilProductoInsumoComponent,
+    InsumosComponent,
+    EditarPerfilComponent
   ],
   imports: [
     BrowserModule,
