@@ -365,6 +365,38 @@
         ]
       }
     },
+    "/usuarios/update": {
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Actualiza un usuario",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Actualización de usuario.",
+            "schema": {
+              "$ref": "#/definitions/UpdateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/productos/": {
       "get": {
         "tags": [
@@ -520,9 +552,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
           }
         }
       }

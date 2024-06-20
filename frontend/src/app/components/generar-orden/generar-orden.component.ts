@@ -3,7 +3,6 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { ProductosService } from '../../services/productos/productos.service';
 import { OrdenesService } from '../../services/ordenes/ordenes.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Orden } from '../../models/orden';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
@@ -12,7 +11,6 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrls: ['./generar-orden.component.scss']
 })
 export class GenerarOrdenComponent implements OnInit {
-  productos: any[] = [];
   productosDisponibles: any[] = [];
   productosFiltrados: any[] = [];
   carrito: any[] = [];
@@ -23,6 +21,9 @@ export class GenerarOrdenComponent implements OnInit {
   productosPorPagina: number = 6;
   totalPaginas: number = 0;
 
+  alertMessage: string = '';
+  alertType: 'success' | 'danger' = 'success';
+
   constructor(
     private offcanvasService: NgbOffcanvas,
     private productoService: ProductosService,
@@ -32,10 +33,13 @@ export class GenerarOrdenComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.cargarProductos();
+  }
+
+  private cargarProductos(): void {
     this.productoService.get().subscribe({
       next: (data) => {
-        this.productos = data;
-        this.productosDisponibles = [...this.productos];
+        this.productosDisponibles = [...data];
         this.filtrarProductos();
       },
       error: (error) => {
@@ -45,6 +49,11 @@ export class GenerarOrdenComponent implements OnInit {
   }
 
   agregarAlCarrito(producto: any, cantidad: number): void {
+    if (cantidad <= 0) {
+      this.alertMessage = 'La cantidad debe ser un número y mayor a 0';
+      this.alertType = 'danger';
+      return;
+    }
     const productoEnCarrito = this.carrito.find(item => item.producto.id === producto.id);
     if (productoEnCarrito) {
       productoEnCarrito.cantidad += cantidad;
@@ -71,41 +80,54 @@ export class GenerarOrdenComponent implements OnInit {
   }
 
   crearOrden(): void {
+    if (this.carrito.length === 0) {
+      this.alertMessage = 'No hay productos en el carrito';
+      this.alertType = 'danger';
+      this.offcanvasService.dismiss();
+      return;
+    }
     const nuevaOrden = this.construirNuevaOrden();
+    console.log('Nueva orden:', nuevaOrden);
     this.ordenesService.createOrden(nuevaOrden).subscribe({
       next: (response) => {
-        console.log('Orden creada con éxito:', response);
-        // Aquí puedes manejar la respuesta del backend, como mostrar un mensaje de éxito, limpiar el carrito, etc.
+        this.limpiarCarrito();
+        this.cargarProductos(); 
+        this.offcanvasService.dismiss(); 
+        this.alertMessage = 'Orden creada correctamente';
+        this.alertType = 'success';
+        this.setAutoCloseAlert(3000); // Cerrar alert después de 3 segundos
       },
       error: (error) => {
         console.error('Error al crear la orden:', error);
+        this.alertMessage = 'Error al crear la orden';
+        this.alertType = 'danger';
         // Manejo de errores, como mostrar un mensaje de error al usuario
       }
     });
   }
 
   private construirNuevaOrden(): any {
-      const orden = {
-        fecha: new Date(),
-        estado: 'PENDIENTE',
-        importe: this.calcularTotalCarrito(),
-        panaderiaId: null,
-        clienteId: this.authService.getEmail()
-      };
+    const orden = {
+      fecha: new Date(),
+      estado: 'PENDIENTE',
+      importe: this.calcularTotalCarrito(),
+      panaderiaId: null,
+      clienteId: this.authService.getId() // Suponiendo que tienes un método para obtener el ID del usuario autenticado
+    };
 
-      // Construir los pedidos de la orden
-      const pedidosOrden = this.carrito.map(item => {
-        return {
-          productoId: item.producto.id, // Suponiendo que tienes un campo 'id' en cada producto del carrito
-          cantidad: item.cantidad,
-        };
-      });
-
-      // Devolver la orden y los pedidos
+    // Construir los pedidos de la orden
+    const pedidosOrden = this.carrito.map(item => {
       return {
-        orden,
-        pedidosOrden
+        productoId: item.producto.id, // Suponiendo que tienes un campo 'id' en cada producto del carrito
+        cantidad: item.cantidad,
       };
+    });
+
+    // Devolver la orden y los pedidos
+    return {
+      orden,
+      pedidosOrden
+    };
   }
 
   limpiarCarrito(): void {
@@ -139,5 +161,11 @@ export class GenerarOrdenComponent implements OnInit {
 
   calcularTotalCarrito(): number {
     return this.carrito.reduce((total, item) => total + item.producto.precio * item.cantidad, 0);
+  }
+
+  setAutoCloseAlert(timeout: number) {
+    setTimeout(() => {
+      this.alertMessage = '';
+    }, timeout);
   }
 }
