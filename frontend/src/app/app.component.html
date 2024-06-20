@@ -47,7 +47,7 @@
             Ordenes
           </a>
           <ul class="dropdown-menu dropdown-menu-start">
-            <li><a class="dropdown-item" href="#">Ver Ordenes</a></li>
+            <li><a [routerLink]="['/ordenes']" class="dropdown-item">Ver Ordenes</a></li>
           </ul>
         </li>
 
@@ -76,7 +76,7 @@
           <a class="nav-link" href="#">Productos</a>
         </li>
         <li *ngIf="role === 'USER'" class="nav-item">
-          <a class="nav-link" href="#">Ordenar!</a>
+          <a class="nav-link" [routerLink]="['/ordenar']">Ordenar!</a>
         </li>
 
       </ul>
@@ -120,7 +120,7 @@
             Ordenes
           </a>
           <ul class="dropdown-menu dropdown-menu-start">
-            <li><a class="dropdown-item" href="#">Ver Ordenes</a></li>
+            <li><a [routerLink]="['/ordenes']" class="dropdown-item">Ver Ordenes</a></li>
           </ul>
         </li>
 
@@ -149,7 +149,7 @@
           <a class="nav-link" href="#">Productos</a>
         </li>
         <li *ngIf="role === 'USER'" class="nav-item">
-          <a class="nav-link" href="#">Ordenar!</a>
+          <a class="nav-link" [routerLink]="['/ordenar']">Ordenar!</a>
         </li>
 
         <!-- Opciones de usuario -->

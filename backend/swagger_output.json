@@ -365,6 +365,38 @@
         ]
       }
     },
+    "/usuarios/update": {
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Actualiza un usuario",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Actualización de usuario.",
+            "schema": {
+              "$ref": "#/definitions/UpdateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/productos/": {
       "get": {
         "tags": [
@@ -438,7 +470,7 @@
         "tags": [
           "Productos"
         ],
-        "summary": "Actualiza un producto existente",
+        "summary": "Actualiza un producto existente y sus insumos",
         "description": "",
         "parameters": [
           {
@@ -520,9 +552,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
           }
         }
       }
@@ -692,6 +721,9 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         },
         "security": [
@@ -791,32 +823,6 @@
             "BearerAuth": []
           }
         ]
-      }
-    },
-    "/ordenes/getProductosOrden/{id}": {
-      "get": {
-        "tags": [
-          "Órdenes"
-        ],
-        "summary": "Obtiene los productos de una orden",
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "description": "ID de la orden"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
       }
     },
     "/panaderias/": {
@@ -1126,37 +1132,40 @@
           "type": "number",
           "example": 1
         },
-        "fechaEntrega": {
+        "fecha": {
           "type": "string",
-          "example": "2024-06-22"
-        },
-        "descripcion": {
-          "type": "string",
-          "example": "Descripción de la orden"
+          "example": "2024-06-18"
         },
         "estado": {
           "type": "string",
-          "example": "LISTO PARA RECOGER"
+          "example": "PENDIENTE"
         },
         "importe": {
           "type": "number",
           "example": 9.99
         },
-        "panadero": {
-          "type": "number",
-          "example": 1
-        },
-        "cliente": {
+        "clienteId": {
           "type": "number",
           "example": 2
         },
-        "productos": {
+        "pedidos": {
           "type": "array",
-          "example": [
-            1
-          ],
           "items": {
-            "type": "number"
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 2
+              },
+              "productoId": {
+                "type": "number",
+                "example": 2
+              },
+              "cantidad": {
+                "type": "number",
+                "example": 3
+              }
+            }
           }
         }
       }
@@ -1171,6 +1180,23 @@
         "nombre": {
           "type": "string",
           "example": "Panadería Ejemplo"
+        }
+      }
+    },
+    "Pedido": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "productoId": {
+          "type": "number",
+          "example": 1
+        },
+        "cantidad": {
+          "type": "number",
+          "example": 2
         }
       }
     }
