@@ -51,6 +51,7 @@ const register = async (req, res) => {
 
 const update = async (req, res) => {
   const { email, telefono, id } = req.body;
+  console.log(req.body)
   const user = usuarios.find(u => u.id == id);
   if (user) {
     user.email = email;
@@ -66,7 +67,7 @@ const login = async (req, res) => {
   const user = usuarios.find(u => u.email === email);
   if (user && await bcrypt.compare(password, user.password)) {
     const token = generateToken(user);
-    res.json({ token, nombre: user.email, role: user.role, id: user.id});
+    res.json({ token, nombre: user.email, role: user.role, id: user.id, telefono: user.telefono});
   } else {
     res.status(401).json({ message: 'Invalid credentials' });
   }
@@ -116,6 +117,17 @@ const disableUser = (req, res) => {
   }
 };
 
+const getInfoUser = (req, res) => {
+  //devuelve datos del usuario excepto la contraseña
+  const { id } = req.body;
+  const user = usuarios.find(u => u.id == id);
+  if (user) {
+    res.json({ email: user.email, role: user.role, telefono: user.telefono });
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+};
+
 module.exports = {
   register,
   update,
@@ -124,4 +136,5 @@ module.exports = {
   forgotPassword,
   enableUser,
   disableUser,
+  getInfoUser,
 };
