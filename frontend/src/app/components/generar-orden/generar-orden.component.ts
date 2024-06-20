@@ -48,7 +48,7 @@ export class GenerarOrdenComponent implements OnInit {
   }
 
   agregarAlCarrito(producto: any, cantidad: number): void {
-    if (cantidad <= 0) {
+    if (!cantidad || cantidad <= 0) {
       this.alertMessage = 'La cantidad debe ser un número mayor a 0';
       this.alertType = 'danger';
       return;
