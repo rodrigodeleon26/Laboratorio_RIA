@@ -397,6 +397,38 @@
         ]
       }
     },
+    "/usuarios/get-info-user": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Obtiene la información de un usuario",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Obtención de información de usuario.",
+            "schema": {
+              "$ref": "#/definitions/GetInfoUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/productos/": {
       "get": {
         "tags": [
