@@ -63,9 +63,9 @@ const productosInsumos = [
 ];
 
 const ordenes = [
-    { id: 1, fecha: new Date('2024-06-18'), estado: 'PENDIENTE', importe: 1000, panaderiaId: 1, clienteId: 1 },
-    { id: 2, fecha: new Date('2024-06-18'), estado: 'EN PREPARACION', importe: 2000, panaderiaId: 2, clienteId: 1 },
-    { id: 3, fecha: new Date('2021-10-03'), estado: 'LISTO PARA RECOGER', importe: 3000, panaderiaId: 3, clienteId: 1 },
+    { id: 1, fecha: new Date('2024-06-18'), estado: 'PENDIENTE', importe: 1000, panaderiaId: null, clienteId: 1 },
+    { id: 2, fecha: new Date('2024-06-18'), estado: 'EN PREPARACION', importe: 2000, panaderiaId: null, clienteId: 1 },
+    { id: 3, fecha: new Date('2021-10-03'), estado: 'LISTO PARA RECOGER', importe: 3000, panaderiaId: null, clienteId: 1 },
 ];
 
 const pedidos = [

@@ -14,7 +14,7 @@ export class OrdenesComponent implements OnInit {
   ngOnInit(): void {
     this.ordenesService.getOrdenes().subscribe(data => {
       this.ordenes = data;
-      console.log('Orders fetched', this.ordenes);
+      console.log('Ordenes', data);
     }, error => {
       console.error('Error fetching orders', error);
     });

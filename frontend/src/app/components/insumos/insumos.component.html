@@ -1,101 +1,104 @@
 <ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title">{{ insumoEdit.id ? 'Editar' : 'Agregar' }} insumo</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="insumoForm">
-      <div class="form-group mb-3">
-        <label for="nombre">Nombre</label>
-        <input type="text" class="form-control" id="nombre" formControlName="nombre">
-        <div *ngIf="insumoForm.get('nombre')?.invalid && insumoForm.get('nombre')?.touched" class="invalid-feedback d-block">
-          Por favor, ingrese un nombre
-        </div>
-      </div>
-      <div class="form-group mb-3">
-        <label for="precio">Precio</label>
-        <input type="number" class="form-control" id="precio" formControlName="precio" min="0">
-        <div *ngIf="insumoForm.get('precio')?.invalid && insumoForm.get('precio')?.touched" class="invalid-feedback d-block">
-          Por favor, ingrese un precio válido
-        </div>
-      </div>
-      <div class="form-group mb-3">
-        <label for="descripcion">Descripción</label>
-        <textarea class="form-control" id="descripcion" formControlName="descripcion"></textarea>
-        <div *ngIf="insumoForm.get('descripcion')?.invalid && insumoForm.get('descripcion')?.touched" class="invalid-feedback d-block">
-          Por favor, ingrese una descripción
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button class="btn btn-danger btn-sm" *ngIf="insumoEdit.id" (click)="eliminarInsumo(insumoEdit.id)">
-      Borrar <i class="bi bi-trash"></i>
-    </button>
-    <button class="btn btn-warning btn-sm" *ngIf="insumoEdit.id" (click)="editarInsumo()">
-      Editar <i class="bi bi-pencil"></i>
-    </button>
-    <button class="btn btn-success btn-sm" *ngIf="!insumoEdit.id" (click)="editarInsumo()">
-      Agregar <i class="bi bi-plus"></i>
-    </button>
-  </div>
+    <div class="modal-header">
+        <h4 class="modal-title">{{ insumoEdit.id ? 'Editar' : 'Agregar' }} insumo</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="insumoForm">
+            <div class="form-group mb-3">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" formControlName="nombre">
+                <div *ngIf="insumoForm.get('nombre')?.invalid && insumoForm.get('nombre')?.touched"
+                    class="invalid-feedback d-block">
+                    Por favor, ingrese un nombre
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="precio">Precio</label>
+                <input type="number" class="form-control" id="precio" formControlName="precio" min="0">
+                <div *ngIf="insumoForm.get('precio')?.invalid && insumoForm.get('precio')?.touched"
+                    class="invalid-feedback d-block">
+                    Por favor, ingrese un precio válido
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="descripcion">Descripción</label>
+                <textarea class="form-control" id="descripcion" formControlName="descripcion"></textarea>
+                <div *ngIf="insumoForm.get('descripcion')?.invalid && insumoForm.get('descripcion')?.touched"
+                    class="invalid-feedback d-block">
+                    Por favor, ingrese una descripción
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger btn-sm" *ngIf="insumoEdit.id" (click)="eliminarInsumo(insumoEdit.id)">
+            Borrar <i class="bi bi-trash"></i>
+        </button>
+        <button class="btn btn-warning btn-sm" *ngIf="insumoEdit.id" (click)="editarInsumo()">
+            Editar <i class="bi bi-pencil"></i>
+        </button>
+        <button class="btn btn-success btn-sm" *ngIf="!insumoEdit.id" (click)="editarInsumo()">
+            Agregar <i class="bi bi-plus"></i>
+        </button>
+    </div>
 </ng-template>
 
 
-  <div class="container mt-4">
+<div class="container mt-4">
     <div *ngIf="alertMessage" class="alert alert-{{alertType}} alert-dismissible fade show" role="alert">
-      <i class="bi bi-{{alertType === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill'}}"></i>
-      {{ alertMessage }}
-      <button type="button" class="btn-close" aria-label="Close" (click)="alertMessage=''"></button>
+        <i class="bi bi-{{alertType === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill'}}"></i>
+        {{ alertMessage }}
+        <button type="button" class="btn-close" aria-label="Close" (click)="alertMessage=''"></button>
     </div>
     <div class="row mb-3">
-      <div class="col-7 col-md-6">
-        <input type="text" [formControl]="filter" class="form-control" placeholder="Buscar insumo">
-      </div>
-      <div class="col-5 col-md-6 text-end">
-        <button class="btn btn-success" (click)="openAgregarInsumoModal(content)">
-          Agregar <i class="bi bi-plus"></i>
-        </button>
-      </div>  
+        <div class="col-7 col-md-6">
+            <input type="text" [formControl]="filter" class="form-control" placeholder="Buscar insumo">
+        </div>
+        <div class="col-5 col-md-6 text-end">
+            <button class="btn btn-success" (click)="openAgregarInsumoModal(content)">
+                Agregar <i class="bi bi-plus"></i>
+            </button>
+        </div>
     </div>
-  <div class="row">
-    <div class="col-12">
-      <table class="table table-striped">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Nombre</th>
-            <th scope="col" class="d-none d-sm-table-cell">Descripción</th>
-            <th scope="col" (click)="sortBy('precio')" id="columna_precio">Precio
-              <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'precio' && sortDirection.value === 'asc',
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col" class="d-none d-sm-table-cell">Descripción</th>
+                        <th scope="col" (click)="sortBy('precio')" id="columna_precio">Precio
+                            <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'precio' && sortDirection.value === 'asc',
                                          'bi-caret-down-fill': sortColumn.value === 'precio' && sortDirection.value === 'desc',
                                        }"></i>
-            </th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngIf="(insumosFilteredAndSorted$ | async)?.length; else noInsumos">
-            <tr *ngFor="let insumo of insumosFilteredAndSorted$ | async">
-              <td>{{insumo.nombre}}</td>
-              <td class="d-none d-sm-table-cell">{{insumo.descripcion}}</td>
-              <td>{{insumo.precio | currency}}</td>
-              <td>
-                <button class="btn btn-warning btn-sm" (click)="openEditarInsumoModal(insumo, content)">
-                  <i class="bi bi-pencil"></i>
-                </button>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-      <ng-template #noInsumos>
-        <tr>
-          <td colspan="4">
-            <div class="alert alert-warning mt-3" role="alert">
-              No hay insumos disponibles.
-            </div>
-          </td>
-        </tr>
-      </ng-template>
+                        </th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="(insumosFilteredAndSorted$ | async)?.length; else noInsumos">
+                        <tr *ngFor="let insumo of insumosFilteredAndSorted$ | async">
+                            <td>{{insumo.nombre}}</td>
+                            <td class="d-none d-sm-table-cell">{{insumo.descripcion}}</td>
+                            <td>{{insumo.precio | currency}}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" (click)="openEditarInsumoModal(insumo, content)">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+            <ng-template #noInsumos>
+                <tr>
+                    <td colspan="4">
+                        <div class="alert alert-warning mt-3" role="alert">
+                            No hay insumos disponibles.
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </div>
     </div>
-  </div>

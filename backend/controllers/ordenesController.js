@@ -1,5 +1,6 @@
 const { ordenes, usuarios, productos, pedidosOrdenes, pedidos } = require('../mockData');
 const pedidosController = require('./pedidosController');
+const usuariosController = require('./usuariosController');
 
 exports.getOrdenes = (req, res) => {
   for (let i = 0; i < ordenes.length; i++) {
@@ -34,6 +35,9 @@ exports.createOrden = (req, res) => {
   }
 
   newOrden.id = ordenes.length ? ordenes[ordenes.length - 1].id + 1 : 1;
+  const emailCliente = req.body.orden.email;
+  const usuario = usuariosController.buscarUsuarioPorEmail(emailCliente);
+  newOrden.clienteId = usuario.id;
   ordenes.push(newOrden);
 
   newOrdenPedidos.forEach(pedido => {

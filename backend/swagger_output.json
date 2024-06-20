@@ -438,7 +438,7 @@
         "tags": [
           "Productos"
         ],
-        "summary": "Actualiza un producto existente",
+        "summary": "Actualiza un producto existente y sus insumos",
         "description": "",
         "parameters": [
           {

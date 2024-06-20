@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Orden } from '../../models/orden';
 
 @Injectable({
   providedIn: 'root'
@@ -13,4 +14,9 @@ export class OrdenesService {
   getOrdenes(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
+
+  createOrden(orden: Orden): Observable<Orden> {
+    return this.http.post<Orden>(this.apiUrl, orden);
+  }
 }
+

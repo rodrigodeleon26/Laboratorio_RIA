@@ -1,34 +1,43 @@
 .card {
     .img-fluid {
-      max-width: 100px; // Ajusta este tamaño según tus necesidades
-      height: auto;
-      margin: auto; // Centra la imagen verticalmente en la columna
+        max-width: 100px; // Ajusta este tamaño según tus necesidades
+        height: auto;
+        margin: auto; // Centra la imagen verticalmente en la columna
     }
-  
-    .card-body {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-  
-    .input-group {
-      margin-top: auto;
-    }
-  }
 
-  .offcanvas-footer {
-    position: absolute;
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .input-group {
+        margin-top: auto;
+    }
+}
+
+.offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.offcanvas-body .overflow-auto {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.offcanvas-footer {
+    position: sticky;
     bottom: 0;
     left: 0;
     width: 100%;
     padding: 1rem;
     background-color: #f8f9fa;
     border-top: 1px solid #dee2e6;
-  }
+}
 
-    .offcanvas-footer button {
-        width: 100%;
-    }
-
-  
-  
+.offcanvas-footer button {
+    width: 100%;
+}

@@ -116,6 +116,14 @@ const disableUser = (req, res) => {
   }
 };
 
+buscarUsuarioPorEmail = (emailCliente) => {
+  const usuario = usuarios.find(u => u.email == emailCliente);
+  if (!usuario) {
+    throw new Error('Usuario no encontrado');
+  }
+  return usuario;
+};
+
 module.exports = {
   register,
   update,
@@ -124,4 +132,5 @@ module.exports = {
   forgotPassword,
   enableUser,
   disableUser,
+  buscarUsuarioPorEmail
 };
