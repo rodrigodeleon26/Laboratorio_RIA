@@ -13,7 +13,7 @@ const swaggerFile = require('./swagger_output.json');
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
 
 app.use('/hospitales', hospitalesRoutes);

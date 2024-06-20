@@ -28,7 +28,7 @@ router.post('/', (req, res) => {
   productosController.createProducto(req, res);
 });
 
-router.put('/:id', (req, res) => {
+//router.put('/:id', (req, res) => {
   /* #swagger.summary = 'Actualiza un producto existente' verifyToken, isAdmin,  */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
@@ -38,7 +38,20 @@ router.put('/:id', (req, res) => {
         description: 'Update product.',
         schema: { $ref: '#/definitions/Producto' }
     } */
-  productosController.updateProducto(req, res);
+  //productosController.updateProducto(req, res);
+//});
+
+router.put('/:id', (req, res) => {
+  /* #swagger.summary = 'Actualiza un producto existente y sus insumos' verifyToken, isAdmin,  */
+  /* #swagger.tags = ['Productos'] */
+  /* #swagger.security = [{ "BearerAuth": [] }] */
+  /* #swagger.parameters['id'] = { description: 'ID del producto', type: 'integer', required: true } */
+  /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Update product.',
+        schema: { $ref: '#/definitions/Producto' }
+    } */
+  productosController.updateProductoINSUMO(req, res);
 });
 
 router.delete('/:id', (req, res) => {
