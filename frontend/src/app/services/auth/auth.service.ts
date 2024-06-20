@@ -8,7 +8,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:3000'; 
 
-  user = new BehaviorSubject<{ email: string; role: string ; id: number}>({ email: '', role: '' , id: 0});
+  user = new BehaviorSubject<{ email: string; role: string; id: number; telefono: string }>({ email: '', role: '' , id: 0, telefono: ''});
 
   constructor(private http: HttpClient) {
     this.loadUserFromLocalStorage();
@@ -19,7 +19,8 @@ export class AuthService {
       const email = localStorage.getItem('email') || '';
       const role = localStorage.getItem('role') || '';
       const id = parseInt(localStorage.getItem('id') || '0', 10);
-      this.user.next({ email, role , id});
+      const telefono = localStorage.getItem('telefono') || '';
+      this.user.next({ email, role , id, telefono});
     }
   }
 
@@ -32,8 +33,8 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/usuarios/register`, { email, password, telefono });
   }
 
-  updateUser(email: string, role: string, id: number) {
-    this.user.next({email, role, id});
+  updateUser(email: string, role: string, id: number, telefono: string) {
+    this.user.next({email, role, id, telefono});
     localStorage.setItem('email', email);
     localStorage.setItem('role', role);
     localStorage.setItem('id', id.toString());
@@ -44,7 +45,8 @@ export class AuthService {
     localStorage.removeItem('email');
     localStorage.removeItem('role');
     localStorage.removeItem('id');
-    this.user.next({email: '', role: '', id: 0});
+    localStorage.removeItem('telefono');
+    this.user.next({email: '', role: '', id: 0, telefono: ''});
   }
 
   getToken(): string | null {
@@ -61,6 +63,10 @@ export class AuthService {
 
   getId(): number {
     return parseInt(localStorage.getItem('id') || '0', 10);
+  }
+
+  getTelefono(): string | null {
+    return localStorage.getItem('telefono');
   }
 
   public isAuthenticated(): boolean {

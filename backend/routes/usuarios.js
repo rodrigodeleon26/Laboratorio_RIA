@@ -86,4 +86,16 @@ router.post('/update', (req, res) => {
   usuariosController.update(req, res);
 });
 
+router.get('/get-info-user', (req, res) => {
+  /* #swagger.summary = 'Obtiene la información de un usuario' */
+  /* #swagger.tags = ['Usuarios'] */
+  /* #swagger.security = [{ "BearerAuth": [] }] */
+  /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Obtención de información de usuario.',
+        schema: { $ref: '#/definitions/GetInfoUser' }
+    } */
+  usuariosController.getInfoUser(req, res);
+});
+
 module.exports = router;

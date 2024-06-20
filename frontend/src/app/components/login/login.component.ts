@@ -23,7 +23,7 @@ export class LoginComponent {
           localStorage.setItem('role', response.role);
           localStorage.setItem('id', response.id);
           // Actualiza el BehaviorSubject con el nuevo email y rol del usuario
-          this.authService.updateUser(this.email, response.role, response.id);
+          this.authService.updateUser(this.email, response.role, response.id, response.telefono);
           this.router.navigate(['/home']);
         },
         error => {
