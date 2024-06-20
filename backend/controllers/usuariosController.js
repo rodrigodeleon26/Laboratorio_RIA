@@ -51,6 +51,7 @@ const register = async (req, res) => {
 
 const update = async (req, res) => {
   const { email, telefono, id } = req.body;
+  console.log(req.body)
   const user = usuarios.find(u => u.id == id);
   if (user) {
     user.email = email;

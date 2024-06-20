@@ -76,6 +76,11 @@ export class AuthService {
   }
 
   editarPerfil(email: string, telefono: string, id: number): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/usuarios/update`, { email, telefono, id });
+    console.log("servicio", email, telefono, id);
+    return this.http.post<any>(`${this.apiUrl}/usuarios/update`, { email, telefono, id });
+  }
+
+  cambiarContra(oldPassword: string, newPassword: string, id: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/usuarios/change-password`, { oldPassword, newPassword, id });
   }
 }

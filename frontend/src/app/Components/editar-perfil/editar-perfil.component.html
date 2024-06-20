@@ -24,8 +24,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 d-flex justify-content-center justify-content-md-end">
-                        <button class="btn btn-primary" style="width: max-content;">Guardar</button>
+                    <div class="d-flex flex-column flex-md-row w-100 justify-content-between">
+                        <p *ngIf="actualizacionExitosa" style="color: green; width: fit-content;" id="CambioInfoExito">Informacion actualizada correctamente</p>
+                        <p *ngIf="actualizacionFallida" style="color: red; width: fit-content;" id="CambioInfoError">Error al actualizar</p>
+                        <div class="d-flex flex-fill justify-content-center justify-content-md-end">
+                            <button class="btn btn-primary" style="width: max-content;" (click)="(actualizarInfo())">Guardar</button>
+                        </div>
                     </div>
                 </div>
 
@@ -36,19 +40,25 @@
                             <h2>Contraseña</h2>
                             <div class="form-group mb-2 text-start">
                                 <label for="password">Contraseña Actual</label>
-                                <input type="password" class="form-control" id="password" placeholder="Contraseña">
+                                <input type="password" class="form-control" id="password" placeholder="Contraseña" [(ngModel)]="oldPassword" autocomplete="off">
                             </div>
                             <div class="form-group mb-2 text-start">
                                 <label for="newPassword">Nueva Contraseña</label>
-                                <input type="password" class="form-control" id="newPassword" placeholder="Nueva Contraseña">
+                                <input type="password" class="form-control" id="newPassword" placeholder="Nueva Contraseña" [(ngModel)]="newPassword" autocomplete="off">
                             </div>
                             <div class="form-group mb-2 text-start">
                                 <label for="confirmPassword">Confirmar Contraseña</label>
-                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirmar Contraseña">
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirmar Contraseña" [(ngModel)]="confirmarContra" autocomplete="off">
                             </div>
-                            <div class="w-100 d-flex justify-content-center justify-content-md-end">
-                                <button class="btn btn-primary" style="width: max-content;">Guardar</button>
+
+                            <div class="d-flex flex-column flex-md-row w-100 justify-content-between">
+                                <p *ngIf="contraCambiada" style="color: green; width: fit-content;" id="CambioInfoExito">Contraseña actualizada correctamente</p>
+                                <p *ngIf="contraNoCambiada" style="color: red; width: fit-content;" id="CambioInfoError">Error al actualizar</p>
+                                <div class="w-100 d-flex justify-content-center justify-content-md-end">
+                                    <button class="btn btn-primary" style="width: max-content;" (click)="acualizarContra()">Guardar</button>
+                                </div>
                             </div>
+                            
                         </div>
                         <div class="col-md-6 d-flex flex-column text-center align-items-center d-none d-md-block">
                             <h2>Abrir Carrito</h2>
