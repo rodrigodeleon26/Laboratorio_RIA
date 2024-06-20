@@ -7,13 +7,10 @@
 
   <div class="row mb-3">
     <div class="col-9 col-md-6">
-      <input type="text" class="form-control" placeholder="Buscar producto..." [(ngModel)]="filtroProducto"
-        (input)="filtrarProductos()" />
+      <input type="text" class="form-control" placeholder="Buscar producto..." [(ngModel)]="filtroProducto" (input)="filtrarProductos()" />
     </div>
     <div class="col-3 col-md-6 text-end">
-      <button class="btn"
-        [ngClass]="{ 'btn-outline-secondary': carrito.length === 0, 'btn-success': carrito.length > 0 }"
-        (click)="openEnd(content)">
+      <button class="btn" [ngClass]="{ 'btn-outline-secondary': carrito.length === 0, 'btn-success': carrito.length > 0 }" (click)="openEnd(content)">
         <i class="bi bi-cart3"></i>
       </button>
     </div>
@@ -22,8 +19,7 @@
   <ng-template #content let-offcanvas>
     <div class="offcanvas-header">
       <h4 class="offcanvas-title">
-        <i class="bi bi-cart3"></i>
-        Carro
+        <i class="bi bi-cart3"></i> Carro
       </h4>
       <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
     </div>
@@ -59,7 +55,6 @@
     <div *ngIf="productosFiltrados.length === 0" class="alert alert-warning col-12">
       No hay productos disponibles
     </div>
-  
     <div class="col-12 col-md-6 col-lg-4 mb-3" *ngFor="let producto of getProductosPaginados()">
       <div class="card h-100">
         <div class="row g-0 h-100">
@@ -74,8 +69,8 @@
                 <h5 class="card-text">{{ producto.precio | currency }}</h5>
               </div>
               <div class="input-group mt-3">
-                <input type="number" class="form-control" [(ngModel)]="cantidadSeleccionada" min="1" />
-                <button class="btn btn-primary" (click)="agregarAlCarrito(producto, cantidadSeleccionada)">Agregar</button>
+                <input type="number" class="form-control" [(ngModel)]="producto.cantidadSeleccionada" min="1" />
+                <button class="btn btn-primary" (click)="agregarAlCarrito(producto, producto.cantidadSeleccionada)">Agregar</button>
               </div>
             </div>
           </div>
@@ -83,7 +78,6 @@
       </div>
     </div>
   </div>
-  
 
   <nav *ngIf="totalPaginas > 1">
     <ul class="pagination justify-content-center">
