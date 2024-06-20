@@ -6,8 +6,8 @@ import { ProductosComponent } from './Components/productos/productos.component';
 import { CrearProductoComponent } from './Components/crear-producto/crear-producto.component';
 import { HomeComponent } from './Components/home/home.component';
 import { InsumosComponent } from './Components/insumos/insumos.component';
-import { OrdenesComponent } from './components/ordenes/ordenes.component';
-import { GenerarOrdenComponent } from './components/generar-orden/generar-orden.component';
+import { OrdenesComponent } from './Components/ordenes/ordenes.component';
+import { GenerarOrdenComponent } from './Components/generar-orden/generar-orden.component';
 import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.component';
 
 const routes: Routes = [

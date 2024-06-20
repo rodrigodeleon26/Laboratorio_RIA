@@ -21,8 +21,8 @@ import { CrearProductoComponent } from './Components/crear-producto/crear-produc
 import { ModalMovilProductoComponent } from './Components/productos/modal-movil-producto/modal-movil-producto.component';
 import { ModalMovilProductoInsumoComponent } from './Components/productos/modal-movil-producto-insumo/modal-movil-producto-insumo.component';
 import { CommonModule } from '@angular/common';
-import { OrdenesComponent } from './components/ordenes/ordenes.component';
-import { GenerarOrdenComponent } from './components/generar-orden/generar-orden.component';
+import { OrdenesComponent } from './Components/ordenes/ordenes.component';
+import { GenerarOrdenComponent } from './Components/generar-orden/generar-orden.component';
 import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.component';
 
 @NgModule({

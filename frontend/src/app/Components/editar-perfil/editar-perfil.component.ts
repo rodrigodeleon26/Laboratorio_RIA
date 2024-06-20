@@ -79,4 +79,8 @@ export class EditarPerfilComponent {
       alert('Por favor, rellene todos los campos');
     }
   }
+
+  abrirCarrito(){
+    this.router.navigate(['/ordenar']);
+  }
 }
