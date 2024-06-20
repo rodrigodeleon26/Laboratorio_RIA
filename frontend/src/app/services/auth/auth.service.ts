@@ -38,6 +38,7 @@ export class AuthService {
     localStorage.setItem('email', email);
     localStorage.setItem('role', role);
     localStorage.setItem('id', id.toString());
+    localStorage.setItem('telefono', telefono);
   }
 
   logout() {
