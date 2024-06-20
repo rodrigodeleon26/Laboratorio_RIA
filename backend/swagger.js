@@ -66,17 +66,21 @@ const doc = {
     },
     Orden: {
       id: 1,
-      fechaEntrega: "2024-06-22",
-      descripcion: "Descripción de la orden",
-      estado: "LISTO PARA RECOGER",
+      fecha: '2024-06-18',
+      estado: "PENDIENTE",
       importe: 9.99,
-      panadero: 1,
-      cliente: 2,
-      productos: [1]
+      clienteId: 2,
+      pedidos: [{ id: 1, productoId: 1, cantidad: 2 },
+                { id: 2, productoId: 2, cantidad: 3 }]
     },
     Panaderia: {
       id: 1,
       nombre: "Panadería Ejemplo",
+    },
+    Pedido: {
+      id: 1,
+      productoId: 1,
+      cantidad: 2,
     }
   }
 };

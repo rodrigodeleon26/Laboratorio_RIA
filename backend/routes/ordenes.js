@@ -49,11 +49,4 @@ router.delete('/:id', (req, res) => {
   ordenesController.deleteOrden(req, res);
 });
 
-router.get('/getProductosOrden/:id', (req, res) => {
-  /* #swagger.summary = 'Obtiene los productos de una orden' verifyToken, isUser, */
-  /* #swagger.tags = ['Órdenes'] */
-  /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
-  ordenesController.getProductosOrden(req, res);
-});
-
 module.exports = router;

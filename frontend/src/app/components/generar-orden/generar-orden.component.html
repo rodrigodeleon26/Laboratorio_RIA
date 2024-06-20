@@ -1,0 +1,65 @@
+<div class="container mt-4">
+    <button class="btn btn-lg btn-outline-secondary mb-3 me-2" (click)="openEnd(content)">
+        <i class="bi bi-cart3"></i>
+    </button>
+    
+    <ng-template #content let-offcanvas>
+        <div class="offcanvas-header">
+          <h4 class="offcanvas-title">
+            <i class="bi bi-cart3"></i>
+            Carro
+          </h4>
+          <button type="button" class="btn-close" aria-label="Close" (click)="offcanvas.dismiss('Cross click')"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div *ngFor="let item of carrito" class="d-flex flex-column mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div class="d-flex align-items-center">
+                <h6 class="me-2">{{ item.cantidad }} x </h6>
+                <h6 class="me-2">{{ item.producto.nombre }}</h6>
+              </div>
+              <div class="d-flex align-items-center">
+                <h6 class="me-2">{{ item.producto.precio * item.cantidad | currency }}</h6>
+                <button class="btn btn-sm btn-outline-danger me-2" (click)="eliminarDelCarrito(item)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+        <div class="offcanvas-footer">
+          <div class="d-flex justify-content-between">
+            <h5>Total:</h5>
+            <h5>{{ calcularTotalCarrito() | currency }}</h5>
+          </div>
+          <button class="btn btn-primary mt-3">Ordenar!</button>
+        </div>
+      </ng-template>
+  
+    <div class="row">
+      <div class="col-12 mb-3" *ngFor="let producto of productosDisponibles">
+        <div class="card h-100">
+          <div class="row g-0 h-100">
+            <div class="col-2 d-flex align-items-center">
+              <img [src]="getSafeImageUrl(producto.imagen)" class="img-fluid rounded-start" [alt]="producto.nombre">
+            </div>
+            <div class="col-10">
+              <div class="card-body d-flex flex-column justify-content-between h-100">
+                <div>
+                  <h6 class="card-title">{{ producto.nombre }}</h6>
+                  <p class="card-text">{{ producto.descripcion }}</p>
+                  <h5 class="card-text">{{ producto.precio | currency }}</h5>
+                </div>
+                <div class="input-group mt-3">
+                  <input type="number" class="form-control" [(ngModel)]="cantidadSeleccionada" min="1" />
+                  <button class="btn btn-primary" (click)="agregarAlCarrito(producto, cantidadSeleccionada)">Agregar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

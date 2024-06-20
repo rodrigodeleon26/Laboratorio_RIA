@@ -19,6 +19,8 @@ import { HomeComponent } from './Components/home/home.component';
 import { InsumosComponent } from './Components/insumos/insumos.component';
 import { CrearProductoComponent } from './Components/crear-producto/crear-producto.component';
 import { CommonModule } from '@angular/common';
+import { OrdenesComponent } from './components/ordenes/ordenes.component';
+import { GenerarOrdenComponent } from './components/generar-orden/generar-orden.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { CommonModule } from '@angular/common';
     ProductosComponent,
     HomeComponent,
     CrearProductoComponent,
-    InsumosComponent
+    InsumosComponent,
+    OrdenesComponent,
+    GenerarOrdenComponent
   ],
   imports: [
     BrowserModule,
