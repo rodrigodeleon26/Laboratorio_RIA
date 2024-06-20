@@ -50,7 +50,7 @@ const register = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { email, telefono } = req.body;
+  const { email, telefono, id } = req.body;
   const user = usuarios.find(u => u.id == id);
   if (user) {
     user.email = email;
@@ -66,7 +66,7 @@ const login = async (req, res) => {
   const user = usuarios.find(u => u.email === email);
   if (user && await bcrypt.compare(password, user.password)) {
     const token = generateToken(user);
-    res.json({ token, nombre: user.email, role: user.role });
+    res.json({ token, nombre: user.email, role: user.role, id: user.id});
   } else {
     res.status(401).json({ message: 'Invalid credentials' });
   }

@@ -6,6 +6,7 @@ import { ProductosComponent } from './Components/productos/productos.component';
 import { CrearProductoComponent } from './Components/crear-producto/crear-producto.component';
 import { HomeComponent } from './Components/home/home.component';
 import { InsumosComponent } from './Components/insumos/insumos.component';
+import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.component';
 
 const routes: Routes = [
 
@@ -42,6 +43,11 @@ const routes: Routes = [
   {
     path: 'insumos',
     component: InsumosComponent
+  },
+
+  {
+    path: 'perfil',
+    component: EditarPerfilComponent
   },
   
   { path: '**', redirectTo: '', pathMatch: 'full' },

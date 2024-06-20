@@ -1,0 +1,18 @@
+.fondoForm {
+    background-color: rgba(245, 159, 119, 1);
+    background: linear-gradient(0deg,rgba(245, 159, 119, 1) 75%, rgb(255, 255, 255) 90%);
+    padding: 20px;
+
+}
+
+.carrito{
+    width: 85%;
+    height: auto;
+    transition: transform 0.3s ease-out, filter 0.3s ease-out;
+}
+
+.carrito:hover{
+    cursor: pointer;
+    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+    transform: translateY(-10px); 
+}

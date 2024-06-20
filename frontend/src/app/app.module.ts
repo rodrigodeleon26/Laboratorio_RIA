@@ -21,6 +21,7 @@ import { CrearProductoComponent } from './Components/crear-producto/crear-produc
 import { ModalMovilProductoComponent } from './Components/productos/modal-movil-producto/modal-movil-producto.component';
 import { ModalMovilProductoInsumoComponent } from './Components/productos/modal-movil-producto-insumo/modal-movil-producto-insumo.component';
 import { CommonModule } from '@angular/common';
+import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { CommonModule } from '@angular/common';
     CrearProductoComponent,
     ModalMovilProductoComponent,
     ModalMovilProductoInsumoComponent,
-    InsumosComponent
+    InsumosComponent,
+    EditarPerfilComponent
   ],
   imports: [
     BrowserModule,
