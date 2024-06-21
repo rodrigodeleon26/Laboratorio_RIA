@@ -26,5 +26,10 @@ export class OrdenesService {
   getOrdenByUsuario(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/usuario/${id}`);
   }
+
+  getUsuarios(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/getUsuarios`);
+
+  }
 }
 

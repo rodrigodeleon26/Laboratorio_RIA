@@ -1,7 +1,60 @@
 <div class="container mt-3">
     <ul ngbNav #nav="ngbNav" class="nav-tabs">
-        <button class="btn btn-success me-3">Filtrar</button>
+        <button class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#filtroModal">Filtrar</button>
 
+        <!-- Modal -->
+        <div class="modal fade" id="filtroModal" tabindex="-1" aria-labelledby="filtroModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="filtroModalLabel">Filtros</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <!-- Aquí puedes agregar los campos de filtro -->
+                <div class="mb-3">
+                    <!-- <label for="tipoSelect" class="form-label">Tipos de filtro</label>
+                    <select class="form-select form-select-sm" aria-label="tipoSelect">
+                        <option selected>Filtros</option>
+                        <option value="1">Rango de fecha</option>
+                        <option value="2">Importe</option>
+                        <option value="3">Cliente</option>
+                    </select> -->
+
+                    <div class="mb-3">
+                        <label for="fechaInicio" class="form-label">Fecha de inicio</label>
+                        <input type="date" class="form-control" id="fechaInicio">
+                    
+                        <label for="fechaFin" class="form-label">Fecha de fin</label>
+                        <input type="date" class="form-control" id="fechaFin">
+                    
+                        <label for="importeMin" class="form-label">Importe mínimo</label>
+                        <input type="number" class="form-control" id="importeMin">
+
+                        <label for="importeMax" class="form-label">Importe máximo</label>
+                        <input type="number" class="form-control" id="importeMax">
+
+                        <label for="clienteSelect" class="form-label">Cliente</label>
+                        <input class="form-control" list="clientes" id="clienteSelect" placeholder="Escribe para buscar...">
+                        <datalist id="clientes">
+                            <option *ngFor="let usuario of clientes" value="{{usuario.id}}">{{usuario.nombre}}</option>
+                            <!-- Agrega más opciones según sea necesario -->
+                        </datalist>
+
+                    </div>
+                </div>
+                <!-- Agrega más campos de filtro según sea necesario -->
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Aplicar filtros</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        <!-- TABLA -->
         <li [ngbNavItem]="1">
             <button ngbNavLink (click)="actualizarCantPaginas('PENDIENTE')">Pendientes</button>
             <ng-template ngbNavContent>
@@ -31,7 +84,7 @@
                             <td>{{ orden.importe }}</td>
                             <td>{{ orden.clienteId }}</td>
                             <td>
-                                <button class="btn btn-primary" (click)="verMas(orden.id)"><i class="bi bi-eye"></i></button>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -65,7 +118,7 @@
                             <td>{{ orden.importe }}</td>
                             <td>{{ orden.clienteId }}</td>
                             <td>
-                                <button class="btn btn-primary" (click)="verMas(orden.id)"><i class="bi bi-eye"></i></button>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -100,7 +153,7 @@
                             <td>{{ orden.importe }}</td>
                             <td>{{ orden.clienteId }}</td>
                             <td>
-                                <button class="btn btn-primary" (click)="verMas(orden.id)"><i class="bi bi-eye"></i></button>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -111,6 +164,7 @@
     </ul>
 
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
+        <!-- PAGINADO -->
     <nav *ngIf="totalPaginas > 1">
         <ul class="pagination justify-content-center">
           <li class="page-item" [class.disabled]="paginaActual === 1">
@@ -124,5 +178,26 @@
           </li>
         </ul>
     </nav>
+
+    <!-- MODAL INFO -->
+
+    <div class="modal fade" id="ordenModal" tabindex="-1" aria-labelledby="ordenModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ordenModalLabel">Detalles de la Orden</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Fecha: {{ ordenSeleccionada.fecha | date }}</p>
+                    <p>Importe: {{ ordenSeleccionada.importe }}</p>
+                    <p>Cliente: {{ ordenSeleccionada.clienteId }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

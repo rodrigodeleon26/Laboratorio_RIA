@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrdenesService } from '../../services/ordenes/ordenes.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-ordenes',
@@ -12,6 +13,7 @@ export class OrdenesComponent implements OnInit {
   ordenes: any[] = [];
   role = '';
   userId = 0;
+  clientes: any[] = [];
 
   paginaActual: number = 1;
   OrdenesPorPagina: number = 6;
@@ -23,8 +25,9 @@ export class OrdenesComponent implements OnInit {
 
   sortDirection: 'asc' | 'desc' = 'asc';
   sortColumn = new BehaviorSubject<string>('nombre');
+  ordenSeleccionada: any = [];
 
-  constructor(private ordenesService: OrdenesService, private authService: AuthService) { }
+  constructor(private ordenesService: OrdenesService, private authService: AuthService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
 
@@ -47,6 +50,12 @@ export class OrdenesComponent implements OnInit {
         console.error('Error fetching orders', error);
       });
     }
+
+    this.ordenesService.getUsuarios().subscribe(data => {
+      this.clientes = data;
+    }, error => {
+      console.error('Error fetching users', error);
+    });
 
     this.ordenesPendientes = this.ordenes.filter(orden => orden.estado === 'PENDIENTE');
     this.ordenesEnPreparacion = this.ordenes.filter(orden => orden.estado === 'EN PREPARACION');
@@ -130,5 +139,8 @@ export class OrdenesComponent implements OnInit {
   }
 
 
-  verMas(orden: any): void {}
+   verMas(orden: any): void {
+    this.ordenSeleccionada = orden;
+    console.log(this.ordenSeleccionada);
+  }
 }

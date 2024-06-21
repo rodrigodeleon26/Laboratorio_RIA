@@ -112,3 +112,16 @@ exports.getPedidosOrden = function() {
     .map(po => pedidos.find(p => p.id == po.pedidoId));
   res.json(pedidosOrden);
 };
+
+exports.getUsuariosOrdenes = (req, res) => {
+  const usuariosUnicos = {};
+  const usuariosOrdenes = ordenes.reduce((result, o) => {
+    const usuario = usuarios.find(u => u.id == o.clienteId);
+    if (usuario && !usuariosUnicos[usuario.id]) {
+      usuariosUnicos[usuario.id] = true;
+      result.push({ id: usuario.id, nombre: usuario.email });
+    }
+    return result;
+  }, []);
+  res.json(usuariosOrdenes);
+};
