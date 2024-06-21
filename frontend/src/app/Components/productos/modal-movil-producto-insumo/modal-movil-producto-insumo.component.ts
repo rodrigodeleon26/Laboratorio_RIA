@@ -26,7 +26,7 @@ import { Insumo } from '../../../models/insumo';
             </div>
             <div class="mb-3">
                 <label for="cantidad">Cantidad</label>
-                <input type="number" min="0" class="form-control" id="cantidad" [(ngModel)]="cantidadInsumo" name="cantidadInsumo" placeholder="Cantidad necesaria">
+                <input type="number" min="0.1" step="0.1" class="form-control" id="cantidad" [(ngModel)]="cantidadInsumo" name="cantidadInsumo" placeholder="Cantidad necesaria">
             </div>
         </form>
 

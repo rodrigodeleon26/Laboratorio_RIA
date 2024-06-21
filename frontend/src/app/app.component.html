@@ -14,7 +14,7 @@
           Perfil
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="#">Ordenes Realizadas</a></li>
+          <li><a class="dropdown-item" [routerLink]="['/ordenes']">Ordenes Realizadas</a></li>
           <li><a [routerLink]="['/perfil']" class="dropdown-item">Editar Perfil</a></li>
         </ul>
       </li>
@@ -61,14 +61,8 @@
         </li>
 
         <!-- Opciones de PANADERO -->
-        <li *ngIf="role === 'PANADERO'" class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Ordenes
-          </a>
-          <ul class="dropdown-menu dropdown-menu-start">
-            <li><a class="dropdown-item" href="#">Ver Ordenes</a></li>
-            <li><a [routerLink]="['/productos']" class="dropdown-item">Ordenes Pendientes</a></li>
-          </ul>
+        <li *ngIf="role === 'PANADERO'" class="nav-item">
+          <a [routerLink]="['/ordenes']" class="nav-link">Ordenes</a>
         </li>
 
         <!-- Opciones para cliente -->
@@ -134,14 +128,8 @@
         </li>
 
         <!-- Opciones de PANADERO -->
-        <li *ngIf="role === 'PANADERO'" class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Ordenes
-          </a>
-          <ul class="dropdown-menu dropdown-menu-start">
-            <li><a class="dropdown-item" href="#">Ver Ordenes</a></li>
-            <li><a [routerLink]="['/productos']" class="dropdown-item">Ordenes Pendientes</a></li>
-          </ul>
+        <li *ngIf="role === 'PANADERO'" class="nav-item">
+          <a class="nav-link" [routerLink]="['/ordenes']">Ordenes</a>
         </li>
 
         <!-- Opciones para cliente -->
@@ -164,7 +152,7 @@
             Perfil
           </a>
           <ul class="dropdown-menu dropdown-menu-start">
-            <li><a class="dropdown-item" href="#">Ordenes Realizadas</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/ordenes']">Ordenes Realizadas</a></li>
             <li><a [routerLink]="['/perfil']" class="dropdown-item">Editar Perfil</a></li>
           </ul>
         </li>

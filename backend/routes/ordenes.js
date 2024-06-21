@@ -49,4 +49,13 @@ router.delete('/:id', (req, res) => {
   ordenesController.deleteOrden(req, res);
 });
 
+//obtener ordenes por usuario
+router.get('/usuario/:id', (req, res) => {
+  /* #swagger.summary = 'Obtiene las órdenes de un usuario' verifyToken, isUser, */
+  /* #swagger.tags = ['Órdenes'] */
+  /* #swagger.parameters['id'] = { description: 'ID del usuario', type: 'integer', required: true } */
+  ordenesController.getOrdenesByUsuario(req, res);
+});
+
+
 module.exports = router;

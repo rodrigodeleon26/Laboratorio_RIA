@@ -39,7 +39,7 @@ import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.
     ModalMovilProductoComponent,
     ModalMovilProductoInsumoComponent,
     InsumosComponent,
-    EditarPerfilComponent
+    EditarPerfilComponent,
   ],
   imports: [
     BrowserModule,

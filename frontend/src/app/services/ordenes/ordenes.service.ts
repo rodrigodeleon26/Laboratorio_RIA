@@ -18,5 +18,13 @@ export class OrdenesService {
   createOrden(orden: Orden): Observable<Orden> {
     return this.http.post<Orden>(this.apiUrl, orden);
   }
+
+  updateOrden(orden: Orden): Observable<Orden> {
+    return this.http.put<Orden>(`${this.apiUrl}/${orden.id}`, orden);
+  }
+
+  getOrdenByUsuario(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/usuario/${id}`);
+  }
 }
 

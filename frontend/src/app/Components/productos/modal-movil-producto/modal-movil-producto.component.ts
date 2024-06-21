@@ -41,7 +41,7 @@ import { ModalMovilProductoInsumoComponent } from '../modal-movil-producto-insum
             <tbody>
                 <tr *ngFor="let insumo of insumosProducto" >
                     <td>{{getInsumoNombre(insumo.insumoId)}}</td>
-                    <td class="d-flex justify-content-center h-100"><input class="w-50" style="height: 2.5rem;" min="1" type="number" [(ngModel)]="insumo.cantidad" value="{{insumo.cantidad}}"></td>
+                    <td class="d-flex justify-content-center h-100"><input class="w-50" style="height: 2.5rem;" min="0.1" step="0.1" type="number" [(ngModel)]="insumo.cantidad" value="{{insumo.cantidad}}"></td>
                     <td><button class="btn btn-danger" (click)="eliminarInsumo(insumo.insumoId)"><i class="bi bi-trash-fill"></i></button></td>
                 </tr>
             </tbody>

@@ -25,6 +25,30 @@ exports.getOrdenById = (req, res) => {
   }
 };
 
+exports.getOrdenesByUsuario = (req, res) => {
+  const { id } = req.params;
+  const usuario = usuarios.find(u => u.id == id);
+  console.log("id:", id, "usuario", usuario);
+  if (usuario) {
+    const usuarioOrdenes = ordenes.filter(o => o.clienteId == id);
+    console.log("ordenes:", usuarioOrdenes);
+    for (let i = 0; i < usuarioOrdenes.length; i++) {
+      const orden = usuarioOrdenes[i];
+      orden.pedidos = pedidosOrdenes
+        .filter(po => po.ordenId == orden.id)
+        .map(po => {
+          const pedido = pedidos.find(p => p.id == po.pedidoId);
+          const producto = productos.find(prod => prod.id == pedido.productoId);
+          return producto ? { id: pedido.id, nombre: producto.nombre, cantidad: pedido.cantidad } : { id: pedido.id, nombre: 'Producto no encontrado', cantidad: pedido.cantidad };
+        });
+    }
+    console.log("ordenes ENVIO:", usuarioOrdenes);
+    res.json(usuarioOrdenes);
+  } else {
+    res.json([]);
+  }
+}
+
 exports.createOrden = (req, res) => {
   const newOrden = req.body.orden;
   const newOrdenPedidos = req.body.pedidosOrden;
