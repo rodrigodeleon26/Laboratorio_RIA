@@ -1,59 +1,217 @@
 <div class="container mt-3">
     <ul ngbNav #nav="ngbNav" class="nav-tabs">
+        <button class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#filtroModal">Filtrar</button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="filtroModal" tabindex="-1" aria-labelledby="filtroModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="filtroModalLabel">Filtros</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <!-- Aquí puedes agregar los campos de filtro -->
+                <div class="mb-3">
+                    <!-- <label for="tipoSelect" class="form-label">Tipos de filtro</label>
+                    <select class="form-select form-select-sm" aria-label="tipoSelect">
+                        <option selected>Filtros</option>
+                        <option value="1">Rango de fecha</option>
+                        <option value="2">Importe</option>
+                        <option value="3">Cliente</option>
+                    </select> -->
+
+                    <div class="mb-3">
+                        <div class="w-100 d-md-flex justify-content-between">
+                            <div>
+                                <label for="Desde">Desde</label>
+                                <form class="row row-cols-sm-auto" id="Desde">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <input class="form-control" placeholder="yyyy-mm-dd" name="dpInicio" [(ngModel)]="modelInicio" ngbDatepicker #dInicio="ngbDatepicker"/>
+                                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dInicio.toggle()" type="button"></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div>
+                                <label for="Hasta">Hasta</label>
+                                <form class="row row-cols-sm-auto" id="Hasta">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <input class="form-control" placeholder="yyyy-mm-dd" name="dpFin" [(ngModel)]="modelFin" ngbDatepicker #dFin="ngbDatepicker"/>
+                                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dFin.toggle()" type="button"></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <label for="clienteSelect" class="form-label">Cliente</label>
+                        <input class="form-control" list="clientes" id="clienteSelect" placeholder="Escribe para buscar..." [(ngModel)]="usuarioSeleccionado" > <!--  (change)="seleccionarUsuario()" -->
+                        <datalist id="clientes">
+                            <option *ngFor="let usuario of clientes" [value]="usuario.id + ' | ' + usuario.nombre">{{usuario.nombre}}</option>
+                            <!-- Agrega más opciones según sea necesario -->
+                        </datalist>
+
+                    </div>
+                </div>
+                <!-- Agrega más campos de filtro según sea necesario -->
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="limpiarFiltros()">Limiar Filtros</button>
+                <button type="button" class="btn btn-primary" (click)="filtrarOrdenes()">Aplicar filtros</button>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+        <!-- TABLA -->
         <li [ngbNavItem]="1">
-            <button ngbNavLink>Pendientes</button>
+            <button ngbNavLink (click)="actualizarCantPaginas('PENDIENTE')">Pendientes</button>
             <ng-template ngbNavContent>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                        <th>ID</th>
-                        <th>Fecha</th>
-                        <th>Estado</th>
-                        <th>Importe</th>
-                        <th>Cliente</th>
+                            <!-- <th>ID</th> -->
+                            <th style="cursor: pointer;" (click)="cambiarOrdenFecha()">Fecha
+                                <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'fecha' && sortDirection === 'asc',
+                                         'bi-caret-down-fill': sortColumn.value === 'fecha' && sortDirection === 'desc',
+                                       }"></i>
+                            </th>
+                            <!-- <th>Estado</th> -->
+                            <th style="cursor: pointer;" (click)="cambiarOrdenImporte()">Importe
+                                <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'importe' && sortDirection === 'asc',
+                                         'bi-caret-down-fill': sortColumn.value === 'importe' && sortDirection === 'desc',
+                                       }"></i>
+                            <th>Cliente</th>
+                            <th>Ver Mas</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let orden of ordenes">
-                        <td>{{ orden.id }}</td>
-                        <td>{{ orden.fecha | date }}</td>
-                        <td>{{ orden.estado }}</td>
-                        <td>{{ orden.importe }}</td>
-                        <td>{{ orden.clienteId }}</td>
+                        <tr *ngFor="let orden of getPaginadasPendiente()">
+                            <!-- <td>{{ orden.id }}</td> -->
+                            <td>{{ orden.fecha | date }}</td>
+                            <!-- <td>{{ orden.estado }}</td> -->
+                            <td>{{ orden.importe }}</td>
+                            <td>{{ orden.clienteId }}</td>
+                            <td>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </ng-template>
         </li>
         <li [ngbNavItem]="2">
-            <button ngbNavLink>En preparación</button>
+            <button ngbNavLink (click)="actualizarCantPaginas('EN PREPARACION')">En preparación</button>
             <ng-template ngbNavContent>
-                <p>
-                    Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko
-                    farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts
-                    ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar
-                    helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson
-                    8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester
-                    stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
-                </p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="cursor: pointer;" (click)="cambiarOrdenFecha()">Fecha
+                                <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'fecha' && sortDirection === 'asc',
+                                         'bi-caret-down-fill': sortColumn.value === 'fecha' && sortDirection === 'desc',
+                                       }"></i>
+                            </th>
+                            <!-- <th>Estado</th> -->
+                            <th style="cursor: pointer;" (click)="cambiarOrdenImporte()">Importe
+                                <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'importe' && sortDirection === 'asc',
+                                         'bi-caret-down-fill': sortColumn.value === 'importe' && sortDirection === 'desc',
+                                       }"></i>
+                            <th>Cliente</th>
+                            <th>Ver Mas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let orden of getPaginadasEnPreparacion()">
+                            <td>{{ orden.fecha | date }}</td>
+                            <!-- <td>{{ orden.estado }}</td> -->
+                            <td>{{ orden.importe }}</td>
+                            <td>{{ orden.clienteId }}</td>
+                            <td>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </ng-template>
         </li>
         <li [ngbNavItem]="3">
-            <button ngbNavLink>Listas para entregar</button>
+            <button ngbNavLink (click)="actualizarCantPaginas('LISTO PARA RECOGER')">Listas para entregar</button>
             <ng-template ngbNavContent>
-                <p>
-                    Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi.
-                    Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue et odio.
-                    Duis pharetra et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed diam urna,
-                    egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor arcu. Vivamus faucibus nisl enim, nec
-                    tristique ipsum euismod facilisis. Morbi ut bibendum est, eu tincidunt odio. Orci varius natoque penatibus et
-                    magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac lorem aliquet ultricies in eget
-                    neque. Phasellus nec tortor vel tellus pulvinar feugiat.
-                </p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="cursor: pointer;" (click)="cambiarOrdenFecha()">Fecha
+                                <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'fecha' && sortDirection === 'asc',
+                                         'bi-caret-down-fill': sortColumn.value === 'fecha' && sortDirection === 'desc',
+                                       }"></i>
+                            </th>
+                            <!-- <th>Estado</th> -->
+                            <th style="cursor: pointer;" (click)="cambiarOrdenImporte()">Importe
+                                <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'importe' && sortDirection === 'asc',
+                                         'bi-caret-down-fill': sortColumn.value === 'importe' && sortDirection === 'desc',
+                                       }"></i>
+                            </th>
+                            <th>Cliente</th>
+                            <th>Ver Mas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let orden of getPaginadasListasParaEntregar()">
+                            <td>{{ orden.fecha | date }}</td>
+                            <!-- <td>{{ orden.estado }}</td> -->
+                            <td>{{ orden.importe }}</td>
+                            <td>{{ orden.clienteId }}</td>
+                            <td>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </ng-template>
         </li>
+
     </ul>
-    
+
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
-  </div>
-  
+        <!-- PAGINADO -->
+    <nav *ngIf="totalPaginas > 1">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="paginaActual === 1">
+            <a class="page-link" (click)="cambiarPagina(paginaActual - 1)">Anterior</a>
+          </li>
+          <li class="page-item" *ngFor="let pagina of paginas" [class.active]="pagina === paginaActual">
+            <a class="page-link" (click)="cambiarPagina(pagina)">{{ pagina }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="paginaActual === totalPaginas">
+            <a class="page-link" (click)="cambiarPagina(paginaActual + 1)">Siguiente</a>
+          </li>
+        </ul>
+    </nav>
+
+    <!-- MODAL INFO -->
+
+    <div class="modal fade" id="ordenModal" tabindex="-1" aria-labelledby="ordenModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ordenModalLabel">Detalles de la Orden</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Fecha: {{ ordenSeleccionada.fecha | date }}</p>
+                    <p>Importe: {{ ordenSeleccionada.importe }}</p>
+                    <p>Cliente: {{ ordenSeleccionada.clienteId }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

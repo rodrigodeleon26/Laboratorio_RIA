@@ -9,6 +9,14 @@ router.get('/', (req, res) => {
   ordenesController.getOrdenes(req, res);
 });
 
+//entrega nombre e id de usuarios que han hecho ordenes
+router.get('/getUsuarios', (req, res) => {
+  /* #swagger.summary = 'Obtiene los usuarios que han hecho órdenes' verifyToken, isAdmin, */
+  /* #swagger.tags = ['Órdenes'] */
+  ordenesController.getUsuariosOrdenes(req, res);
+});
+
+
 router.get('/:id', (req, res) => {
   /* #swagger.summary = 'Obtiene una orden por ID'  verifyToken, isAdmin, */
   /* #swagger.tags = ['Órdenes'] */
@@ -48,5 +56,14 @@ router.delete('/:id', (req, res) => {
   /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
   ordenesController.deleteOrden(req, res);
 });
+
+//obtener ordenes por usuario
+router.get('/usuario/:id', (req, res) => {
+  /* #swagger.summary = 'Obtiene las órdenes de un usuario' verifyToken, isUser, */
+  /* #swagger.tags = ['Órdenes'] */
+  /* #swagger.parameters['id'] = { description: 'ID del usuario', type: 'integer', required: true } */
+  ordenesController.getOrdenesByUsuario(req, res);
+});
+
 
 module.exports = router;

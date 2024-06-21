@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { OrdenesService } from '../../services/ordenes/ordenes.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { NgbDateStruct, NgbModal, NgbNav } from '@ng-bootstrap/ng-bootstrap';
+import { tap } from 'rxjs/operators';
+import { datePickerComponent } from '../date-picker/date-picker.component';
 
 @Component({
   selector: 'app-ordenes',
@@ -7,16 +12,234 @@ import { OrdenesService } from '../../services/ordenes/ordenes.service';
   styleUrls: ['./ordenes.component.scss']
 })
 export class OrdenesComponent implements OnInit {
-  ordenes: any[] = [];
+  @ViewChild('nav', { static: true })
+  nav!: NgbNav;
 
-  constructor(private ordenesService: OrdenesService) { }
+  ordenes: any[] = [];
+  role = '';
+  userId = 0;
+  clientes: any[] = [];
+  model!: NgbDateStruct;
+  modelInicio!: {year: number, month: number, day: number} | null;
+  modelFin!: { year: number; month: number; day: number; } | null;
+  usuarioSeleccionado = '';
+
+  paginaActual: number = 1;
+  OrdenesPorPagina: number = 6;
+  totalPaginas: number = 0;
+
+  ordenesPendientes: any[] = [];
+  ordenesEnPreparacion: any[] = [];
+  ordenesListasParaEntregar: any[] = [];
+
+  sortDirection: 'asc' | 'desc' = 'asc';
+  sortColumn = new BehaviorSubject<string>('nombre');
+  ordenSeleccionada: any = [];
+
+  constructor(private ordenesService: OrdenesService, private authService: AuthService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.ordenesService.getOrdenes().subscribe(data => {
-      this.ordenes = data;
-      console.log('Ordenes', data);
-    }, error => {
-      console.error('Error fetching orders', error);
+
+    this.authService.user.subscribe(user => {
+      this.role = user.role;
+      this.userId = user.id;
+
+      if (this.role === 'USER') {
+        this.ordenesService.getOrdenByUsuario(this.userId).pipe(
+          tap(data => this.procesarOrdenes(data))
+        ).subscribe(
+          data => this.ordenes = data,
+          error => console.error('Error fetching user orders', error)
+        );
+      } else {
+        this.ordenesService.getOrdenes().pipe(
+          tap(data => this.procesarOrdenes(data))
+        ).subscribe(
+          data => this.ordenes = data,
+          error => console.error('Error fetching orders', error)
+        );
+      }
+
+      this.ordenesService.getUsuarios().subscribe(
+        data => this.clientes = data,
+        error => console.error('Error fetching users', error)
+      );
     });
   }
+
+  private procesarOrdenes(data: any[]): void {
+    this.ordenesPendientes = data.filter(orden => orden.estado === 'PENDIENTE');
+    this.ordenesEnPreparacion = data.filter(orden => orden.estado === 'EN PREPARACION');
+    this.ordenesListasParaEntregar = data.filter(orden => orden.estado === 'LISTO PARA RECOGER');
+
+    this.actualizarCantPaginas('PENDIENTE');
+  }
+
+  private reiniciarOrdenes(): void {
+    this.ordenesPendientes = this.ordenes.filter(orden => orden.estado === 'PENDIENTE');
+    this.ordenesEnPreparacion = this.ordenes.filter(orden => orden.estado === 'EN PREPARACION');
+    this.ordenesListasParaEntregar = this.ordenes.filter(orden => orden.estado === 'LISTO PARA RECOGER');
+  }
+
+  getPaginadasPendiente(): any[] {
+    const inicio = (this.paginaActual - 1) * this.OrdenesPorPagina;
+    const fin = inicio + this.OrdenesPorPagina;
+    return this.ordenesPendientes.slice(inicio, fin);
+  }
+
+  getPaginadasEnPreparacion(): any[] {
+    const inicio = (this.paginaActual - 1) * this.OrdenesPorPagina;
+    const fin = inicio + this.OrdenesPorPagina;
+    return this.ordenesEnPreparacion.slice(inicio, fin);
+  }
+
+  getPaginadasListasParaEntregar(): any[] {
+    const inicio = (this.paginaActual - 1) * this.OrdenesPorPagina;
+    const fin = inicio + this.OrdenesPorPagina;
+    return this.ordenesListasParaEntregar.slice(inicio, fin);
+  }
+
+  cambiarPagina(pagina: number): void {
+    if (pagina >= 1 && pagina <= this.totalPaginas) {
+      this.paginaActual = pagina;
+    }
+  }
+
+  get paginas(): number[] {
+    return Array.from({ length: this.totalPaginas }, (_, i) => i + 1);
+  }
+
+  actualizarCantPaginas(categoria: string): void {
+    if (categoria === 'PENDIENTE') {
+      this.totalPaginas = Math.ceil(this.ordenesPendientes.length / this.OrdenesPorPagina);
+    } else if (categoria === 'EN PREPARACION') {
+      this.totalPaginas = Math.ceil(this.ordenesEnPreparacion.length / this.OrdenesPorPagina);
+    } else if (categoria === 'LISTO PARA RECOGER') {
+      this.totalPaginas = Math.ceil(this.ordenesListasParaEntregar.length / this.OrdenesPorPagina);
+    }
+  }
+
+  cambiarOrdenFecha(): void {
+    if (this.sortDirection === 'asc') {
+      this.sortDirection = 'desc';
+    } else {
+      this.sortDirection = 'asc';
+    }
+    this.sortColumn.next('fecha');
+    this.ordenesPendientes.sort((a, b) => this.compararFechas(a, b));
+    this.ordenesEnPreparacion.sort((a, b) => this.compararFechas(a, b));
+    this.ordenesListasParaEntregar.sort((a, b) => this.compararFechas(a, b));
+  }
+
+  compararFechas(a: any, b: any): number {
+    const fechaA = new Date(a.fecha).getTime();
+    const fechaB = new Date(b.fecha).getTime();
+    return this.sortDirection === 'asc' ? fechaA - fechaB : fechaB - fechaA;
+  }
+
+  cambiarOrdenImporte(): void {
+    if (this.sortDirection === 'asc') {
+      this.sortDirection = 'desc';
+    } else {
+      this.sortDirection = 'asc';
+    }
+    this.sortColumn.next('importe');
+    this.ordenesPendientes.sort((a, b) => this.compararImporte(a, b));
+    this.ordenesEnPreparacion.sort((a, b) => this.compararImporte(a, b));
+    this.ordenesListasParaEntregar.sort((a, b) => this.compararImporte(a, b));
+  }
+
+  compararImporte(a: any, b: any): number {
+    return this.sortDirection === 'asc' ? a.importe - b.importe : b.importe - a.importe;
+  }
+
+  verMas(orden: any): void {
+    this.ordenSeleccionada = orden;
+    console.log(this.ordenSeleccionada);
+  }
+
+  filtrarOrdenes() {
+
+
+    if (!this.modelInicio && !this.modelFin && !this.usuarioSeleccionado) {
+      this.reiniciarOrdenes();
+      this.nav.select(1);
+      this.actualizarCantPaginas('PENDIENTE');
+      return;
+    }
+
+    if (this.modelInicio && !this.modelFin) {
+      alert('Debe seleccionar una fecha de fin');
+      return;
+    }
+    if (!this.modelInicio && this.modelFin) {
+      alert('Debe seleccionar una fecha de inicio');
+      return;
+    }
+
+    this.reiniciarOrdenes();
+    if(this.modelFin && this.modelInicio){
+
+      console.log("entro a fecha" + this.modelFin + " " + this.modelInicio)
+
+      const fechaInicio = new Date(this.modelInicio.year, this.modelInicio.month - 1, this.modelInicio.day);
+      const fechaFin = new Date(this.modelFin.year, this.modelFin.month - 1, this.modelFin.day);
+      fechaFin.setHours(23, 59, 59, 999);
+    
+      if (fechaInicio > fechaFin) {
+        alert('La fecha de inicio no puede ser mayor a la fecha de fin');
+        return;
+      }
+  
+  
+      this.ordenesPendientes = this.ordenesPendientes.filter(orden => {
+        const fechaOrden = new Date(orden.fecha);
+        return fechaOrden >= fechaInicio && fechaOrden <= fechaFin;
+      });
+  
+      this.ordenesEnPreparacion = this.ordenesEnPreparacion.filter(orden => {
+        const fechaOrden = new Date(orden.fecha);
+        return fechaOrden >= fechaInicio && fechaOrden <= fechaFin;
+      });
+  
+      this.ordenesListasParaEntregar = this.ordenesListasParaEntregar.filter(orden => {
+        const fechaOrden = new Date(orden.fecha);
+        return fechaOrden >= fechaInicio && fechaOrden <= fechaFin;
+      });
+
+    }
+    if(this.usuarioSeleccionado){
+      const seleccion = this.usuarioSeleccionado.split(' | ');
+      const idUsuario = seleccion[0]; // Aquí tienes el ID del usuario seleccionado
+      // Puedes hacer algo con el ID del usuario aquí
+      console.log(idUsuario);
+
+      console.log(this.ordenesPendientes);
+      this.ordenesPendientes = this.ordenesPendientes.filter(orden => orden.clienteId == idUsuario);
+  
+      this.ordenesEnPreparacion = this.ordenesEnPreparacion.filter(orden => orden.clienteId == idUsuario);
+  
+      this.ordenesListasParaEntregar = this.ordenesListasParaEntregar.filter(orden => orden.clienteId == idUsuario);
+    }
+
+    this.nav.select(1);
+    this.actualizarCantPaginas('PENDIENTE');
+  }
+
+  limpiarFiltros() {
+    //modeloInicio y modeloFin
+    this.modelInicio = null;
+    this.modelFin = null;
+    this.usuarioSeleccionado = '';
+    this.reiniciarOrdenes();
+    this.nav.select(1);
+    this.actualizarCantPaginas('PENDIENTE');
+  }
+
+  // seleccionarUsuario(){
+  //   const seleccion = this.usuarioSeleccionado.split(' | ');
+  //   const idUsuario = seleccion[0]; // Aquí tienes el ID del usuario seleccionado
+  //   // Puedes hacer algo con el ID del usuario aquí
+  //   console.log(idUsuario);
+  // }
 }

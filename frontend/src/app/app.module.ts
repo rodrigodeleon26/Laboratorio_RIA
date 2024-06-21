@@ -24,6 +24,14 @@ import { CommonModule } from '@angular/common';
 import { OrdenesComponent } from './Components/ordenes/ordenes.component';
 import { GenerarOrdenComponent } from './Components/generar-orden/generar-orden.component';
 import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.component';
+import { datePickerComponent } from './Components/date-picker/date-picker.component';
+
+//import { NgModule } from '@angular/core';
+//import { BrowserModule } from '@angular/platform-browser';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+//import { FormsModule } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +47,8 @@ import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.
     ModalMovilProductoComponent,
     ModalMovilProductoInsumoComponent,
     InsumosComponent,
-    EditarPerfilComponent
+    EditarPerfilComponent,
+    datePickerComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +58,8 @@ import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    NgbDatepickerModule,
+    JsonPipe
   ],
   providers: [
     provideClientHydration(),

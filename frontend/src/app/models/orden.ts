@@ -5,4 +5,5 @@ export class Orden {
     importe?: number;
     panaderiaId?: number | null; // Ajustar el tipo según tu modelo
     clienteId?: number;
+    pedidos: any;
 }

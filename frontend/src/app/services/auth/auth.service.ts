@@ -76,7 +76,6 @@ export class AuthService {
   }
 
   editarPerfil(email: string, telefono: string, id: number): Observable<any> {
-    console.log("servicio", email, telefono, id);
     return this.http.post<any>(`${this.apiUrl}/usuarios/update`, { email, telefono, id });
   }
 
