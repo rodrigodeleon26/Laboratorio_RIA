@@ -22,22 +22,36 @@
                     </select> -->
 
                     <div class="mb-3">
-                        <label for="fechaInicio" class="form-label">Fecha de inicio</label>
-                        <input type="date" class="form-control" id="fechaInicio">
-                    
-                        <label for="fechaFin" class="form-label">Fecha de fin</label>
-                        <input type="date" class="form-control" id="fechaFin">
-                    
-                        <label for="importeMin" class="form-label">Importe mínimo</label>
-                        <input type="number" class="form-control" id="importeMin">
+                        <div class="w-100 d-md-flex justify-content-between">
+                            <div>
+                                <label for="Desde">Desde</label>
+                                <form class="row row-cols-sm-auto" id="Desde">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <input class="form-control" placeholder="yyyy-mm-dd" name="dpInicio" [(ngModel)]="modelInicio" ngbDatepicker #dInicio="ngbDatepicker"/>
+                                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dInicio.toggle()" type="button"></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
 
-                        <label for="importeMax" class="form-label">Importe máximo</label>
-                        <input type="number" class="form-control" id="importeMax">
+                            <div>
+                                <label for="Hasta">Hasta</label>
+                                <form class="row row-cols-sm-auto" id="Hasta">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <input class="form-control" placeholder="yyyy-mm-dd" name="dpFin" [(ngModel)]="modelFin" ngbDatepicker #dFin="ngbDatepicker"/>
+                                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dFin.toggle()" type="button"></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
                         <label for="clienteSelect" class="form-label">Cliente</label>
-                        <input class="form-control" list="clientes" id="clienteSelect" placeholder="Escribe para buscar...">
+                        <input class="form-control" list="clientes" id="clienteSelect" placeholder="Escribe para buscar..." [(ngModel)]="usuarioSeleccionado" > <!--  (change)="seleccionarUsuario()" -->
                         <datalist id="clientes">
-                            <option *ngFor="let usuario of clientes" value="{{usuario.id}}">{{usuario.nombre}}</option>
+                            <option *ngFor="let usuario of clientes" [value]="usuario.id + ' | ' + usuario.nombre">{{usuario.nombre}}</option>
                             <!-- Agrega más opciones según sea necesario -->
                         </datalist>
 
@@ -46,8 +60,8 @@
                 <!-- Agrega más campos de filtro según sea necesario -->
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Aplicar filtros</button>
+                <button type="button" class="btn btn-secondary" (click)="limpiarFiltros()">Limiar Filtros</button>
+                <button type="button" class="btn btn-primary" (click)="filtrarOrdenes()">Aplicar filtros</button>
                 </div>
             </div>
             </div>
