@@ -9,6 +9,14 @@ router.get('/', (req, res) => {
   ordenesController.getOrdenes(req, res);
 });
 
+//todos los datos procesados segun la id de la orden
+router.get('/getInfoOrden/:id', (req, res) => {
+  /* #swagger.summary = 'Obtiene la información de una orden' verifyToken, isAdmin, */
+  /* #swagger.tags = ['Órdenes'] */
+  /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
+  ordenesController.getInfoOrden(req, res);
+});
+
 //entrega nombre e id de usuarios que han hecho ordenes
 router.get('/getUsuarios', (req, res) => {
   /* #swagger.summary = 'Obtiene los usuarios que han hecho órdenes' verifyToken, isAdmin, */

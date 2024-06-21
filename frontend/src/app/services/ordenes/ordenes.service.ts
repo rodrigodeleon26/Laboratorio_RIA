@@ -29,7 +29,10 @@ export class OrdenesService {
 
   getUsuarios(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/getUsuarios`);
+  }
 
+  getInfoOrden(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/getInfoOrden/${id}`);
   }
 }
 

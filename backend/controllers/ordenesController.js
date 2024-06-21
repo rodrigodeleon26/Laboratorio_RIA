@@ -1,4 +1,4 @@
-const { ordenes, usuarios, productos, pedidosOrdenes, pedidos } = require('../mockData');
+const { ordenes, usuarios, productos, pedidosOrdenes, pedidos, productosInsumos, insumos } = require('../mockData');
 const pedidosController = require('./pedidosController');
 
 exports.getOrdenes = (req, res) => {
@@ -124,4 +124,65 @@ exports.getUsuariosOrdenes = (req, res) => {
     return result;
   }, []);
   res.json(usuariosOrdenes);
+};
+
+exports.getInfoOrden = (req, res) => {
+  const { id } = req.params;
+  const orden = ordenes.find(o => o.id == id);
+  
+  if (orden) {
+    // Agregar pedidos a la orden
+    const ordenPedidos = pedidosOrdenes
+      .filter(po => po.ordenId == orden.id)
+      .map(po => {
+        const pedido = pedidos.find(p => p.id == po.pedidoId);
+        const producto = productos.find(prod => prod.id == pedido.productoId);
+        return producto ? { id: pedido.id, nombre: producto.nombre, cantidad: pedido.cantidad, productoId: producto.id } : { id: pedido.id, nombre: 'Producto no encontrado', cantidad: pedido.cantidad, productoId: null };
+      });
+
+    orden.pedidos = ordenPedidos;
+
+    // Agregar información del cliente
+    const cliente = usuarios.find(c => c.id == orden.clienteId);
+    if (cliente) {
+      orden.emailCliente = cliente.email;
+    } else {
+      orden.emailCliente = 'Email no encontrado';
+    }
+
+    // Calcular total de insumos y costo total
+    const insumosTotales = {};
+    ordenPedidos.forEach(pedido => {
+      if (pedido.productoId) {
+        const insumosProducto = productosInsumos.filter(pi => pi.productoId == pedido.productoId);
+        insumosProducto.forEach(insumoProducto => {
+          const insumo = insumos.find(i => i.id == insumoProducto.insumoId);
+          if (insumo) {
+            if (!insumosTotales[insumo.id]) {
+              insumosTotales[insumo.id] = {
+                nombre: insumo.nombre,
+                cantidad: 0,
+                precioUnitario: insumo.precio,
+                totalCosto: 0
+              };
+            }
+            insumosTotales[insumo.id].cantidad += insumoProducto.cantidad * pedido.cantidad;
+          }
+        });
+      }
+    });
+
+    // Calcular costo total de cada insumo
+    for (const insumoId in insumosTotales) {
+      const insumoTotal = insumosTotales[insumoId];
+      const unidadesNecesarias = Math.ceil(insumoTotal.cantidad); // Redondear hacia arriba
+      insumoTotal.totalCosto = unidadesNecesarias * insumoTotal.precioUnitario;
+    }
+
+    orden.insumosTotales = Object.values(insumosTotales);
+
+    res.json(orden);
+  } else {
+    res.status(404).json({ message: 'Orden no encontrada' });
+  }
 };

@@ -153,11 +153,6 @@ export class OrdenesComponent implements OnInit {
     return this.sortDirection === 'asc' ? a.importe - b.importe : b.importe - a.importe;
   }
 
-  verMas(orden: any): void {
-    this.ordenSeleccionada = orden;
-    console.log(this.ordenSeleccionada);
-  }
-
   filtrarOrdenes() {
 
 
@@ -236,10 +231,11 @@ export class OrdenesComponent implements OnInit {
     this.actualizarCantPaginas('PENDIENTE');
   }
 
-  // seleccionarUsuario(){
-  //   const seleccion = this.usuarioSeleccionado.split(' | ');
-  //   const idUsuario = seleccion[0]; // Aquí tienes el ID del usuario seleccionado
-  //   // Puedes hacer algo con el ID del usuario aquí
-  //   console.log(idUsuario);
-  // }
+  verMas(orden: any): void {
+    this.ordenesService.getInfoOrden(orden.id).subscribe(
+      data => this.ordenSeleccionada = data,
+      error => console.error('Error fetching order info', error)
+    );
+    console.log(this.ordenSeleccionada);
+  }
 }
