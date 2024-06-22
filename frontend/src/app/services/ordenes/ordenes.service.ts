@@ -29,7 +29,23 @@ export class OrdenesService {
 
   getUsuarios(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/getUsuarios`);
-
   }
+
+  getInfoOrden(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/getInfoOrden/${id}`);
+  }
+
+  updateEstadoOrden(id: number, estado: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/actualizarEstado/${id}`, {estado});
+  }
+
+  asignarPanadero(id: number, panadero: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/asignarPanadero/${id}`, {panadero});
+  }
+
+  getPanaderos(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/getPanaderos`);
+  }
+
 }
 

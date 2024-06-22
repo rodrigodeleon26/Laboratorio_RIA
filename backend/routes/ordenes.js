@@ -9,6 +9,14 @@ router.get('/', (req, res) => {
   ordenesController.getOrdenes(req, res);
 });
 
+//todos los datos procesados segun la id de la orden
+router.get('/getInfoOrden/:id', (req, res) => {
+  /* #swagger.summary = 'Obtiene la información de una orden' verifyToken, isAdmin, */
+  /* #swagger.tags = ['Órdenes'] */
+  /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
+  ordenesController.getInfoOrden(req, res);
+});
+
 //entrega nombre e id de usuarios que han hecho ordenes
 router.get('/getUsuarios', (req, res) => {
   /* #swagger.summary = 'Obtiene los usuarios que han hecho órdenes' verifyToken, isAdmin, */
@@ -16,12 +24,41 @@ router.get('/getUsuarios', (req, res) => {
   ordenesController.getUsuariosOrdenes(req, res);
 });
 
+router.get('/getPanaderos', (req, res) => {
+  /* #swagger.summary = 'Obtiene los panaderos disponibles' verifyToken, isAdmin, */
+  /* #swagger.tags = ['Órdenes'] */
+  ordenesController.darPanaderos(req, res);
+});
 
 router.get('/:id', (req, res) => {
   /* #swagger.summary = 'Obtiene una orden por ID'  verifyToken, isAdmin, */
   /* #swagger.tags = ['Órdenes'] */
   /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
   ordenesController.getOrdenById(req, res);
+});
+
+router.post('/actualizarEstado/:id', (req, res) => {
+  /* #swagger.summary = 'Actualiza el estado de una orden' verifyToken, isAdmin, */
+  /* #swagger.tags = ['Órdenes'] */
+  /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
+  /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Update order state.',
+        schema: { $ref: '#/definitions/Orden' }
+    } */
+  ordenesController.updateEstadoOrden(req, res);
+});
+
+router.post('/asignarPanadero/:id', (req, res) => {
+  /* #swagger.summary = 'Asigna un panadero a una orden' verifyToken, isAdmin, */
+  /* #swagger.tags = ['Órdenes'] */
+  /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
+  /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Assign baker to order.',
+        schema: { $ref: '#/definitions/Orden' }
+    } */
+  ordenesController.asignarPanadero(req, res);
 });
 
 router.post('/', (req, res) => {
