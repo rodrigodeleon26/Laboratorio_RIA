@@ -9,14 +9,14 @@ router.get('/', (req, res) => {
   productosController.getProductos(req, res);
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', verifyToken, isAdmin, (req, res) => {
   /* #swagger.summary = 'Obtiene un producto por ID'  verifyToken, isAdmin, */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.parameters['id'] = { description: 'ID del producto', type: 'integer', required: true } */
   productosController.getProductoById(req, res);
 });
 
-router.post('/', (req, res) => {
+router.post('/', verifyToken, isAdmin, (req, res) => {
   /* #swagger.summary = 'Agrega un nuevo producto' verifyToken, isAdmin,  */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
   //productosController.updateProducto(req, res);
 //});
 
-router.put('/:id', (req, res) => {
+router.put('/:id', verifyToken, isAdmin, (req, res) => {
   /* #swagger.summary = 'Actualiza un producto existente y sus insumos' verifyToken, isAdmin,  */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
@@ -54,7 +54,7 @@ router.put('/:id', (req, res) => {
   productosController.updateProductoINSUMO(req, res);
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', verifyToken, isAdmin, (req, res) => {
   /* #swagger.summary = 'Elimina un producto'  verifyToken, isAdmin,  */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
@@ -62,7 +62,7 @@ router.delete('/:id', (req, res) => {
   productosController.deleteProducto(req, res);
 });
 
-router.get('/getProductoInsumos/:id', (req, res) => {
+router.get('/getProductoInsumos/:id', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Obtiene los insumos de un producto' verifyToken, isUser, */
   /* #swagger.tags = ['Productos'] */
   /* #swagger.parameters['id'] = { description: 'ID del producto', type: 'integer', required: true } */

@@ -65,7 +65,7 @@ import { ProductosConModalComponent } from './Components/productos/productos-con
   ],
   providers: [
     provideClientHydration(),
-    //{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideHttpClient(withFetch())
   ],
   bootstrap: [AppComponent]

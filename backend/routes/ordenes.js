@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const ordenesController = require('../controllers/ordenesController');
-const { verifyToken, isAdmin, isUser } = require('../middleware/auth');
+const { verifyToken, isAdmin, isUser, isPanadero } = require('../middleware/auth');
 
-router.get('/', (req, res) => {
+router.get('/', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Obtiene la lista de órdenes' verifyToken, isUser, */
   /* #swagger.tags = ['Órdenes'] */
   ordenesController.getOrdenes(req, res);
 });
 
 //todos los datos procesados segun la id de la orden
-router.get('/getInfoOrden/:id', (req, res) => {
+router.get('/getInfoOrden/:id', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Obtiene la información de una orden' verifyToken, isAdmin, */
   /* #swagger.tags = ['Órdenes'] */
   /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
@@ -18,26 +18,26 @@ router.get('/getInfoOrden/:id', (req, res) => {
 });
 
 //entrega nombre e id de usuarios que han hecho ordenes
-router.get('/getUsuarios', (req, res) => {
+router.get('/getUsuarios', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Obtiene los usuarios que han hecho órdenes' verifyToken, isAdmin, */
   /* #swagger.tags = ['Órdenes'] */
   ordenesController.getUsuariosOrdenes(req, res);
 });
 
-router.get('/getPanaderos', (req, res) => {
+router.get('/getPanaderos', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Obtiene los panaderos disponibles' verifyToken, isAdmin, */
   /* #swagger.tags = ['Órdenes'] */
   ordenesController.darPanaderos(req, res);
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Obtiene una orden por ID'  verifyToken, isAdmin, */
   /* #swagger.tags = ['Órdenes'] */
   /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
   ordenesController.getOrdenById(req, res);
 });
 
-router.post('/actualizarEstado/:id', (req, res) => {
+router.post('/actualizarEstado/:id', verifyToken, isPanadero, (req, res) => {
   /* #swagger.summary = 'Actualiza el estado de una orden' verifyToken, isAdmin, */
   /* #swagger.tags = ['Órdenes'] */
   /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
@@ -49,7 +49,7 @@ router.post('/actualizarEstado/:id', (req, res) => {
   ordenesController.updateEstadoOrden(req, res);
 });
 
-router.post('/asignarPanadero/:id', (req, res) => {
+router.post('/asignarPanadero/:id', verifyToken, isPanadero, (req, res) => {
   /* #swagger.summary = 'Asigna un panadero a una orden' verifyToken, isAdmin, */
   /* #swagger.tags = ['Órdenes'] */
   /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
@@ -61,7 +61,7 @@ router.post('/asignarPanadero/:id', (req, res) => {
   ordenesController.asignarPanadero(req, res);
 });
 
-router.post('/', (req, res) => {
+router.post('/', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Agrega una nueva orden' verifyToken, isAdmin,  */
   /* #swagger.tags = ['Órdenes'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
@@ -73,7 +73,7 @@ router.post('/', (req, res) => {
   ordenesController.createOrden(req, res);
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', verifyToken, isPanadero, (req, res) => {
   /* #swagger.summary = 'Actualiza una orden existente' verifyToken, isAdmin,  */
   /* #swagger.tags = ['Órdenes'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
@@ -86,7 +86,7 @@ router.put('/:id', (req, res) => {
   ordenesController.updateOrden(req, res);
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Elimina una orden'  verifyToken, isAdmin,  */
   /* #swagger.tags = ['Órdenes'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
@@ -95,7 +95,7 @@ router.delete('/:id', (req, res) => {
 });
 
 //obtener ordenes por usuario
-router.get('/usuario/:id', (req, res) => {
+router.get('/usuario/:id', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Obtiene las órdenes de un usuario' verifyToken, isUser, */
   /* #swagger.tags = ['Órdenes'] */
   /* #swagger.parameters['id'] = { description: 'ID del usuario', type: 'integer', required: true } */
