@@ -13,8 +13,7 @@ import { AuthService } from '../../services/auth/auth.service';
 export class GenerarOrdenComponent implements OnInit {
   productosDisponibles: any[] = [];
   productosFiltrados: any[] = [];
-  carrito: any[] = [];
-  cantidadSeleccionada: number = 1;
+  carrito: { producto: any, cantidad: number }[] = [];
   filtroProducto: string = '';
 
   paginaActual: number = 1;
@@ -49,20 +48,24 @@ export class GenerarOrdenComponent implements OnInit {
   }
 
   agregarAlCarrito(producto: any, cantidad: number): void {
-    if (cantidad <= 0) {
-      this.alertMessage = 'La cantidad debe ser un número y mayor a 0';
+    if (!cantidad || cantidad <= 0) {
+      this.alertMessage = 'La cantidad debe ser un número mayor a 0';
       this.alertType = 'danger';
       return;
     }
+
     const productoEnCarrito = this.carrito.find(item => item.producto.id === producto.id);
     if (productoEnCarrito) {
       productoEnCarrito.cantidad += cantidad;
     } else {
       this.carrito.push({ producto, cantidad });
     }
+
+    // Restaurar la cantidad seleccionada a 1 para este producto específico
+    producto.cantidadSeleccionada = 1;
+
     this.productosDisponibles = this.productosDisponibles.filter(p => p.id !== producto.id);
     this.filtrarProductos(); // Actualizar la lista de productos filtrados y paginados
-    this.cantidadSeleccionada = 1; // Resetear la cantidad después de agregar
   }
 
   eliminarDelCarrito(item: any): void {
@@ -91,8 +94,8 @@ export class GenerarOrdenComponent implements OnInit {
     this.ordenesService.createOrden(nuevaOrden).subscribe({
       next: (response) => {
         this.limpiarCarrito();
-        this.cargarProductos(); 
-        this.offcanvasService.dismiss(); 
+        this.cargarProductos();
+        this.offcanvasService.dismiss();
         this.alertMessage = 'Orden creada correctamente';
         this.alertType = 'success';
         this.setAutoCloseAlert(3000); // Cerrar alert después de 3 segundos
