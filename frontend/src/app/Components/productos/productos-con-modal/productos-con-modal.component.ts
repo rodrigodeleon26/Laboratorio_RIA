@@ -144,4 +144,28 @@ export class ProductosConModalComponent {
     this.cantidadInsumo = 0;
   }
 
+  public delete() {
+    if(confirm('¿Estás seguro de eliminar el producto?')){
+      // this.productos = this.productos.filter(x => x != this.selectedProducto);
+      // this.selectedProducto = new Producto();
+      this.productoService.delete(this.productoSeleccionado.id).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.productoService.get().subscribe({
+            next: (data) => {
+              this.productos = data;
+              this.filtrarProductos(null);
+            },
+            error: (error) => {
+              console.error(error);
+            }
+          });
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+    }
+  }
+
 }

@@ -54,6 +54,7 @@
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InsumosModal">Insumos</button>
 
                         <div>
+                            <button *ngIf="productoSeleccionado.id !== 0" class="btn btn-danger" (click)="delete()" [disabled]="!productoSeleccionado.id">Eliminar</button>
                             <button type="button" class="btn btn-success" (click)="edit()">Guardar</button>
                         </div>
                     </div>
