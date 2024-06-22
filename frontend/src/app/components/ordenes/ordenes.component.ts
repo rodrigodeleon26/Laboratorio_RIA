@@ -31,10 +31,12 @@ export class OrdenesComponent implements OnInit {
   ordenesPendientes: any[] = [];
   ordenesEnPreparacion: any[] = [];
   ordenesListasParaEntregar: any[] = [];
+  ordenesEntregadas: any[] = [];
 
   sortDirection: 'asc' | 'desc' = 'asc';
   sortColumn = new BehaviorSubject<string>('nombre');
   ordenSeleccionada: any = [];
+  selectedEstado: string = '';
 
   constructor(private ordenesService: OrdenesService, private authService: AuthService, private modalService: NgbModal) { }
 
@@ -71,6 +73,7 @@ export class OrdenesComponent implements OnInit {
     this.ordenesPendientes = data.filter(orden => orden.estado === 'PENDIENTE');
     this.ordenesEnPreparacion = data.filter(orden => orden.estado === 'EN PREPARACION');
     this.ordenesListasParaEntregar = data.filter(orden => orden.estado === 'LISTO PARA RECOGER');
+    this.ordenesEntregadas = data.filter(orden => orden.estado === 'ENTREGADO');
 
     this.actualizarCantPaginas('PENDIENTE');
   }
@@ -79,6 +82,7 @@ export class OrdenesComponent implements OnInit {
     this.ordenesPendientes = this.ordenes.filter(orden => orden.estado === 'PENDIENTE');
     this.ordenesEnPreparacion = this.ordenes.filter(orden => orden.estado === 'EN PREPARACION');
     this.ordenesListasParaEntregar = this.ordenes.filter(orden => orden.estado === 'LISTO PARA RECOGER');
+    this.ordenesEntregadas = this.ordenes.filter(orden => orden.estado === 'ENTREGADO');
   }
 
   getPaginadasPendiente(): any[] {
@@ -99,6 +103,13 @@ export class OrdenesComponent implements OnInit {
     return this.ordenesListasParaEntregar.slice(inicio, fin);
   }
 
+  getPaginadasEntregados(): any[] {
+    const inicio = (this.paginaActual - 1) * this.OrdenesPorPagina;
+    const fin = inicio + this.OrdenesPorPagina;
+    return this.ordenesEntregadas.slice(inicio, fin);
+  
+  }
+
   cambiarPagina(pagina: number): void {
     if (pagina >= 1 && pagina <= this.totalPaginas) {
       this.paginaActual = pagina;
@@ -117,6 +128,8 @@ export class OrdenesComponent implements OnInit {
       this.totalPaginas = Math.ceil(this.ordenesEnPreparacion.length / this.OrdenesPorPagina);
     } else if (categoria === 'LISTO PARA RECOGER') {
       this.totalPaginas = Math.ceil(this.ordenesListasParaEntregar.length / this.OrdenesPorPagina);
+    } else if (categoria === 'ENTREGADO') {
+      this.totalPaginas = Math.ceil(this.ordenesEntregadas.length / this.OrdenesPorPagina);
     }
   }
 
@@ -130,6 +143,7 @@ export class OrdenesComponent implements OnInit {
     this.ordenesPendientes.sort((a, b) => this.compararFechas(a, b));
     this.ordenesEnPreparacion.sort((a, b) => this.compararFechas(a, b));
     this.ordenesListasParaEntregar.sort((a, b) => this.compararFechas(a, b));
+    this.ordenesEntregadas.sort((a, b) => this.compararFechas(a, b));
   }
 
   compararFechas(a: any, b: any): number {
@@ -148,6 +162,7 @@ export class OrdenesComponent implements OnInit {
     this.ordenesPendientes.sort((a, b) => this.compararImporte(a, b));
     this.ordenesEnPreparacion.sort((a, b) => this.compararImporte(a, b));
     this.ordenesListasParaEntregar.sort((a, b) => this.compararImporte(a, b));
+    this.ordenesEntregadas.sort((a, b) => this.compararImporte(a, b));
   }
 
   compararImporte(a: any, b: any): number {
@@ -203,6 +218,11 @@ export class OrdenesComponent implements OnInit {
         return fechaOrden >= fechaInicio && fechaOrden <= fechaFin;
       });
 
+      this.ordenesEntregadas = this.ordenesEntregadas.filter(orden => {
+        const fechaOrden = new Date(orden.fecha);
+        return fechaOrden >= fechaInicio && fechaOrden <= fechaFin;
+      });
+
     }
     if(this.usuarioSeleccionado){
       const seleccion = this.usuarioSeleccionado.split(' | ');
@@ -216,6 +236,8 @@ export class OrdenesComponent implements OnInit {
       this.ordenesEnPreparacion = this.ordenesEnPreparacion.filter(orden => orden.clienteId == idUsuario);
   
       this.ordenesListasParaEntregar = this.ordenesListasParaEntregar.filter(orden => orden.clienteId == idUsuario);
+
+      this.ordenesEntregadas = this.ordenesEntregadas.filter(orden => orden.clienteId == idUsuario);
     }
 
     this.nav.select(1);
@@ -238,6 +260,42 @@ export class OrdenesComponent implements OnInit {
       error => console.error('Error fetching order info', error)
     );
     console.log(this.ordenSeleccionada);
+  }
+
+  guardarEstado(){
+    console.log(this.selectedEstado);
+    console.log(this.ordenSeleccionada.id);
+    switch(this.selectedEstado){
+      case '1':
+        this.selectedEstado = 'PENDIENTE';
+        break;
+      case '2':
+        this.selectedEstado = 'EN PREPARACION';
+        break;
+      case '3':
+        this.selectedEstado = 'LISTO PARA RECOGER';
+        break;
+      case '4':
+        this.selectedEstado = 'ENTREGADO';
+        break;
+      default:
+        this.selectedEstado = 'PENDIENTE';
+        break;
+    }
+    console.log(this.selectedEstado);
+
+    this.ordenesService.updateEstadoOrden(this.ordenSeleccionada.id, this.selectedEstado).subscribe(
+      data => {
+        console.log(data);
+        this.ordenesService.getOrdenes().pipe(
+          tap(data => this.procesarOrdenes(data))
+        ).subscribe(
+          data => this.ordenes = data,
+          error => console.error('Error fetching orders', error)
+        );
+      },
+      error => console.error('Error updating order status', error)
+    );
   }
 
 }

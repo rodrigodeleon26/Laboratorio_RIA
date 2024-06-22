@@ -107,8 +107,8 @@ const productosInsumos = [
 
 const ordenes = [
     { id: 1, fecha: new Date('2024-06-18'), estado: 'PENDIENTE', importe: 135, panaderiaId: null, clienteId: 6 },
-    { id: 2, fecha: new Date('2024-06-18'), estado: 'EN PREPARACION', importe: 2000, panaderiaId: null, clienteId: 4 },
-    { id: 3, fecha: new Date('2021-10-03'), estado: 'LISTO PARA RECOGER', importe: 920, panaderiaId: null, clienteId: 5 },
+    { id: 2, fecha: new Date('2024-06-18'), estado: 'EN PREPARACION', importe: 2000, panaderiaId: 2, clienteId: 4 },
+    { id: 3, fecha: new Date('2021-10-03'), estado: 'ENTREGADO', importe: 920, panaderiaId: 2, clienteId: 5 },
     { id: 4, fecha: new Date('2021-11-23'), estado: 'PENDIENTE', importe: 160, panaderiaId: null, clienteId: 6 },
     { id: 5, fecha: new Date('2021-07-11'), estado: 'PENDIENTE', importe: 360, panaderiaId: null, clienteId: 4 },
     { id: 6, fecha: new Date('2021-07-03'), estado: 'PENDIENTE', importe: 180, panaderiaId: null, clienteId: 5 },
@@ -119,17 +119,17 @@ const ordenes = [
     { id: 10, fecha: new Date('2024-06-22'), estado: 'PENDIENTE', importe: 140, panaderiaId: null, clienteId: 6 },
     { id: 11, fecha: new Date('2024-06-23'), estado: 'PENDIENTE', importe: 220, panaderiaId: null, clienteId: 4 },
 
-    { id: 12, fecha: new Date('2024-06-19'), estado: 'EN PREPARACION', importe: 2400, panaderiaId: null, clienteId: 5 },
-    { id: 13, fecha: new Date('2024-06-20'), estado: 'EN PREPARACION', importe: 1600, panaderiaId: null, clienteId: 6 },
-    { id: 14, fecha: new Date('2024-06-21'), estado: 'EN PREPARACION', importe: 1800, panaderiaId: null, clienteId: 4 },
-    { id: 15, fecha: new Date('2024-06-22'), estado: 'EN PREPARACION', importe: 2000, panaderiaId: null, clienteId: 5 },
-    { id: 16, fecha: new Date('2024-06-23'), estado: 'EN PREPARACION', importe: 2200, panaderiaId: null, clienteId: 6 },
+    { id: 12, fecha: new Date('2024-06-19'), estado: 'ENTREGADO', importe: 2400, panaderiaId: 3, clienteId: 5 },
+    { id: 13, fecha: new Date('2024-06-20'), estado: 'EN PREPARACION', importe: 1600, panaderiaId: 3, clienteId: 6 },
+    { id: 14, fecha: new Date('2024-06-21'), estado: 'EN PREPARACION', importe: 1800, panaderiaId: 2, clienteId: 4 },
+    { id: 15, fecha: new Date('2024-06-22'), estado: 'EN PREPARACION', importe: 2000, panaderiaId: 2, clienteId: 5 },
+    { id: 16, fecha: new Date('2024-06-23'), estado: 'EN PREPARACION', importe: 2200, panaderiaId: 3, clienteId: 6 },
 
-    { id: 17, fecha: new Date('2024-06-19'), estado: 'LISTO PARA RECOGER', importe: 950, panaderiaId: null, clienteId: 4 },
-    { id: 18, fecha: new Date('2024-06-20'), estado: 'LISTO PARA RECOGER', importe: 1100, panaderiaId: null, clienteId: 5 },
-    { id: 19, fecha: new Date('2024-06-21'), estado: 'LISTO PARA RECOGER', importe: 1250, panaderiaId: null, clienteId: 6 },
-    { id: 20, fecha: new Date('2024-06-22'), estado: 'LISTO PARA RECOGER', importe: 1400, panaderiaId: null, clienteId: 4 },
-    { id: 21, fecha: new Date('2024-06-23'), estado: 'LISTO PARA RECOGER', importe: 1550, panaderiaId: null, clienteId: 5 },
+    { id: 17, fecha: new Date('2024-06-19'), estado: 'LISTO PARA RECOGER', importe: 950, panaderiaId: 3, clienteId: 4 },
+    { id: 18, fecha: new Date('2024-06-20'), estado: 'LISTO PARA RECOGER', importe: 1100, panaderiaId: 2, clienteId: 5 },
+    { id: 19, fecha: new Date('2024-06-21'), estado: 'LISTO PARA RECOGER', importe: 1250, panaderiaId: 2, clienteId: 6 },
+    { id: 20, fecha: new Date('2024-06-22'), estado: 'LISTO PARA RECOGER', importe: 1400, panaderiaId: 3, clienteId: 4 },
+    { id: 21, fecha: new Date('2024-06-23'), estado: 'ENTREGADO', importe: 1550, panaderiaId: 3, clienteId: 5 },
 ];
 
 const insumosPanaderia = [

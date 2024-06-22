@@ -32,6 +32,18 @@ router.get('/:id', (req, res) => {
   ordenesController.getOrdenById(req, res);
 });
 
+router.post('/actualizarEstado/:id', (req, res) => {
+  /* #swagger.summary = 'Actualiza el estado de una orden' verifyToken, isAdmin, */
+  /* #swagger.tags = ['Órdenes'] */
+  /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
+  /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Update order state.',
+        schema: { $ref: '#/definitions/Orden' }
+    } */
+  ordenesController.updateEstadoOrden(req, res);
+});
+
 router.post('/', (req, res) => {
   /* #swagger.summary = 'Agrega una nueva orden' verifyToken, isAdmin,  */
   /* #swagger.tags = ['Órdenes'] */

@@ -189,3 +189,16 @@ exports.getInfoOrden = (req, res) => {
     res.status(404).json({ message: 'Orden no encontrada' });
   }
 };
+
+
+exports.updateEstadoOrden = (req, res) => {
+  const { id } = req.params;
+  const { estado } = req.body;
+  const ordenIndex = ordenes.findIndex(o => o.id == id);
+  if (ordenIndex !== -1) {
+    ordenes[ordenIndex].estado = estado;
+    res.json(ordenes[ordenIndex]);
+  } else {
+    res.status(404).json({ message: 'Orden no encontrada' });
+  }
+}

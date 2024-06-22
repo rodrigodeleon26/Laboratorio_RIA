@@ -34,5 +34,9 @@ export class OrdenesService {
   getInfoOrden(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/getInfoOrden/${id}`);
   }
+
+  updateEstadoOrden(id: number, estado: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/actualizarEstado/${id}`, {estado});
+  }
 }
 

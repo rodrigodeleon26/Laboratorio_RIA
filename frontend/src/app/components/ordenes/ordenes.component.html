@@ -48,12 +48,14 @@
                             </div>
                         </div>
 
-                        <label for="clienteSelect" class="form-label">Cliente</label>
-                        <input class="form-control" list="clientes" id="clienteSelect" placeholder="Escribe para buscar..." [(ngModel)]="usuarioSeleccionado" > <!--  (change)="seleccionarUsuario()" -->
-                        <datalist id="clientes">
-                            <option *ngFor="let usuario of clientes" [value]="usuario.id + ' | ' + usuario.nombre">{{usuario.nombre}}</option>
-                            <!-- Agrega más opciones según sea necesario -->
-                        </datalist>
+                        <div *ngIf="this.role !== 'USER' ">
+                            <label for="clienteSelect" class="form-label">Cliente</label>
+                            <input class="form-control" list="clientes" id="clienteSelect" placeholder="Escribe para buscar..." [(ngModel)]="usuarioSeleccionado" > <!--  (change)="seleccionarUsuario()" -->
+                            <datalist id="clientes">
+                                <option *ngFor="let usuario of clientes" [value]="usuario.id + ' | ' + usuario.nombre">{{usuario.nombre}}</option>
+                                <!-- Agrega más opciones según sea necesario -->
+                            </datalist>
+                        </div>
 
                     </div>
                 </div>
@@ -174,6 +176,41 @@
                 </table>
             </ng-template>
         </li>
+        <li [ngbNavItem]="4">
+            <button ngbNavLink (click)="actualizarCantPaginas('ENTREGADO')">Entregado</button>
+            <ng-template ngbNavContent>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="cursor: pointer;" (click)="cambiarOrdenFecha()">Fecha
+                                <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'fecha' && sortDirection === 'asc',
+                                         'bi-caret-down-fill': sortColumn.value === 'fecha' && sortDirection === 'desc',
+                                       }"></i>
+                            </th>
+                            <!-- <th>Estado</th> -->
+                            <th style="cursor: pointer;" (click)="cambiarOrdenImporte()">Importe
+                                <i class="bi" [ngClass]="{'bi-caret-up-fill': sortColumn.value === 'importe' && sortDirection === 'asc',
+                                         'bi-caret-down-fill': sortColumn.value === 'importe' && sortDirection === 'desc',
+                                       }"></i>
+                            </th>
+                            <th>Cliente</th>
+                            <th>Ver Mas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let orden of getPaginadasEntregados()">
+                            <td>{{ orden.fecha | date }}</td>
+                            <!-- <td>{{ orden.estado }}</td> -->
+                            <td>{{ orden.importe }}</td>
+                            <td>{{ orden.clienteId }}</td>
+                            <td>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-template>
+        </li>
 
     </ul>
 
@@ -207,7 +244,7 @@
                             <div class="col 12 col-md-4">
                                 <p>Fecha: {{ ordenSeleccionada.fecha | date }}</p>
                                 <p>Estado: {{ ordenSeleccionada.estado }}</p>
-                                <p>Panadero: {{ ordenSeleccionada.panaderiaId }}</p>
+                                <p *ngIf="this.role !== 'USER' ">Panadero: {{ ordenSeleccionada.panaderiaId }}</p>
                                 <p>Importe: {{ ordenSeleccionada.importe }}</p>
                                 <p>Cliente: {{ ordenSeleccionada.emailCliente }}</p>
                             </div>
@@ -232,12 +269,13 @@
                 </div>
                 <div class="modal-footer">
                     <div class="w-100 d-flex justify-content-between">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalInsumos">Insumos</button>
+                        <button *ngIf="this.role !== 'USER' " type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalInsumos">Insumos</button>
 
                         <div>
                             <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button> -->
-                            <button type="button" class="btn btn-success">Aceptar</button>
-                            <button type="button" class="btn btn-primary">Asignar</button>
+                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == this.userId " type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalEstado">Cambiar Estado</button>
+                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == null " type="button" class="btn btn-success">Aceptar</button>
+                            <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary">Asignar</button>
                         </div>
                     </div>
                 </div>
@@ -286,8 +324,42 @@
                     <div class="w-100 d-flex justify-content-between">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ordenModal">Atras/Orden</button>
                         <div>
-                            <button type="button" class="btn btn-success">Aceptar</button>
-                            <button type="button" class="btn btn-primary">Asignar</button>
+                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == null " type="button" class="btn btn-success">Aceptar</button>
+                            <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary">Asignar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para los Cambiar el estado de la orden -->
+    <div class="modal fade" id="ModalEstado" tabindex="-1" aria-labelledby="ModalEstadoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalEstadoLabel">Detalles de la Orden</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Select con las opciones de Estado -->
+
+                    <div class="mb-3">
+                        <label for="estadoSelect" class="form-label">Estado</label>
+                        <select class="form-select form-select-sm" [(ngModel)]="selectedEstado" aria-label="estadoSelect">
+                            <option value="1">Pendiente</option>
+                            <option value="2">En preparación</option>
+                            <option value="3">Listo para entregar</option>
+                            <option value="4">Entregado</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100 d-flex justify-content-between">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ordenModal">Atras/Orden</button>
+                        <div>
+                            <button type="button" class="btn btn-success" (click)="guardarEstado()">Guardar</button>
                         </div>
                     </div>
                 </div>
