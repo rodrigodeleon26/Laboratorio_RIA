@@ -1,19 +1,25 @@
 <div class="container-principal">
     <div class="container mt-4">
+        <h1 class="letraCoqueta mb-4">Elija sus productos...</h1>
+        
         <div *ngIf="alertMessage" class="alert alert-{{alertType}} alert-dismissible fade show" role="alert">
             <i class="bi bi-{{alertType === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill'}}"></i>
             {{ alertMessage }}
             <button type="button" class="btn-close" aria-label="Close" (click)="alertMessage=''"></button>
         </div>
 
-        <h1 class="letraCoqueta mb-2">Elija sus productos...</h1>
-
         <div class="row mb-3">
+            <div class="col-12 col-md-5">
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="floatingFechaEntrega" [(ngModel)]="fechaEntrega" placeholder="Fecha de entrega" [min]="fechaEntrega"/>
+                    <label for="floatingFechaEntrega">Fecha de entrega</label>
+                </div>
+            </div>
             <div class="col-9 col-md-6">
                 <input type="text" class="form-control" placeholder="Buscar producto..." [(ngModel)]="filtroProducto"
                     (input)="filtrarProductos()" />
             </div>
-            <div class="col-3 col-md-6 text-end">
+            <div class="col-3 col-md-1 text-end">
                 <button class="btn"
                     [ngClass]="{ 'btn-outline-secondary': carrito.length === 0, 'btn-success': carrito.length > 0 }"
                     (click)="openEnd(content)">
@@ -22,6 +28,8 @@
             </div>
         </div>
 
+        <!-- Input para seleccionar la fecha de entrega -->
+        
 
         <ng-template #content let-offcanvas>
             <div class="offcanvas-header">
@@ -61,8 +69,10 @@
         </ng-template>
 
         <div class="row">
-            <div *ngIf="productosFiltrados.length === 0" class="alert alert-warning col-12">
-                No hay productos disponibles
+            <div class="col-12">
+                <div *ngIf="productosFiltrados.length === 0" class="alert alert-warning">
+                    No hay productos disponibles
+                </div>
             </div>
             <div class="col-12 col-md-6 col-lg-4 mb-3" *ngFor="let producto of getProductosPaginados()">
                 <div class="card h-100">
