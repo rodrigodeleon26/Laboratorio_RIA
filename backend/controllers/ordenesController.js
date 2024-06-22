@@ -215,3 +215,8 @@ exports.asignarPanadero = (req, res) => {
     res.status(404).json({ message: 'Orden no encontrada' });
   }
 }
+
+exports.darPanaderos = (req, res) => {
+  const panaderos = usuarios.filter(u => u.role == 'PANADERO');
+  res.json(panaderos);
+};

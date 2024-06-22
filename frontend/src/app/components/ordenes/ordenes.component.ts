@@ -37,6 +37,8 @@ export class OrdenesComponent implements OnInit {
   sortColumn = new BehaviorSubject<string>('nombre');
   ordenSeleccionada: any = [];
   selectedEstado: string = '';
+  selectedPanadero: number = 0;
+  panaderos: any[] = [];
 
   constructor(private ordenesService: OrdenesService, private authService: AuthService, private modalService: NgbModal) { }
 
@@ -65,6 +67,11 @@ export class OrdenesComponent implements OnInit {
       this.ordenesService.getUsuarios().subscribe(
         data => this.clientes = data,
         error => console.error('Error fetching users', error)
+      );
+
+      this.ordenesService.getPanaderos().subscribe(
+        data => this.panaderos = data,
+        error => console.error('Error fetching panaderos', error)
       );
     });
   }
@@ -300,10 +307,26 @@ export class OrdenesComponent implements OnInit {
 
   panaderoAcepta(){
     //el panadero acepta una orden para si
-    console.log("panadero " + this.userId + " acepta orden " + this.ordenSeleccionada.id);
     this.ordenesService.asignarPanadero(this.ordenSeleccionada.id, this.userId).subscribe(
       data => {
-        console.log(data);
+        this.ordenSeleccionada = data;
+        this.ordenesService.getOrdenes().pipe(
+          tap(data => this.procesarOrdenes(data))
+        ).subscribe(
+          data => this.ordenes = data,
+          error => console.error('Error fetching orders', error)
+        );
+      },
+      error => console.error('Error updating order status', error)
+    );
+  }
+
+  asignarPanadero() {
+    //el administrador asigna un panadero a una orden
+    console.log(this.selectedPanadero);
+    this.ordenesService.asignarPanadero(this.ordenSeleccionada.id, this.selectedPanadero).subscribe(
+      data => {
+        this.ordenSeleccionada = data;
         this.ordenesService.getOrdenes().pipe(
           tap(data => this.procesarOrdenes(data))
         ).subscribe(

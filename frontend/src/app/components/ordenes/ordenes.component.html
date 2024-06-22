@@ -275,7 +275,7 @@
                             <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button> -->
                             <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == this.userId " type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalEstado">Cambiar Estado</button>
                             <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == null " type="button" class="btn btn-success" (click)="panaderoAcepta()">Aceptar</button>
-                            <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary">Asignar</button>
+                            <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalAsignar">Asignar</button>
                         </div>
                     </div>
                 </div>
@@ -325,7 +325,7 @@
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ordenModal">Atras/Orden</button>
                         <div>
                             <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == null " type="button" class="btn btn-success" (click)="panaderoAcepta()">Aceptar</button>
-                            <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary">Asignar</button>
+                            <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalAsignar">Asignar</button>
                         </div>
                     </div>
                 </div>
@@ -338,7 +338,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalEstadoLabel">Detalles de la Orden</h5>
+                    <h5 class="modal-title" id="ModalEstadoLabel">Cambiar estado</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -360,6 +360,37 @@
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ordenModal">Atras/Orden</button>
                         <div>
                             <button type="button" class="btn btn-success" (click)="guardarEstado()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para los Asignar un panadero -->
+    <div class="modal fade" id="ModalAsignar" tabindex="-1" aria-labelledby="ModalAsignarLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalAsignarLabel">Asignar Panadero</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Select con las opciones de Estado -->
+
+                    <div class="mb-3">
+                        <label for="estadoSelect" class="form-label">Panaderos</label>
+                        <select class="form-select form-select-sm" [(ngModel)]="selectedPanadero" aria-label="panaderoSelect">
+                            <option *ngFor="let panadero of panaderos" [value]="panadero.id">{{panadero.email}}</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100 d-flex justify-content-between">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ordenModal">Atras/Orden</button>
+                        <div>
+                            <button type="button" class="btn btn-success" (click)="asignarPanadero()">Guardar</button>
                         </div>
                     </div>
                 </div>

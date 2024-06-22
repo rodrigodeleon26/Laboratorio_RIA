@@ -43,5 +43,9 @@ export class OrdenesService {
     return this.http.post<any>(`${this.apiUrl}/asignarPanadero/${id}`, {panadero});
   }
 
+  getPanaderos(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/getPanaderos`);
+  }
+
 }
 

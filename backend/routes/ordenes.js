@@ -24,6 +24,11 @@ router.get('/getUsuarios', (req, res) => {
   ordenesController.getUsuariosOrdenes(req, res);
 });
 
+router.get('/getPanaderos', (req, res) => {
+  /* #swagger.summary = 'Obtiene los panaderos disponibles' verifyToken, isAdmin, */
+  /* #swagger.tags = ['Órdenes'] */
+  ordenesController.darPanaderos(req, res);
+});
 
 router.get('/:id', (req, res) => {
   /* #swagger.summary = 'Obtiene una orden por ID'  verifyToken, isAdmin, */
