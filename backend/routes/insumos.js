@@ -3,14 +3,14 @@ const router = express.Router();
 const insumosController = require('../controllers/insumosController');
 const { verifyToken, isAdmin, isPanadero } = require('../middleware/auth');
 
-router.get('/', (req, res) => {
+router.get('/', verifyToken, isPanadero, (req, res) => {
   //verifyToken, isAdmin, 
   /* #swagger.summary = 'Obtiene la lista de insumos' */
   /* #swagger.tags = ['Insumos'] */
   insumosController.getInsumos(req, res);
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', verifyToken, isPanadero, (req, res) => {
   //verifyToken, isAdmin, 
   /* #swagger.summary = 'Obtiene un insumo por ID' */
   /* #swagger.tags = ['Insumos'] */
@@ -18,7 +18,7 @@ router.get('/:id', (req, res) => {
   insumosController.getInsumoById(req, res);
 });
 
-router.post('/', (req, res) => {
+router.post('/', verifyToken, isAdmin, (req, res) => {
   //verifyToken, isAdmin, 
   /* #swagger.summary = 'Agrega un nuevo insumo' */
   /* #swagger.tags = ['Insumos'] */
@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
   insumosController.createInsumo(req, res);
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', verifyToken, isAdmin, (req, res) => {
   //verifyToken, isAdmin, 
   /* #swagger.summary = 'Actualiza un insumo existente' */
   /* #swagger.tags = ['Insumos'] */
@@ -45,7 +45,7 @@ router.put('/:id', (req, res) => {
   insumosController.updateInsumo(req, res);
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', verifyToken, isAdmin, (req, res) => {
   //verifyToken, isAdmin, 
   /* #swagger.summary = 'Elimina un insumo' */
   /* #swagger.tags = ['Insumos'] */
