@@ -34,15 +34,6 @@ export class GenerarOrdenComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarProductos();
-    this.setFechaMinima();
-  }
-
-  private setFechaMinima(): void {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0!
-    const dd = String(today.getDate()).padStart(2, '0');
-    this.fechaEntrega = `${yyyy}-${mm}-${dd}`;
   }
 
   private cargarProductos(): void {
