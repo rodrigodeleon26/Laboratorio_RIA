@@ -10,6 +10,8 @@ import { OrdenesComponent } from './Components/ordenes/ordenes.component';
 import { GenerarOrdenComponent } from './Components/generar-orden/generar-orden.component';
 import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.component';
 import { ProductosConModalComponent } from './Components/productos/productos-con-modal/productos-con-modal.component';
+import { ForgotPasswordComponent } from './Components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 const routes: Routes = [
 
@@ -61,6 +63,16 @@ const routes: Routes = [
   {
     path: 'perfil',
     component: EditarPerfilComponent
+  },
+
+  { 
+    path: 'forgotPassword',
+    component: ForgotPasswordComponent 
+  },
+
+  { 
+    path: 'reset-password', 
+    component: ResetPasswordComponent 
   },
   
   { path: '**', redirectTo: '', pathMatch: 'full' },

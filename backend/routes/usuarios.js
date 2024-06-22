@@ -50,6 +50,18 @@ router.post('/forgot-password', (req, res) => {
   usuariosController.forgotPassword(req, res);
 });
 
+router.post('/reset-password', (req, res) => {
+  /* #swagger.summary = 'Restablece la contraseña de un usuario' */
+  /* #swagger.tags = ['Usuarios'] */
+  /* #swagger.security = [{ "BearerAuth": [] }] */
+  /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Restablecimiento de contraseña de usuario.',
+        schema: { $ref: '#/definitions/ResetPassword' }
+    } */
+  usuariosController.resetPassword(req, res);
+});
+
 router.post('/enable-user', (req, res) => {
   /* #swagger.summary = 'Habilita un usuario' */
   /* #swagger.tags = ['Usuarios'] */

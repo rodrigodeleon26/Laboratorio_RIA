@@ -82,4 +82,12 @@ export class AuthService {
   cambiarContra(oldPassword: string, newPassword: string, id: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/usuarios/change-password`, { oldPassword, newPassword, id });
   }
+
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/usuarios/forgot-password`, { email });
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/usuarios/reset-password`, { token, newPassword });
+  }
 }

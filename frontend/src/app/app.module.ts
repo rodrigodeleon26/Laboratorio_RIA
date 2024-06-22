@@ -32,6 +32,8 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 //import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { ProductosConModalComponent } from './Components/productos/productos-con-modal/productos-con-modal.component';
+import { ForgotPasswordComponent } from './Components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 
 @NgModule({
@@ -51,6 +53,8 @@ import { ProductosConModalComponent } from './Components/productos/productos-con
     EditarPerfilComponent,
     datePickerComponent,
     ProductosConModalComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

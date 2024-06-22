@@ -1,10 +1,26 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {usuarios} = require('../mockData')
+const nodemailer = require('nodemailer');
 
 const generateToken = (user) => {
   return jwt.sign({ id: user.id, role: user.role }, 'your_secret_key', { expiresIn: '1h' });
 };
+
+const generateTokenReset = (user) => {
+  return jwt.sign({ id: user.id, role: user.role }, 'your_secret_key', { expiresIn: '10m' });
+};
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // true para el puerto 465, false para el otro
+  auth: {
+    user: 'bakery.houseutec@gmail.com',
+    pass: 'mfsl ayna jfig avpa'
+  }
+});
+
 
 // Función para crear usuarios por defecto
 const createDefaultUsers = async () => {
@@ -15,6 +31,7 @@ const createDefaultUsers = async () => {
     { email: 'user@example.com', password: 'user123', role: 'USER', telefono: '456123789' },
     { email: 'user2@example.com' , password: 'user123', role: 'USER', telefono: '789456123'},
     { email: 'user3@example.com' , password: 'user123', role: 'USER', telefono: '987456321'},
+    { email: 'rd6209965@gmail.com', password: '123', role: 'USER', telefono: '123456789'}
   ];
 
   for (const user of defaultUsers) {
@@ -90,11 +107,49 @@ const changePassword = async (req, res) => {
 const forgotPassword = (req, res) => {
   const { email } = req.body;
   const user = usuarios.find(u => u.email === email);
-  if (user) {
-    // Aquí podrías enviar un correo electrónico con un enlace para restablecer la contraseña
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  const token = generateTokenReset(user);
+
+  const mailOptions = {
+    from: 'bakery.houseutec@gmail.com',
+    to: email,
+    subject: 'Recuperación de contraseña',
+    text: `Para restablecer tu contraseña, haz clic en el siguiente enlace: http://localhost:4200/reset-password?token=${token}`,
+    html: `<p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p><p><a href="http://localhost:4200/reset-password?token=${token}">Restablecer contraseña</a></p>`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+      return res.status(500).json({ message: 'Failed to send reset email' });
+    }
+    console.log('Correo electrónico enviado:', info.response);
     res.json({ message: 'Password reset link sent' });
-  } else {
-    res.status(404).json({ message: 'User not found' });
+  });
+};
+
+const resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, 'your_secret_key'); 
+    const user = usuarios.find(u => u.id === decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    res.json({ message: 'Password reset successfully' });
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).json({ message: 'Failed to reset password' });
   }
 };
 
@@ -140,4 +195,5 @@ module.exports = {
   enableUser,
   disableUser,
   getInfoUser,
+  resetPassword
 };
