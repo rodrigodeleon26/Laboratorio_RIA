@@ -15,6 +15,7 @@ export class GenerarOrdenComponent implements OnInit {
   productosFiltrados: any[] = [];
   carrito: { producto: any, cantidad: number }[] = [];
   filtroProducto: string = '';
+  fechaEntrega: string = ''; // Campo para almacenar la fecha de entrega
 
   paginaActual: number = 1;
   productosPorPagina: number = 6;
@@ -33,6 +34,15 @@ export class GenerarOrdenComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarProductos();
+    this.setFechaMinima();
+  }
+
+  private setFechaMinima(): void {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0!
+    const dd = String(today.getDate()).padStart(2, '0');
+    this.fechaEntrega = `${yyyy}-${mm}-${dd}`;
   }
 
   private cargarProductos(): void {
@@ -51,6 +61,7 @@ export class GenerarOrdenComponent implements OnInit {
     if (!cantidad || cantidad <= 0) {
       this.alertMessage = 'La cantidad debe ser un número mayor a 0';
       this.alertType = 'danger';
+      this.setAutoCloseAlert(3000); // Cerrar alert después de 3 segundos
       return;
     }
 
@@ -87,8 +98,17 @@ export class GenerarOrdenComponent implements OnInit {
       this.alertMessage = 'No hay productos en el carrito';
       this.alertType = 'danger';
       this.offcanvasService.dismiss();
+      this.setAutoCloseAlert(3000); 
       return;
     }
+    if (!this.fechaEntrega) {
+      this.alertMessage = 'Debe seleccionar una fecha de entrega';
+      this.alertType = 'danger';
+      this.offcanvasService.dismiss();
+      this.setAutoCloseAlert(3000);
+      return;
+    }
+
     const nuevaOrden = this.construirNuevaOrden();
     console.log('Nueva orden:', nuevaOrden);
     this.ordenesService.createOrden(nuevaOrden).subscribe({
@@ -112,6 +132,7 @@ export class GenerarOrdenComponent implements OnInit {
   private construirNuevaOrden(): any {
     const orden = {
       fecha: new Date(),
+      fechaEntrega: this.fechaEntrega, // Agregar la fecha de entrega a la orden
       estado: 'PENDIENTE',
       importe: this.calcularTotalCarrito(),
       panaderiaId: null,
@@ -135,6 +156,7 @@ export class GenerarOrdenComponent implements OnInit {
 
   limpiarCarrito(): void {
     this.carrito = []; // Método para limpiar el carrito después de crear la orden
+    this.fechaEntrega = ''; // Limpiar la fecha de entrega
   }
 
   filtrarProductos(): void {
