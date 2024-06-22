@@ -67,7 +67,7 @@
 
         <!-- Opciones para cliente -->
         <li *ngIf="role === 'USER'" class="nav-item">
-          <a class="nav-link" href="#">Productos</a>
+          <a class="nav-link" [routerLink]="['/home']">Productos</a>
         </li>
         <li *ngIf="role === 'USER'" class="nav-item">
           <a class="nav-link" [routerLink]="['/ordenar']">Ordenar!</a>
@@ -134,7 +134,7 @@
 
         <!-- Opciones para cliente -->
         <li *ngIf="role === 'USER'" class="nav-item">
-          <a class="nav-link" href="#">Productos</a>
+          <a class="nav-link" [routerLink]="['/home']">Productos</a>
         </li>
         <li *ngIf="role === 'USER'" class="nav-item">
           <a class="nav-link" [routerLink]="['/ordenar']">Ordenar!</a>
@@ -165,8 +165,9 @@
 </nav>
 
 
-
-<router-outlet></router-outlet>
+<div class="Contenido">
+  <router-outlet></router-outlet>
+</div>
 
 
 <footer id="footer"> <!-- class="mt-5" -->

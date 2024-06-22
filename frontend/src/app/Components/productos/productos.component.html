@@ -98,6 +98,48 @@
             </div>
         </div>
 
+
+        <!-- MODAL MODIFICAR PARA CELU -->
+
+        <div class="modal fade" id="ModificarModal" tabindex="-1" aria-labelledby="ModificarModalLabel" aria-hidden="true" (click)="$event.stopPropagation()">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModificarModalLabel">ESTE ES EL PRIMER MODAL</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="selectInsumos">Insumo</label>
+                                <select class="form-select" aria-label="Default select example" name="insumos" id="selectInsumos" [(ngModel)]="insumoSeleccionado">
+                                    <option [value]="0" selected>Seleccionar Insumo</option>
+                                    <option *ngFor="let insumo of insumos" [value]="insumo.id">{{insumo.nombre}}</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cantidad">Cantidad</label>
+                                <input type="number" min="0.1" step="0.1" class="form-control" id="cantidad" [(ngModel)]="cantidadInsumo" name="cantidadInsumo" placeholder="Cantidad necesaria">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="d-flex justify-content-around">                        
+                            <button *ngIf="selectedProducto.id !== 0" (click)="edit()" class="btn btn-primary" [disabled]="!selectedProducto.id">
+                                Guardar
+                            </button>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInsumoModal">
+                                Agregar Insumo
+                            </button>
+                            <button *ngIf="selectedProducto.id !== 0" class="btn btn-danger" (click)="delete()" [disabled]="!selectedProducto.id">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>

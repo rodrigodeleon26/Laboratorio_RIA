@@ -31,6 +31,7 @@ import { datePickerComponent } from './Components/date-picker/date-picker.compon
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 //import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+import { ProductosConModalComponent } from './Components/productos/productos-con-modal/productos-con-modal.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { JsonPipe } from '@angular/common';
     InsumosComponent,
     EditarPerfilComponent,
     datePickerComponent,
+    ProductosConModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,10 +1,15 @@
-/*#page-container {
-    position: relative;
+#page-container {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.Contenido{
+    flex: 1;
+    background-color: rgba(245, 159, 119, 1);
+    background: linear-gradient(0deg,rgba(245, 159, 119, 1) 75%, rgb(255, 255, 255) 90%);
 }
 
 #footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}*/
+    margin-top: auto;
+}
