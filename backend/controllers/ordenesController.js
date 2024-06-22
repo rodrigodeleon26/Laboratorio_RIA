@@ -173,13 +173,16 @@ exports.getInfoOrden = (req, res) => {
     });
 
     // Calcular costo total de cada insumo
+    let costoTotalInsumos = 0;
     for (const insumoId in insumosTotales) {
       const insumoTotal = insumosTotales[insumoId];
       const unidadesNecesarias = Math.ceil(insumoTotal.cantidad); // Redondear hacia arriba
       insumoTotal.totalCosto = unidadesNecesarias * insumoTotal.precioUnitario;
+      costoTotalInsumos += insumoTotal.totalCosto; // Sumar el costo total de cada insumo
     }
 
     orden.insumosTotales = Object.values(insumosTotales);
+    orden.costoTotalInsumos = costoTotalInsumos; // Agregar el costo total de los insumos a la orden
 
     res.json(orden);
   } else {

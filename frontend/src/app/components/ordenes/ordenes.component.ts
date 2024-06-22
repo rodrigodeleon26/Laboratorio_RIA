@@ -110,6 +110,7 @@ export class OrdenesComponent implements OnInit {
   }
 
   actualizarCantPaginas(categoria: string): void {
+    this.cambiarPagina(1);
     if (categoria === 'PENDIENTE') {
       this.totalPaginas = Math.ceil(this.ordenesPendientes.length / this.OrdenesPorPagina);
     } else if (categoria === 'EN PREPARACION') {
@@ -238,4 +239,5 @@ export class OrdenesComponent implements OnInit {
     );
     console.log(this.ordenSeleccionada);
   }
+
 }

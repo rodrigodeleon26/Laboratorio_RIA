@@ -19,7 +19,7 @@ const insumos = [
     { id: 1, nombre: 'Harina de trigo (1k)', descripcion: 'Harina refinada de trigo 000', precio: 30.0 },
     { id: 2, nombre: 'Levadura (10g)', descripcion: 'Levadura seca instantánea', precio: 15.0 },
     { id: 3, nombre: 'Azúcar (1k)', descripcion: 'Azúcar blanca refinada', precio: 25.0 },
-    { id: 4, nombre: 'Sal (1k)', descripcion: 'Sal fina', precio: 5.0 },
+    { id: 4, nombre: 'Sal (1k)', descripcion: 'Sal fina', precio: 50.0 },
     { id: 5, nombre: 'Mantequilla (1k)', descripcion: 'Mantequilla sin sal', precio: 50.0 },
     { id: 6, nombre: 'Huevos (12u)', descripcion: 'Huevos frescos', precio: 40.0 },
     { id: 7, nombre: 'Leche (1L)', descripcion: 'Leche entera', precio: 20.0 },
