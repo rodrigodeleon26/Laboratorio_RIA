@@ -202,3 +202,16 @@ exports.updateEstadoOrden = (req, res) => {
     res.status(404).json({ message: 'Orden no encontrada' });
   }
 }
+
+exports.asignarPanadero = (req, res) => {
+  const { id } = req.params;
+  const { panadero } = req.body;
+  const ordenIndex = ordenes.findIndex(o => o.id == id);
+  if (ordenIndex !== -1) {
+    ordenes[ordenIndex].panaderiaId = panadero;
+    ordenes[ordenIndex].estado = 'EN PREPARACION';
+    res.json(ordenes[ordenIndex]);
+  } else {
+    res.status(404).json({ message: 'Orden no encontrada' });
+  }
+}

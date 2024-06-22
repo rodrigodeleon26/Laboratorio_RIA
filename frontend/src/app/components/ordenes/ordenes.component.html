@@ -274,7 +274,7 @@
                         <div>
                             <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button> -->
                             <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == this.userId " type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalEstado">Cambiar Estado</button>
-                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == null " type="button" class="btn btn-success">Aceptar</button>
+                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == null " type="button" class="btn btn-success" (click)="panaderoAcepta()">Aceptar</button>
                             <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary">Asignar</button>
                         </div>
                     </div>
@@ -324,7 +324,7 @@
                     <div class="w-100 d-flex justify-content-between">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ordenModal">Atras/Orden</button>
                         <div>
-                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == null " type="button" class="btn btn-success">Aceptar</button>
+                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderiaId == null " type="button" class="btn btn-success" (click)="panaderoAcepta()">Aceptar</button>
                             <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary">Asignar</button>
                         </div>
                     </div>

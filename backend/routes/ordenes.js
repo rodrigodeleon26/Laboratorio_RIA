@@ -44,6 +44,18 @@ router.post('/actualizarEstado/:id', (req, res) => {
   ordenesController.updateEstadoOrden(req, res);
 });
 
+router.post('/asignarPanadero/:id', (req, res) => {
+  /* #swagger.summary = 'Asigna un panadero a una orden' verifyToken, isAdmin, */
+  /* #swagger.tags = ['Órdenes'] */
+  /* #swagger.parameters['id'] = { description: 'ID de la orden', type: 'integer', required: true } */
+  /* #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Assign baker to order.',
+        schema: { $ref: '#/definitions/Orden' }
+    } */
+  ordenesController.asignarPanadero(req, res);
+});
+
 router.post('/', (req, res) => {
   /* #swagger.summary = 'Agrega una nueva orden' verifyToken, isAdmin,  */
   /* #swagger.tags = ['Órdenes'] */

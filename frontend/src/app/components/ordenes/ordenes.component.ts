@@ -298,4 +298,21 @@ export class OrdenesComponent implements OnInit {
     );
   }
 
+  panaderoAcepta(){
+    //el panadero acepta una orden para si
+    console.log("panadero " + this.userId + " acepta orden " + this.ordenSeleccionada.id);
+    this.ordenesService.asignarPanadero(this.ordenSeleccionada.id, this.userId).subscribe(
+      data => {
+        console.log(data);
+        this.ordenesService.getOrdenes().pipe(
+          tap(data => this.procesarOrdenes(data))
+        ).subscribe(
+          data => this.ordenes = data,
+          error => console.error('Error fetching orders', error)
+        );
+      },
+      error => console.error('Error updating order status', error)
+    );
+  }
+
 }

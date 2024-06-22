@@ -38,5 +38,10 @@ export class OrdenesService {
   updateEstadoOrden(id: number, estado: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/actualizarEstado/${id}`, {estado});
   }
+
+  asignarPanadero(id: number, panadero: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/asignarPanadero/${id}`, {panadero});
+  }
+
 }
 
