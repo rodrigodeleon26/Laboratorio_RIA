@@ -327,6 +327,7 @@ export class OrdenesComponent implements OnInit {
     this.ordenesService.asignarPanadero(this.ordenSeleccionada.id, this.selectedPanadero).subscribe(
       data => {
         this.ordenSeleccionada = data;
+        this.selectedPanadero = 0;
         this.ordenesService.getOrdenes().pipe(
           tap(data => this.procesarOrdenes(data))
         ).subscribe(
