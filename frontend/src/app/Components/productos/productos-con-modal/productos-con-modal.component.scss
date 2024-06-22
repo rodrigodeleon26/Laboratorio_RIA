@@ -1,0 +1,32 @@
+.fondoForm {
+    background-color: rgba(245, 159, 119, 1);
+    background: linear-gradient(0deg,rgba(245, 159, 119, 1) 75%, rgb(255, 255, 255) 90%);
+    padding: 20px;
+
+}
+
+.card img {
+    object-fit: cover; 
+    height: 20vh;
+}
+
+.card {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.card:hover {
+    background-color: rgb(220,220,220);
+    //sombra
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+
+    th {
+        background-color: #ebebeb; // Ajusta este valor a tus necesidades
+    }
+}

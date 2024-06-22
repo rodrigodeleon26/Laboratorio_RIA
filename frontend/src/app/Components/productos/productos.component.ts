@@ -96,7 +96,7 @@ export class ProductosComponent {
       next: (data) => {
         this.insumosProducto = data;
         if (window.innerWidth < 768) {
-          this.open();
+          this.openModificarModal();
         }
       },
       error: (error) => {
@@ -148,20 +148,9 @@ export class ProductosComponent {
     this.cantidadInsumo = 0;
   }
 
-  open() {
-      const modalRef = this.modalService.open(ModalMovilProductoComponent);
-      modalRef.componentInstance.selectedProducto = this.selectedProducto;
-      modalRef.componentInstance.insumosProducto = this.insumosProducto;
-      modalRef.componentInstance.insumos = this.insumos;
-      modalRef.componentInstance.getSafeImageUrl = this.getSafeImageUrl.bind(this);
-      modalRef.componentInstance.onFileChange = this.onFileChange.bind(this);
-      modalRef.componentInstance.getInsumoNombre = this.getInsumoNombre.bind(this);
-      modalRef.componentInstance.eliminarInsumo = this.eliminarInsumo.bind(this);
-      modalRef.componentInstance.addInsumo = this.addInsumo.bind(this);
-      modalRef.componentInstance.edit = this.edit.bind(this);
-      modalRef.componentInstance.delete = this.delete.bind(this);
-      modalRef.componentInstance.cantidadInsumo = this.cantidadInsumo;
-      modalRef.componentInstance.insumoSeleccionado = this.insumoSeleccionado;
+  private openModificarModal() {
+    const modalRef = this.modalService.open(ModalMovilProductoComponent, { ariaLabelledBy: 'ModificarModalLabel' });
+    modalRef.componentInstance.selectedProducto = this.selectedProducto;
+    modalRef.componentInstance.insumosProducto = this.insumosProducto;
   }
-
 }

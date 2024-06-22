@@ -9,6 +9,7 @@ import { InsumosComponent } from './Components/insumos/insumos.component';
 import { OrdenesComponent } from './Components/ordenes/ordenes.component';
 import { GenerarOrdenComponent } from './Components/generar-orden/generar-orden.component';
 import { EditarPerfilComponent } from './Components/editar-perfil/editar-perfil.component';
+import { ProductosConModalComponent } from './Components/productos/productos-con-modal/productos-con-modal.component';
 
 const routes: Routes = [
 
@@ -29,7 +30,7 @@ const routes: Routes = [
 
   {
     path: 'productos',
-    component: ProductosComponent
+    component: ProductosConModalComponent
   },
 
   {

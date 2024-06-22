@@ -1,0 +1,140 @@
+<div class="h-100 fondoForm">
+    <h1 class="letraCoqueta mb-3">Productos</h1>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-12 col-md-6">
+                <input type="text" [formControl]="filter" class="form-control" placeholder="Buscar producto">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-4">
+                <div class="row row-cols-1 row-cols-md-4 g-4">
+                    <div class="col" *ngFor="let producto of productosFiltrados">
+                        <div class="card h-100" (click)="verMas(producto)" data-bs-toggle="modal" data-bs-target="#ProductoModal">
+                            <img [src]="getSafeImageUrl(producto.imagen)" class="card-img-top" [alt]="producto.nombre">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ producto.nombre }}</h5>
+                                <p class="card-text">Desde: ${{ producto.precio }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+        </div>    
+    </div>
+
+    <!-- MODAL INFO PRODUCTO -->
+    <div class="modal fade" id="ProductoModal" tabindex="-1" aria-labelledby="ProductoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ProductoModalLabel">Modificar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="form-group mb-3">
+                                <input type="text" [(ngModel)]="productoSeleccionado.nombre" placeholder="Inserte nombre" class="form-control" [disabled]="!productoSeleccionado.id">
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="number" [(ngModel)]="productoSeleccionado.precio" placeholder="Inserte precio" class="form-control" [disabled]="!productoSeleccionado.id">
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="text" [(ngModel)]="productoSeleccionado.descripcion" placeholder="inserte descripcion" class="form-control" [disabled]="!productoSeleccionado.id">
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="file" (change)="onFileChange($event)" class="form-control" [disabled]="!productoSeleccionado.id">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100 d-flex justify-content-between">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InsumosModal">Insumos</button>
+
+                        <div>
+                            <button type="button" class="btn btn-success" (click)="edit()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL INSUMOS DEL PRODUCTO -->
+    <div class="modal fade" id="InsumosModal" tabindex="-1" aria-labelledby="InsumosModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="InsumosModalLabel">Insumos del Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">Nombre</th>
+                                        <th scope="col" class="text-center">Cantidad</th>
+                                        <th scope="col" class="text-center">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let insumo of insumosProducto" >
+                                        <td>{{getInsumoNombre(insumo.insumoId)}}</td>
+                                        <td class="d-flex justify-content-center h-100"><input class="w-50" style="height: 2.5rem;" min="0.1" step="0.1" type="number" [(ngModel)]="insumo.cantidad" value="{{insumo.cantidad}}"></td>
+                                        <td><button class="btn btn-danger" (click)="eliminarInsumo(insumo.insumoId)"><i class="bi bi-trash-fill"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100 d-flex justify-content-between">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ProductoModal">Atras/Producto</button>
+
+                        <div>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInsumoModal">Agregar Insumo</button>
+                            <button type="button" class="btn btn-success" (click)="edit()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AÑADIR INSUMO Modal -->
+    <div class="modal fade" id="addInsumoModal" tabindex="-1" aria-labelledby="addInsumoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addInsumoModalLabel">Agregar Insumo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="selectInsumos">Insumo</label>
+                            <select class="form-select" aria-label="Default select example" name="insumos" id="selectInsumos" [(ngModel)]="insumoSeleccionado">
+                                <option [value]="0" selected>Seleccionar Insumo</option>
+                                <option *ngFor="let insumo of insumos" [value]="insumo.id">{{insumo.nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cantidad">Cantidad</label>
+                            <input type="number" min="0.1" step="0.1" class="form-control" id="cantidad" [(ngModel)]="cantidadInsumo" name="cantidadInsumo" placeholder="Cantidad necesaria">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" (click)="addInsumo()" data-bs-toggle="modal" data-bs-target="#InsumosModal">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
