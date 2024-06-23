@@ -1,31 +1,37 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
-  email: string = '';
-  password: string = '';
-  telefono: string = '';
+export class RegisterComponent implements OnInit {
+  registerForm!: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
-  onSubmit(registerForm: any): void {
-    if (registerForm.valid) {
-      this.authService.register(this.email, this.password, this.telefono).subscribe(
+  ngOnInit(): void {
+    this.registerForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      telefono: ['', [Validators.required, Validators.pattern('\\d{8,9}')]]
+    });
+  }
+
+  onSubmit(): void {
+    if (this.registerForm.valid) {
+      const { email, password, telefono } = this.registerForm.value;
+      this.authService.register(email, password, telefono).subscribe(
         response => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('email', this.email);
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/login']);
         },
         error => {
           alert(error.error.message);
         }
       );
-    } 
+    }
   }
 }

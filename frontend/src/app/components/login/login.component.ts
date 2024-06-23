@@ -1,29 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
-import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-  email: string = '';
-  password: string = '';
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
-  onSubmit(loginForm: any): void {
-    if (loginForm.valid) {
-      this.authService.login(this.email, this.password).subscribe(
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
+  }
+
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this.authService.login(email, password).subscribe(
         response => {
           localStorage.setItem('token', response.token);
-          localStorage.setItem('email', this.email);
+          localStorage.setItem('email', email);
           localStorage.setItem('role', response.role);
           localStorage.setItem('id', response.id);
           // Actualiza el BehaviorSubject con el nuevo email y rol del usuario
-          this.authService.updateUser(this.email, response.role, response.id, response.telefono);
+          this.authService.updateUser(email, response.role, response.id, response.telefono);
           this.router.navigate(['/home']);
         },
         error => {

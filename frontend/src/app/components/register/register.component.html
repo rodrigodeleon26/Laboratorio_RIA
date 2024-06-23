@@ -1,38 +1,54 @@
-<div class="register-container">
-    <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" novalidate>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" [(ngModel)]="email" name="email" required class="form-control" [ngClass]="{'is-invalid': registerForm.submitted && registerForm.form.get('email')?.invalid}" aria-label="Email" placeholder="ejemplo@dominio.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
-            <div *ngIf="registerForm.submitted && registerForm.form.get('email')?.errors?.['required']" class="invalid-feedback">
-                Email es requerido.
-            </div>
-            <div *ngIf="registerForm.submitted && registerForm.form.get('email')?.errors?.['pattern']" class="invalid-feedback">
-                Email no es válido.
+<div class="container mt-4 mb-4">
+    <div class="card mx-auto">
+        <div class="card-header text-center">
+            <h5 class="card-title mb-0">¡Bienvenido, nuevo usuario!</h5>
+        </div>
+        <div class="card-body">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingEmail" placeholder="ejemplo@dominio.com" formControlName="email" required email
+                        [ngClass]="{'is-invalid': registerForm.controls['email'].invalid && registerForm.controls['email'].touched}">
+                    <label for="floatingEmail">Email</label>
+                    <div *ngIf="registerForm.controls['email'].errors?.['required'] && registerForm.controls['email'].touched" class="invalid-feedback">
+                        Email es requerido.
+                    </div>
+                    <div *ngIf="registerForm.controls['email'].errors?.['email'] && registerForm.controls['email'].touched" class="invalid-feedback">
+                        Por favor, ingresa un email válido.
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="Mínimo 8 caracteres" formControlName="password" required minlength="8"
+                        [ngClass]="{'is-invalid': registerForm.controls['password'].invalid && registerForm.controls['password'].touched}">
+                    <label for="floatingPassword">Contraseña</label>
+                    <div *ngIf="registerForm.controls['password'].errors?.['required'] && registerForm.controls['password'].touched" class="invalid-feedback">
+                        Contraseña es requerida.
+                    </div>
+                    <div *ngIf="registerForm.controls['password'].errors?.['minlength'] && registerForm.controls['password'].touched" class="invalid-feedback">
+                        La contraseña debe tener al menos 8 caracteres.
+                    </div>
+                </div>
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingTelefono" placeholder="8 o 9 números" formControlName="telefono" required pattern="\d{8,9}"
+                        [ngClass]="{'is-invalid': registerForm.controls['telefono'].invalid && registerForm.controls['telefono'].touched}">
+                    <label for="floatingTelefono">Teléfono</label>
+                    <div *ngIf="registerForm.controls['telefono'].errors?.['required'] && registerForm.controls['telefono'].touched" class="invalid-feedback">
+                        Teléfono es requerido.
+                    </div>
+                    <div *ngIf="registerForm.controls['telefono'].errors?.['pattern'] && registerForm.controls['telefono'].touched" class="invalid-feedback">
+                        Teléfono no es válido.
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-center">
+            <div class="row align-items-center">
+                <div class="col-5">
+                    <a href="/login" class="link-primary">¿Ya estás registrado? Inicia sesión.</a>
+                </div>
+                <div class="col-7">
+                    <button type="submit" class="btn btn-primary w-100" (click)="onSubmit()">Registrarse</button>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" [(ngModel)]="password" name="password" required minlength="8" class="form-control" [ngClass]="{'is-invalid': registerForm.submitted && registerForm.form.get('password')?.invalid}" aria-label="Contraseña" placeholder="Mínimo 8 caracteres">
-            <div *ngIf="registerForm.submitted && registerForm.form.get('password')?.errors?.['required']" class="invalid-feedback">
-                Contraseña es requerida.
-            </div>
-            <div *ngIf="registerForm.submitted && registerForm.form.get('password')?.errors?.['minlength']" class="invalid-feedback">
-                La contraseña debe tener al menos 8 caracteres.
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="telefono">Teléfono</label>
-            <input type="text" id="telefono" [(ngModel)]="telefono" name="telefono" required class="form-control" [ngClass]="{'is-invalid': registerForm.submitted && registerForm.form.get('telefono')?.invalid}" aria-label="Teléfono" placeholder="8 o 9 números" pattern="\d{8,9}">
-            <div *ngIf="registerForm.submitted && registerForm.form.get('telefono')?.errors?.['required']" class="invalid-feedback">
-                Teléfono es requerido.
-            </div>
-            <div *ngIf="registerForm.submitted && registerForm.form.get('telefono')?.errors?.['pattern']" class="invalid-feedback">
-                Teléfono no es válido.
-            </div>
-        </div>
-        <div class="form-group">
-            <a href="/login">¿Ya estás registrado? Inicia sesión.</a>
-        </div>
-        <button type="submit" class="btn btn-primary">Registrarse</button>
-    </form>
+    </div>
 </div>
