@@ -10,6 +10,8 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
+  alertMessage: string = ''; // Mensaje para el alert
+  alertType: 'success' | 'danger' = 'success'; // Tipo de alerta: éxito o error
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
@@ -29,9 +31,17 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/login']);
         },
         error => {
-          alert(error.error.message);
+          this.alertMessage = error.error.message;
+          this.alertType = 'danger';
+          this.setAutoCloseAlert(3000);
         }
       );
     }
+  }
+
+  setAutoCloseAlert(timeout: number) {
+    setTimeout(() => {
+      this.alertMessage = '';
+    }, timeout);
   }
 }

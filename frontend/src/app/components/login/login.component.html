@@ -31,6 +31,12 @@
                     <a href="/forgotPassword" class="text-secondary">¿Olvidaste tu contraseña?</a>
                 </div>
             </form>
+
+            <!-- Alerta -->
+            <div *ngIf="alertMessage" class="alert alert-{{alertType}} alert-dismissible fade show mt-3 mb-0" role="alert">
+                <i class="bi bi-{{alertType === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill'}}"></i>
+                {{ alertMessage }}
+            </div>
         </div>
         <div class="card-footer text-center">
             <div class="row align-items-center">

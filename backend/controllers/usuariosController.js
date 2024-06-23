@@ -55,6 +55,11 @@ exports.usuarios = usuarios;
 
 const register = async (req, res) => {
   const { email, password, role, telefono } = req.body;
+  const existingUser = usuarios.find(user => user.email === email);
+  if (existingUser) {
+    return res.status(400).json({ message: 'El email ya está en uso. Por favor, utiliza otro email.' });
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10);
   const newUser = {
     id: usuarios.length ? usuarios[usuarios.length - 1].id + 1 : 1,
@@ -89,7 +94,7 @@ const login = async (req, res) => {
     const token = generateToken(user);
     res.json({ token, nombre: user.email, role: user.role, id: user.id, telefono: user.telefono});
   } else {
-    res.status(401).json({ message: 'Invalid credentials' });
+    res.status(401).json({ message: 'Credenciales incorrectas' });
   }
 };
 
@@ -109,7 +114,7 @@ const forgotPassword = (req, res) => {
   const user = usuarios.find(u => u.email === email);
 
   if (!user) {
-    return res.status(404).json({ message: 'User not found' });
+    return res.status(404).json({ message: 'Usuario no encontrado' });
   }
 
   const token = generateTokenReset(user);
@@ -124,11 +129,9 @@ const forgotPassword = (req, res) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error('Error al enviar el correo electrónico:', error);
-      return res.status(500).json({ message: 'Failed to send reset email' });
+      return res.status(500).json({ message: 'Error al enviar el correo electrónico' });
     }
-    console.log('Correo electrónico enviado:', info.response);
-    res.json({ message: 'Password reset link sent' });
+    res.json({ message: 'Correo electrónico de recuperación enviado' });
   });
 };
 
@@ -140,16 +143,15 @@ const resetPassword = async (req, res) => {
     const user = usuarios.find(u => u.id === decoded.id);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
 
-    res.json({ message: 'Password reset successfully' });
+    res.json({ message: 'Contraseña restablecida correctamente'});
   } catch (error) {
-    console.error('Error resetting password:', error);
-    res.status(500).json({ message: 'Failed to reset password' });
+    res.status(500).json({ message: 'Error al restablecer la contraseña' });
   }
 };
 
