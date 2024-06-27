@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NgbDateStruct, NgbModal, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { tap } from 'rxjs/operators';
 import { UsuariosService } from '../../services/usuarios/usuarios.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-ordenes',
@@ -15,6 +16,7 @@ export class OrdenesComponent implements OnInit {
   @ViewChild('nav', { static: true })
   nav!: NgbNav;
 
+  private subscriptions: Subscription[] = [];
   ordenes: any[] = [];
   role = '';
   userId = 0;
@@ -43,41 +45,55 @@ export class OrdenesComponent implements OnInit {
   constructor(private ordenesService: OrdenesService, private authService: AuthService, private usuarioService: UsuariosService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
-  if (typeof window !== 'undefined' && window.localStorage && this.authService.isAuthenticated()) {
-    this.usuarioService.user.subscribe(user => {
-      if (user) { // Verifica si user no es null
-        this.role = user.role;
-        this.userId = user.id;
-
-        if (this.role === 'USER') {
-          this.ordenesService.getOrdenByUsuario(this.userId).pipe(
-            tap(data => this.procesarOrdenes(data))
-          ).subscribe(
-            data => this.ordenes = data,
-            error => console.error('Error fetching user orders', error)
-          );
-        } else {
-          this.ordenesService.getOrdenes().pipe(
-            tap(data => this.procesarOrdenes(data))
-          ).subscribe(
-            data => this.ordenes = data,
-            error => console.error('Error fetching orders', error)
-          );
+    if (typeof window !== 'undefined' && window.localStorage && this.authService.isAuthenticated()) {
+      const userSubscription = this.usuarioService.user.subscribe(user => {
+        if (user) {
+          this.role = user.role;
+          this.userId = user.id;
+  
+          if (this.role === 'USER') {
+            const userOrdersSubscription = this.ordenesService.getOrdenByUsuario(this.userId).pipe(
+              tap(data => this.procesarOrdenes(data))
+            ).subscribe(
+              data => this.ordenes = data,
+              error => console.error('Error fetching user orders', error)
+            );
+            this.subscriptions.push(userOrdersSubscription);
+          } else {
+            if (this.authService.isAuthenticated()) {
+              const allOrdersSubscription = this.ordenesService.getOrdenes().pipe(
+                tap(data => this.procesarOrdenes(data))
+              ).subscribe(
+                data => this.ordenes = data,
+                error => console.error('Error fetching orders', error)
+              );
+              this.subscriptions.push(allOrdersSubscription);
+            }
+          }
         }
+      });
+      this.subscriptions.push(userSubscription);
+  
+      if (this.authService.isAuthenticated()) {
+        const usuariosSubscription = this.ordenesService.getUsuarios().subscribe(
+          data => this.clientes = data,
+          error => console.error('Error fetching users', error)
+        );
+        this.subscriptions.push(usuariosSubscription);
+  
+        const panaderosSubscription = this.ordenesService.getPanaderos().subscribe(
+          data => this.panaderos = data,
+          error => console.error('Error fetching panaderos', error)
+        );
+        this.subscriptions.push(panaderosSubscription);
       }
-
-      this.ordenesService.getUsuarios().subscribe(
-        data => this.clientes = data,
-        error => console.error('Error fetching users', error)
-      );
-
-      this.ordenesService.getPanaderos().subscribe(
-        data => this.panaderos = data,
-        error => console.error('Error fetching panaderos', error)
-      );
-    });
-  } 
-}
+    }
+  }
+  
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+  
 
   private procesarOrdenes(data: any[]): void {
     this.ordenesPendientes = data.filter(orden => orden.estado === 'PENDIENTE');
