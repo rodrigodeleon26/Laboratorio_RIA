@@ -34,8 +34,8 @@
             </div>
             <div class="modal-body">
                 <img [src]="getSafeImageUrl(selectedProduct?.imagen)" class="card-img-top" [alt]="selectedProduct?.nombre">
-                <p>Desde: ${{ selectedProduct?.precio }}</p>
-                <p>{{selectedProduct?.descripcion}}</p>
+                <p class="text-body-secondary mt-3">{{selectedProduct?.descripcion}}</p>
+                <h3> ${{ selectedProduct?.precio }}</h3>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@
                 <img [src]="getSafeImageUrl(producto.imagen)" class="card-img-top" [alt]="producto.nombre">
                 <div class="card-body">
                     <h5 class="card-title">{{ producto.nombre }}</h5>
-                    <p class="card-text">Desde: ${{ producto.precio }}</p>
+                    <h4 class="card-text">${{ producto.precio }}</h4>
                 </div>
             </div>
         </div>
