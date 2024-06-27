@@ -37,9 +37,11 @@ export class InsumosComponent implements OnInit {
   }
 
   loadInsumos() {
-    this.insumosService.getInsumos().subscribe(insumos => {
+    if (typeof window !== 'undefined' && window.localStorage){
+      this.insumosService.getInsumos().subscribe(insumos => {
       this.insumos$.next(insumos);
-    });
+      });
+    }
   }
 
   setupFilterAndSorting() {

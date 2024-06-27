@@ -54,7 +54,7 @@
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#InsumosModal">Insumos</button>
 
                         <div>
-                            <button *ngIf="productoSeleccionado.id !== 0" class="btn btn-danger" (click)="delete()" [disabled]="!productoSeleccionado.id">Eliminar</button>
+                            <button *ngIf="productoSeleccionado.id !== 0" class="btn btn-danger me-2" (click)="delete()" [disabled]="!productoSeleccionado.id">Eliminar</button>
                             <button type="button" class="btn btn-success" (click)="edit()">Guardar</button>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                                     <tr *ngFor="let insumo of insumosProducto" >
                                         <td>{{getInsumoNombre(insumo.insumoId)}}</td>
                                         <td class="d-flex justify-content-center h-100"><input class="w-50" style="height: 2.5rem;" min="0.1" step="0.1" type="number" [(ngModel)]="insumo.cantidad" value="{{insumo.cantidad}}"></td>
-                                        <td><button class="btn btn-danger" (click)="eliminarInsumo(insumo.insumoId)"><i class="bi bi-trash-fill"></i></button></td>
+                                        <td class="text-center"><button class="btn btn-danger" (click)="eliminarInsumo(insumo.insumoId)"><i class="bi bi-trash-fill"></i></button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -98,7 +98,7 @@
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ProductoModal">Atras/Producto</button>
 
                         <div>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInsumoModal">Agregar Insumo</button>
+                            <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addInsumoModal">Agregar Insumo</button>
                             <button type="button" class="btn btn-success" (click)="edit()">Guardar</button>
                         </div>
                     </div>

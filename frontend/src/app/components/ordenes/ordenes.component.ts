@@ -4,7 +4,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { NgbDateStruct, NgbModal, NgbNav } from '@ng-bootstrap/ng-bootstrap';
 import { tap } from 'rxjs/operators';
-import { datePickerComponent } from '../date-picker/date-picker.component';
+import { UsuariosService } from '../../services/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-ordenes',
@@ -40,28 +40,30 @@ export class OrdenesComponent implements OnInit {
   selectedPanadero: number = 0;
   panaderos: any[] = [];
 
-  constructor(private ordenesService: OrdenesService, private authService: AuthService, private modalService: NgbModal) { }
+  constructor(private ordenesService: OrdenesService, private authService: AuthService, private usuarioService: UsuariosService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
+  if (typeof window !== 'undefined' && window.localStorage && this.authService.isAuthenticated()) {
+    this.usuarioService.user.subscribe(user => {
+      if (user) { // Verifica si user no es null
+        this.role = user.role;
+        this.userId = user.id;
 
-    this.authService.user.subscribe(user => {
-      this.role = user.role;
-      this.userId = user.id;
-
-      if (this.role === 'USER') {
-        this.ordenesService.getOrdenByUsuario(this.userId).pipe(
-          tap(data => this.procesarOrdenes(data))
-        ).subscribe(
-          data => this.ordenes = data,
-          error => console.error('Error fetching user orders', error)
-        );
-      } else {
-        this.ordenesService.getOrdenes().pipe(
-          tap(data => this.procesarOrdenes(data))
-        ).subscribe(
-          data => this.ordenes = data,
-          error => console.error('Error fetching orders', error)
-        );
+        if (this.role === 'USER') {
+          this.ordenesService.getOrdenByUsuario(this.userId).pipe(
+            tap(data => this.procesarOrdenes(data))
+          ).subscribe(
+            data => this.ordenes = data,
+            error => console.error('Error fetching user orders', error)
+          );
+        } else {
+          this.ordenesService.getOrdenes().pipe(
+            tap(data => this.procesarOrdenes(data))
+          ).subscribe(
+            data => this.ordenes = data,
+            error => console.error('Error fetching orders', error)
+          );
+        }
       }
 
       this.ordenesService.getUsuarios().subscribe(
@@ -74,7 +76,8 @@ export class OrdenesComponent implements OnInit {
         error => console.error('Error fetching panaderos', error)
       );
     });
-  }
+  } 
+}
 
   private procesarOrdenes(data: any[]): void {
     this.ordenesPendientes = data.filter(orden => orden.estado === 'PENDIENTE');

@@ -23,15 +23,17 @@ export class CrearProductoComponent {
   imagenBase64: string | ArrayBuffer | null = null;
   
   ngOnInit(): void {
-    this.insumosService.getInsumos().subscribe({
-      next: (data) => {
-        this.insumos = data;
-        console.log(data);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+    if (typeof window !== 'undefined' && window.localStorage){
+      this.insumosService.getInsumos().subscribe({
+        next: (data) => {
+          this.insumos = data;
+          console.log(data);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+    }
   }
 
   mostrarInsumoForm() {

@@ -8,10 +8,9 @@ import { Insumo } from '../../models/insumo';
 import { InsumoProducto } from '../../interfaces/InsumoProducto';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
-import { ModalMovilProductoComponent } from './modal-movil-producto/modal-movil-producto.component';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConectorModalService } from '../../services/productos/conector-modal.service';
-
+import { ModalMovilProductoComponent } from './modal-movil-producto/modal-movil-producto.component';
 
 @Component({
   selector: 'app-productos',
@@ -34,23 +33,25 @@ export class ProductosComponent {
   private modalService = inject(NgbModal);
 
   ngOnInit(): void {
-    this.productoService.get().subscribe({
-      next: (data) => {
-        this.productos = data;
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-    this.insumosService.getInsumos().subscribe({
-      next: (data) => {
-        this.insumos = data;
-        console.log(this.insumos);
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+    if (typeof window !== 'undefined' && window.localStorage) {
+      this.productoService.get().subscribe({
+        next: (data) => {
+          this.productos = data;
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+      this.insumosService.getInsumos().subscribe({
+        next: (data) => {
+          this.insumos = data;
+          console.log(this.insumos);
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+    }
   }
 
   public edit() {
@@ -89,7 +90,8 @@ export class ProductosComponent {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  seleccionarProducto(producto: Producto, event: Event){
+  seleccionarProducto(producto: Producto, event: Event) {
+  if (typeof window !== 'undefined' && window.localStorage) {
     event.stopPropagation();
     this.selectedProducto = producto;
     this.productoService.getProductoInsumos(producto.id).subscribe({
@@ -104,6 +106,7 @@ export class ProductosComponent {
       }
     });
   }
+}
 
   deselectProducto(event: Event) {
       this.selectedProducto = new Producto();

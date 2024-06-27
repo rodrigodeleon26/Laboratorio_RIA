@@ -34,6 +34,7 @@ export class ProductosConModalComponent {
   };
 
   ngOnInit(): void {
+  if (typeof window !== 'undefined' && window.localStorage) {
     this.productoService.get().subscribe({
       next: (data) => {
         this.productos = data;
@@ -60,6 +61,7 @@ export class ProductosConModalComponent {
       this.filtrarProductos(value);
     });
   }
+}
 
   getSafeImageUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
@@ -90,6 +92,7 @@ export class ProductosConModalComponent {
   }
 
   verMas(producto: Producto): void {
+  if (typeof window !== 'undefined' && window.localStorage) {
     this.productoSeleccionado = producto;
     this.productoService.getProductoInsumos(producto.id).subscribe({
       next: (data) => {
@@ -100,6 +103,7 @@ export class ProductosConModalComponent {
       }
     });
   }
+}
 
   edit() {
 

@@ -3,7 +3,7 @@ import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { ProductosService } from '../../services/productos/productos.service';
 import { OrdenesService } from '../../services/ordenes/ordenes.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { AuthService } from '../../services/auth/auth.service';
+import { UsuariosService } from '../../services/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-generar-orden',
@@ -29,7 +29,7 @@ export class GenerarOrdenComponent implements OnInit {
     private productoService: ProductosService,
     private ordenesService: OrdenesService,
     private sanitizer: DomSanitizer,
-    private authService: AuthService
+    private usuarioService: UsuariosService
   ) { }
 
   ngOnInit(): void {
@@ -37,15 +37,17 @@ export class GenerarOrdenComponent implements OnInit {
   }
 
   private cargarProductos(): void {
-    this.productoService.get().subscribe({
-      next: (data) => {
-        this.productosDisponibles = [...data];
-        this.filtrarProductos();
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+    if (typeof window !== 'undefined' && window.localStorage){
+      this.productoService.get().subscribe({
+        next: (data) => {
+          this.productosDisponibles = [...data];
+          this.filtrarProductos();
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+    }
   }
 
   agregarAlCarrito(producto: any, cantidad: number): void {
@@ -127,7 +129,7 @@ export class GenerarOrdenComponent implements OnInit {
       estado: 'PENDIENTE',
       importe: this.calcularTotalCarrito(),
       panaderoId: null,
-      clienteId: this.authService.getId() // Suponiendo que tienes un método para obtener el ID del usuario autenticado
+      clienteId: this.usuarioService.getId() // Suponiendo que tienes un método para obtener el ID del usuario autenticado
     };
 
     // Construir los pedidos de la orden
