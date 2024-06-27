@@ -3,7 +3,7 @@ export class Orden {
     fecha?: Date;
     estado?: string;
     importe?: number;
-    panaderiaId?: number | null; // Ajustar el tipo según tu modelo
+    panaderoId?: number | null; // Ajustar el tipo según tu modelo
     clienteId?: number;
     pedidos: any;
 }

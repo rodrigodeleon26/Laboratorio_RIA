@@ -126,7 +126,7 @@ export class GenerarOrdenComponent implements OnInit {
       fechaEntrega: this.fechaEntrega, // Agregar la fecha de entrega a la orden
       estado: 'PENDIENTE',
       importe: this.calcularTotalCarrito(),
-      panaderiaId: null,
+      panaderoId: null,
       clienteId: this.authService.getId() // Suponiendo que tienes un método para obtener el ID del usuario autenticado
     };
 

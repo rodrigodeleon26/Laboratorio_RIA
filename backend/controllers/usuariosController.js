@@ -177,16 +177,56 @@ const disableUser = (req, res) => {
   }
 };
 
-const getInfoUser = (req, res) => {
-  //devuelve datos del usuario excepto la contraseña
-  const { id } = req.body;
-  const user = usuarios.find(u => u.id == id);
+const getInfo = (req, res) => {
+  const userId = req.userId; // Obteniendo el id del usuario del token decodificado
+  const user = usuarios.find(u => u.id === userId);
+
+  if (!user) {
+    return res.status(404).json({ message: 'Usuario no encontrado' });
+  }
+
+  res.json({ email: user.email, role: user.role, telefono: user.telefono, id: user.id });
+};
+
+const getId = (req, res) => {
+  const userId = req.userId;
+  const user = usuarios.find(u => u.id === userId);
   if (user) {
-    res.json({ email: user.email, role: user.role, telefono: user.telefono });
+    res.json({ id: user.id });
   } else {
     res.status(404).json({ message: 'User not found' });
   }
 };
+
+const getRole = (req, res) => {
+  const userId = req.userId;
+  const user = usuarios.find(u => u.id === userId);
+  if (user) {
+    res.json({ role: user.role });
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+}
+
+const getTelefono = (req, res) => {
+  const userId = req.userId;
+  const user = usuarios.find(u => u.id === userId);
+  if (user) {
+    res.json({ telefono: user.telefono });
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+}
+
+const getEmail = (req, res) => {
+  const userId = req.userId;
+  const user = usuarios.find(u => u.id === userId);
+  if (user) {
+    res.json({ email: user.email });
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+}
 
 module.exports = {
   register,
@@ -196,6 +236,10 @@ module.exports = {
   forgotPassword,
   enableUser,
   disableUser,
-  getInfoUser,
-  resetPassword
+  getInfo,
+  resetPassword,
+  getId,
+  getRole,
+  getTelefono,
+  getEmail
 };

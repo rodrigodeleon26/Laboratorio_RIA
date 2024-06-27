@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const usuariosController = require('../controllers/usuariosController');
+const { verifyToken } = require('../middleware/auth');
 
 router.post('/register', (req, res) => {
   /* #swagger.summary = 'Registra un nuevo usuario' */
@@ -98,16 +99,39 @@ router.post('/update', (req, res) => {
   usuariosController.update(req, res);
 });
 
-router.get('/get-info-user', (req, res) => {
-  /* #swagger.summary = 'Obtiene la información de un usuario' */
+router.get('/getInfo', verifyToken, (req, res) => { 
+  /* #swagger.summary = 'Obtiene la información del usuario' */
   /* #swagger.tags = ['Usuarios'] */
   /* #swagger.security = [{ "BearerAuth": [] }] */
-  /* #swagger.parameters['body'] = {
-        in: 'body',
-        description: 'Obtención de información de usuario.',
-        schema: { $ref: '#/definitions/GetInfoUser' }
-    } */
-  usuariosController.getInfoUser(req, res);
+  usuariosController.getInfo(req, res);
+});
+
+router.get('/getId', verifyToken, (req, res) => {
+  /* #swagger.summary = 'Obtiene el ID del usuario' */
+  /* #swagger.tags = ['Usuarios'] */
+  /* #swagger.security = [{ "BearerAuth": [] }] */
+  usuariosController.getId(req, res);
+});
+
+router.get('/getEmail', verifyToken, (req, res) => {
+  /* #swagger.summary = 'Obtiene el correo del usuario' */
+  /* #swagger.tags = ['Usuarios'] */
+  /* #swagger.security = [{ "BearerAuth": [] }] */
+  usuariosController.getEmail(req, res);
+});
+
+router.get('/getRole', verifyToken, (req, res) => {
+  /* #swagger.summary = 'Obtiene el rol del usuario' */
+  /* #swagger.tags = ['Usuarios'] */
+  /* #swagger.security = [{ "BearerAuth": [] }] */
+  usuariosController.getRole(req, res);
+});
+
+router.get('/getTelefono', verifyToken, (req, res) => {
+  /* #swagger.summary = 'Obtiene el teléfono del usuario' */
+  /* #swagger.tags = ['Usuarios'] */
+  /* #swagger.security = [{ "BearerAuth": [] }] */
+  usuariosController.getTelefono(req, res);
 });
 
 module.exports = router;

@@ -73,10 +73,6 @@ const doc = {
       pedidos: [{ id: 1, productoId: 1, cantidad: 2 },
                 { id: 2, productoId: 2, cantidad: 3 }]
     },
-    Panaderia: {
-      id: 1,
-      nombre: "Panadería Ejemplo",
-    },
     Pedido: {
       id: 1,
       productoId: 1,

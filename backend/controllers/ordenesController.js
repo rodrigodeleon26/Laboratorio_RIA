@@ -208,7 +208,7 @@ exports.asignarPanadero = (req, res) => {
   const { panadero } = req.body;
   const ordenIndex = ordenes.findIndex(o => o.id == id);
   if (ordenIndex !== -1) {
-    ordenes[ordenIndex].panaderiaId = panadero;
+    ordenes[ordenIndex].panaderoId = panadero;
     ordenes[ordenIndex].estado = 'EN PREPARACION';
     res.json(ordenes[ordenIndex]);
   } else {
