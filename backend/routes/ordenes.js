@@ -17,6 +17,12 @@ router.get('/getInfoOrden/:id', verifyToken, isUser, (req, res) => {
   ordenesController.getInfoOrden(req, res);
 });
 
+router.get('/getInsumosPendientes', verifyToken, isPanadero, (req, res) => {
+  /* #swagger.summary = 'Obtiene los insumos pendientes' verifyToken, isAdmin, */
+  /* #swagger.tags = ['Órdenes'] */
+  ordenesController.getInsumosPendientes(req, res);
+});
+
 //entrega nombre e id de usuarios que han hecho ordenes
 router.get('/getUsuarios', verifyToken, isUser, (req, res) => {
   /* #swagger.summary = 'Obtiene los usuarios que han hecho órdenes' verifyToken, isAdmin, */

@@ -220,3 +220,53 @@ exports.darPanaderos = (req, res) => {
   const panaderos = usuarios.filter(u => u.role == 'PANADERO');
   res.json(panaderos);
 };
+
+exports.getInsumosPendientes = (req, res) => {
+  const ordenesPendientes = ordenes.filter(o => o.estado === 'PENDIENTE');
+
+  if (ordenesPendientes.length > 0) {
+    const insumosTotales = {};
+
+    ordenesPendientes.forEach(orden => {
+      const ordenPedidos = pedidosOrdenes
+        .filter(po => po.ordenId == orden.id)
+        .map(po => {
+          const pedido = pedidos.find(p => p.id == po.pedidoId);
+          const producto = productos.find(prod => prod.id == pedido.productoId);
+          return producto ? { id: pedido.id, nombre: producto.nombre, cantidad: pedido.cantidad, productoId: producto.id } : { id: pedido.id, nombre: 'Producto no encontrado', cantidad: pedido.cantidad, productoId: null };
+        });
+
+      ordenPedidos.forEach(pedido => {
+        if (pedido.productoId) {
+          const insumosProducto = productosInsumos.filter(pi => pi.productoId == pedido.productoId);
+          insumosProducto.forEach(insumoProducto => {
+            const insumo = insumos.find(i => i.id == insumoProducto.insumoId);
+            if (insumo) {
+              if (!insumosTotales[insumo.id]) {
+                insumosTotales[insumo.id] = {
+                  nombre: insumo.nombre,
+                  cantidad: 0,
+                  precioUnitario: insumo.precio,
+                  totalCosto: 0
+                };
+              }
+              insumosTotales[insumo.id].cantidad += insumoProducto.cantidad * pedido.cantidad;
+            }
+          });
+        }
+      });
+    });
+
+    let costoTotalInsumos = 0;
+    for (const insumoId in insumosTotales) {
+      const insumoTotal = insumosTotales[insumoId];
+      const unidadesNecesarias = Math.ceil(insumoTotal.cantidad);
+      insumoTotal.totalCosto = unidadesNecesarias * insumoTotal.precioUnitario;
+      costoTotalInsumos += insumoTotal.totalCosto;
+    }
+
+    res.json({ insumosTotales: Object.values(insumosTotales), costoTotalInsumos });
+  } else {
+    res.status(404).json({ message: 'No se encontraron órdenes pendientes' });
+  }
+};

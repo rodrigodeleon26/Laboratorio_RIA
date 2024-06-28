@@ -47,5 +47,9 @@ export class OrdenesService {
     return this.http.get<any>(`${this.apiUrl}/getPanaderos`);
   }
 
+  getInsumosPendientes(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/getInsumosPendientes`);
+  }
+
 }
 

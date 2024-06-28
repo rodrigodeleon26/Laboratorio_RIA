@@ -41,6 +41,8 @@ export class OrdenesComponent implements OnInit {
   selectedEstado: string = '';
   selectedPanadero: number = 0;
   panaderos: any[] = [];
+  insumosTotales: any = [];
+  costoTotal: number = 0;
 
   constructor(private ordenesService: OrdenesService, private authService: AuthService, private usuarioService: UsuariosService, private modalService: NgbModal) { }
 
@@ -88,6 +90,57 @@ export class OrdenesComponent implements OnInit {
         this.subscriptions.push(panaderosSubscription);
       }
     }
+  }
+
+  procesarInsumos() {
+    this.ordenesService.getInsumosPendientes().subscribe(
+      data => {
+        console.log(data);
+        this.insumosTotales = data;
+      },
+      error => console.error('Error fetching insumos', error)
+    );
+  }
+
+  procesarInsumos2() {
+    const ordenes = this.ordenesPendientes;
+    const ordenesInfo: any[] = [];
+    this.insumosTotales = [];
+    this.costoTotal = 0;
+  
+    const requests = ordenes.map(orden =>
+      this.ordenesService.getInfoOrden(orden.id).toPromise()
+    );
+  
+    Promise.all(requests)
+      .then(responses => {
+        responses.forEach(data => {
+          ordenesInfo.push(data);
+        });
+
+        ordenesInfo.forEach(orden => {
+          orden.insumosTotales.forEach((insumo:any) => {
+            const insumoExistente = this.insumosTotales.find((insumoTotal: any) => insumoTotal.nombre === insumo.nombre);
+            //console.log("insumoExistente:" + insumoExistente, "insumo:" + insumo);
+            if (insumoExistente) {
+              //console.log("entro a if" + insumoExistente.nombre)
+              insumoExistente.cantidad += insumo.cantidad;
+            } else {
+              //console.log("entro a else")
+              this.insumosTotales.push({ ...insumo });
+            }
+          });
+        });
+
+        //calcular gasto total de cada insumo cantidad: 55.5 nombre: "Harina de trigo (1k)" precioUnitario: 30 totalCosto: 240
+        this.insumosTotales.forEach((insumo: any) => {
+          //asegurarse de que se redondee la cantidad a la unidad     
+          const unidadesNecesarias = Math.ceil(insumo.cantidad);
+          insumo.totalCosto = unidadesNecesarias * insumo.precioUnitario;
+          this.costoTotal += insumo.totalCosto;
+        })
+      })
+      .catch(error => console.error('Error fetching order info', error));
   }
   
   ngOnDestroy(): void {
