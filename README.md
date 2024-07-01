@@ -1,7 +1,7 @@
 # Laboratorio_RIA
 Laboratorio final
 
-# Sistema de gestión de pedidos de panadería
+## Sistema de gestión de pedidos de panadería
 
 Los usuarios podrán seleccionar productos y realizar órdenes de compra, mientras que los administradores y panaderos tendrán funcionalidades específicas según su rol.
 
