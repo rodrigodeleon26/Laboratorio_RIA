@@ -1122,6 +1122,36 @@
         }
       }
     },
+    "/ordenes/getInsumosPendientes": {
+      "get": {
+        "tags": [
+          "Órdenes"
+        ],
+        "summary": "Obtiene los insumos pendientes",
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/ordenes/getUsuarios": {
       "get": {
         "tags": [
