@@ -8,7 +8,7 @@ import { InsumosService } from '../../../services/insumos/insumos.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-productos-con-modal',
@@ -149,6 +149,8 @@ export class ProductosConModalComponent implements OnInit {
           next: (data) => {
             this.productos = data;
             this.filtrarProductos(null); // Aplicar filtros si es necesario
+            this.closeModal('ProductoModal');
+            this.closeModal('InsumosModal');
 
           },
           error: (error) => {
@@ -196,25 +198,53 @@ export class ProductosConModalComponent implements OnInit {
     this.cantidadInsumo = 0;
   }
 
-  delete() {
-    if (confirm('¿Estás seguro de eliminar el producto?')) {
-      this.productoService.delete(this.productoSeleccionado.id).subscribe({
-        next: (data) => {
-          console.log(data);
-          this.productoService.get().subscribe({
-            next: (data) => {
-              this.productos = data;
-              this.filtrarProductos(null);
-            },
-            error: (error) => {
-              console.error(error);
-            }
-          });
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
+  delete(): void {
+    this.showConfirmModal();
+  }
+  
+  showConfirmModal(): void {
+    const modalElement = document.getElementById('confirmModal');
+    if (modalElement) {
+      const modalInstance = new bootstrap.Modal(modalElement);
+      modalInstance.show();
+    }
+  }
+  
+  confirmDelete(): void {
+    this.productoService.delete(this.productoSeleccionado.id).subscribe({
+      next: (data) => {
+        this.productoService.get().subscribe({
+          next: (data) => {
+            this.productos = data;
+            this.filtrarProductos(null);
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+        this.alertMessage = 'Producto eliminado correctamente';
+        this.alertType = 'success';
+        this.setAutoCloseAlert(3000);
+        this.closeModal('confirmModal');
+        this.closeModal('ProductoModal');
+        
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  closeModal(modalId: string): void {
+    const modalElement = document.getElementById(modalId);
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstance) {
+        modalInstance.hide();
+      } else {
+        const newModalInstance = new bootstrap.Modal(modalElement);
+        newModalInstance.hide();
+      }
     }
   }
 

@@ -4,6 +4,11 @@
     <div class="container mt-5">
         <form [formGroup]="productoForm" (ngSubmit)="enviarForm()">
             <div class="row justify-content-center">
+                <div *ngIf="alertMessage" class="col-md-9 alert alert-{{alertType}} alert-dismissible fade show" role="alert">
+                    <i class="bi bi-{{alertType === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill'}}"></i>
+                    {{ alertMessage }}
+                    <button type="button" class="btn-close" aria-label="Close" (click)="alertMessage=''"></button>
+                </div>
                 <div class="col-md-4">
                     <div class="form-group mb-3">
                         <label for="nombre">Nombre</label>

@@ -1,19 +1,20 @@
 <div class="container mt-3">
     <ul ngbNav #nav="ngbNav" class="nav-tabs flex">
-            <button class="btn btn-success me-md-3 col-6 col-md-1" data-bs-toggle="modal" data-bs-target="#filtroModal">Filtrar</button>
+        <button class="btn btn-success me-md-3 col-6 col-md-1" data-bs-toggle="modal"
+            data-bs-target="#filtroModal">Filtrar</button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="filtroModal" tabindex="-1" aria-labelledby="filtroModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+        <!-- Modal -->
+        <div class="modal fade" id="filtroModal" tabindex="-1" aria-labelledby="filtroModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="filtroModalLabel">Filtros</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title" id="filtroModalLabel">Filtros</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                    <!-- Aquí puedes agregar los campos de filtro -->
-                    <div class="mb-3">
-                        <!-- <label for="tipoSelect" class="form-label">Tipos de filtro</label>
+                        <!-- Aquí puedes agregar los campos de filtro -->
+                        <div class="mb-3">
+                            <!-- <label for="tipoSelect" class="form-label">Tipos de filtro</label>
                         <select class="form-select form-select-sm" aria-label="tipoSelect">
                             <option selected>Filtros</option>
                             <option value="1">Rango de fecha</option>
@@ -21,65 +22,79 @@
                             <option value="3">Cliente</option>
                         </select> -->
 
-                        <div class="mb-3">
-                            <div class="w-100 d-md-flex justify-content-between">
-                                <div>
-                                    <label for="Desde">Desde</label>
-                                    <form class="row row-cols-sm-auto" id="Desde">
-                                        <div class="col-12">
-                                            <div class="input-group">
-                                                <input class="form-control" placeholder="yyyy-mm-dd" name="dpInicio" [(ngModel)]="modelInicio" ngbDatepicker #dInicio="ngbDatepicker"/>
-                                                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dInicio.toggle()" type="button"></button>
+                            <div class="mb-3">
+                                <div class="w-100 d-md-flex justify-content-between">
+                                    <div>
+                                        <label for="Desde">Desde</label>
+                                        <form class="row row-cols-sm-auto" id="Desde">
+                                            <div class="col-12">
+                                                <div class="input-group">
+                                                    <input class="form-control" placeholder="yyyy-mm-dd" name="dpInicio"
+                                                        [(ngModel)]="modelInicio" ngbDatepicker
+                                                        #dInicio="ngbDatepicker" />
+                                                    <button class="btn btn-outline-secondary bi bi-calendar3"
+                                                        (click)="dInicio.toggle()" type="button"></button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
+
+                                    <div>
+                                        <label for="Hasta">Hasta</label>
+                                        <form class="row row-cols-sm-auto" id="Hasta">
+                                            <div class="col-12">
+                                                <div class="input-group">
+                                                    <input class="form-control" placeholder="yyyy-mm-dd" name="dpFin"
+                                                        [(ngModel)]="modelFin" ngbDatepicker #dFin="ngbDatepicker" />
+                                                    <button class="btn btn-outline-secondary bi bi-calendar3"
+                                                        (click)="dFin.toggle()" type="button"></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
 
-                                <div>
-                                    <label for="Hasta">Hasta</label>
-                                    <form class="row row-cols-sm-auto" id="Hasta">
-                                        <div class="col-12">
-                                            <div class="input-group">
-                                                <input class="form-control" placeholder="yyyy-mm-dd" name="dpFin" [(ngModel)]="modelFin" ngbDatepicker #dFin="ngbDatepicker"/>
-                                                <button class="btn btn-outline-secondary bi bi-calendar3" (click)="dFin.toggle()" type="button"></button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                <div *ngIf="this.role !== 'USER' ">
+                                    <label for="clienteSelect" class="form-label">Cliente</label>
+                                    <input class="form-control" list="clientes" id="clienteSelect"
+                                        placeholder="Escribe para buscar..." [(ngModel)]="usuarioSeleccionado">
+                                    <!--  (change)="seleccionarUsuario()" -->
+                                    <datalist id="clientes">
+                                        <option *ngFor="let usuario of clientes"
+                                            [value]="usuario.id + ' | ' + usuario.nombre">{{usuario.nombre}}</option>
+                                        <!-- Agrega más opciones según sea necesario -->
+                                    </datalist>
                                 </div>
-                            </div>
 
-                            <div *ngIf="this.role !== 'USER' ">
-                                <label for="clienteSelect" class="form-label">Cliente</label>
-                                <input class="form-control" list="clientes" id="clienteSelect" placeholder="Escribe para buscar..." [(ngModel)]="usuarioSeleccionado" > <!--  (change)="seleccionarUsuario()" -->
-                                <datalist id="clientes">
-                                    <option *ngFor="let usuario of clientes" [value]="usuario.id + ' | ' + usuario.nombre">{{usuario.nombre}}</option>
-                                    <!-- Agrega más opciones según sea necesario -->
-                                </datalist>
                             </div>
-
                         </div>
-                    </div>
-                    <!-- Agrega más campos de filtro según sea necesario -->
+                        <!-- Agrega más campos de filtro según sea necesario -->
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="limpiarFiltros()">Limiar Filtros</button>
-                    <button type="button" class="btn btn-primary" (click)="filtrarOrdenes()">Aplicar filtros</button>
+                        <button type="button" class="btn btn-secondary" (click)="limpiarFiltros()">Limiar
+                            Filtros</button>
+                        <button type="button" class="btn btn-primary" (click)="filtrarOrdenes()">Aplicar
+                            filtros</button>
                     </div>
                 </div>
-                </div>
             </div>
+        </div>
 
-            <button *ngIf="this.role === 'ADMIN' || this.role === 'PANADERO' " class="btn btn-primary me-md-3 col-6 col-md-1" data-bs-toggle="modal" data-bs-target="#InsumosTotales" (click)=" procesarInsumos2() ">Insumos</button>
+        <button *ngIf="this.role === 'ADMIN' || this.role === 'PANADERO' "
+            class="btn btn-primary me-md-3 col-6 col-md-1" data-bs-toggle="modal" data-bs-target="#InsumosTotales"
+            (click)=" procesarInsumos2() ">Insumos</button>
 
-            <!-- Insumos totales modal -->
-            <div class="modal fade" id="InsumosTotales" tabindex="-1" aria-labelledby="InsumosTotalesLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="ModalInsumosLabel">Detalles de la Orden</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
+        <!-- Insumos totales modal -->
+        <div class="modal fade" id="InsumosTotales" tabindex="-1" aria-labelledby="InsumosTotalesLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ModalInsumosLabel">Detalles de la Orden</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
                             <!-- tabla con todos los insumos y totales nombre	"Harina de trigo (1k)"
                             cantidad	7.5
                             precioUnitario	30
@@ -106,20 +121,22 @@
                                     </tr>
                                 </tbody>
                             </table>
-        
                         </div>
-                        <div class="modal-footer">
-                            <div class="w-100 d-flex">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Atras</button>
-                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="w-100 d-flex">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                aria-label="Close">Atras</button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
         <!-- TABLA -->
         <li [ngbNavItem]="1" class="col-6 col-md-2">
-            <button ngbNavLink (click)="actualizarCantPaginas('PENDIENTE')" class="w-100" style="background-color: azure;">Pendientes</button>
+            <button ngbNavLink (click)="actualizarCantPaginas('PENDIENTE')" class="w-100"
+                style="background-color: azure;">Pendientes</button>
             <ng-template ngbNavContent>
                 <table class="table table-bordered">
                     <thead>
@@ -147,7 +164,8 @@
                             <td>{{ orden.importe }}</td>
                             <td>{{ orden.clienteId }}</td>
                             <td>
-                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal"
+                                    data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -155,7 +173,8 @@
             </ng-template>
         </li>
         <li [ngbNavItem]="2" class="col-6 col-md-2">
-            <button ngbNavLink (click)="actualizarCantPaginas('EN PREPARACION')" class="w-100" style="background-color: azure;">En preparación</button>
+            <button ngbNavLink (click)="actualizarCantPaginas('EN PREPARACION')" class="w-100"
+                style="background-color: azure;">En preparación</button>
             <ng-template ngbNavContent>
                 <table class="table table-bordered">
                     <thead>
@@ -181,7 +200,8 @@
                             <td>{{ orden.importe }}</td>
                             <td>{{ orden.clienteId }}</td>
                             <td>
-                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal"
+                                    data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -189,7 +209,8 @@
             </ng-template>
         </li>
         <li [ngbNavItem]="3" class="col-6 col-md-2">
-            <button ngbNavLink (click)="actualizarCantPaginas('LISTO PARA RECOGER')" class="w-100" style="background-color: azure;">Listas para entregar</button>
+            <button ngbNavLink (click)="actualizarCantPaginas('LISTO PARA RECOGER')" class="w-100"
+                style="background-color: azure;">Listas para entregar</button>
             <ng-template ngbNavContent>
                 <table class="table table-bordered">
                     <thead>
@@ -216,7 +237,8 @@
                             <td>{{ orden.importe }}</td>
                             <td>{{ orden.clienteId }}</td>
                             <td>
-                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal"
+                                    data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -224,7 +246,8 @@
             </ng-template>
         </li>
         <li [ngbNavItem]="4" class="col-6 col-md-2">
-            <button ngbNavLink (click)="actualizarCantPaginas('ENTREGADO')" class="w-100" style="background-color: azure;">Entregado</button>
+            <button ngbNavLink (click)="actualizarCantPaginas('ENTREGADO')" class="w-100"
+                style="background-color: azure;">Entregado</button>
             <ng-template ngbNavContent>
                 <table class="table table-bordered">
                     <thead>
@@ -251,7 +274,8 @@
                             <td>{{ orden.importe }}</td>
                             <td>{{ orden.clienteId }}</td>
                             <td>
-                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal" data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
+                                <button class="btn btn-primary" (click)="verMas(orden)" data-bs-toggle="modal"
+                                    data-bs-target="#ordenModal"><i class="bi bi-eye"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -262,18 +286,18 @@
     </ul>
 
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
-        <!-- PAGINADO -->
+    <!-- PAGINADO -->
     <nav *ngIf="totalPaginas > 1">
         <ul class="pagination justify-content-center">
-          <li class="page-item" [class.disabled]="paginaActual === 1">
-            <a class="page-link" (click)="cambiarPagina(paginaActual - 1)">Anterior</a>
-          </li>
-          <li class="page-item" *ngFor="let pagina of paginas" [class.active]="pagina === paginaActual">
-            <a class="page-link" (click)="cambiarPagina(pagina)">{{ pagina }}</a>
-          </li>
-          <li class="page-item" [class.disabled]="paginaActual === totalPaginas">
-            <a class="page-link" (click)="cambiarPagina(paginaActual + 1)">Siguiente</a>
-          </li>
+            <li class="page-item" [class.disabled]="paginaActual === 1">
+                <a class="page-link" (click)="cambiarPagina(paginaActual - 1)">Anterior</a>
+            </li>
+            <li class="page-item" *ngFor="let pagina of paginas" [class.active]="pagina === paginaActual">
+                <a class="page-link" (click)="cambiarPagina(pagina)">{{ pagina }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="paginaActual === totalPaginas">
+                <a class="page-link" (click)="cambiarPagina(paginaActual + 1)">Siguiente</a>
+            </li>
         </ul>
     </nav>
 
@@ -316,13 +340,19 @@
                 </div>
                 <div class="modal-footer">
                     <div class="w-100 d-flex justify-content-between">
-                        <button *ngIf="this.role !== 'USER' " type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalInsumos">Insumos</button>
+                        <button *ngIf="this.role !== 'USER' " type="button" class="btn btn-primary"
+                            data-bs-toggle="modal" data-bs-target="#ModalInsumos">Insumos</button>
 
                         <div>
                             <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button> -->
-                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderoId == this.userId " type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalEstado">Cambiar Estado</button>
-                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderoId == null " type="button" class="btn btn-success" (click)="panaderoAcepta()">Aceptar</button>
-                            <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalAsignar">Asignar</button>
+                            <button
+                                *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderoId == this.userId "
+                                type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#ModalEstado">Cambiar Estado</button>
+                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderoId == null "
+                                type="button" class="btn btn-success" (click)="panaderoAcepta()">Aceptar</button>
+                            <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary"
+                                data-bs-toggle="modal" data-bs-target="#ModalAsignar">Asignar</button>
                         </div>
                     </div>
                 </div>
@@ -339,40 +369,44 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- tabla con todos los insumos y totales nombre	"Harina de trigo (1k)"
+                    <div class="table-responsive">
+                        <!-- tabla con todos los insumos y totales nombre	"Harina de trigo (1k)"
                     cantidad	7.5
                     precioUnitario	30
                     totalCosto	240 -->
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Insumo</th>
-                                <th>Cantidad</th>
-                                <th>Precio Unitario</th>
-                                <th>Total Costo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let insumo of ordenSeleccionada.insumosTotales">
-                                <td>{{ insumo.nombre }}</td>
-                                <td>{{ insumo.cantidad | number:'1.0-1' }}</td>
-                                <td>${{ insumo.precioUnitario }}</td>
-                                <td>${{ insumo.totalCosto }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3"><strong>Total</strong></td>
-                                <td><strong> ${{ ordenSeleccionada.costoTotalInsumos }} </strong></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Insumo</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Total Costo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let insumo of ordenSeleccionada.insumosTotales">
+                                    <td>{{ insumo.nombre }}</td>
+                                    <td>{{ insumo.cantidad | number:'1.0-1' }}</td>
+                                    <td>${{ insumo.precioUnitario }}</td>
+                                    <td>${{ insumo.totalCosto }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><strong>Total</strong></td>
+                                    <td><strong> ${{ ordenSeleccionada.costoTotalInsumos }} </strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="w-100 d-flex justify-content-between">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ordenModal">Atras/Orden</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#ordenModal">Atras/Orden</button>
                         <div>
-                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderoId == null " type="button" class="btn btn-success" (click)="panaderoAcepta()">Aceptar</button>
-                            <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalAsignar">Asignar</button>
+                            <button *ngIf="this.role === 'PANADERO' && this.ordenSeleccionada.panaderoId == null "
+                                type="button" class="btn btn-success" (click)="panaderoAcepta()">Aceptar</button>
+                            <button *ngIf="this.role === 'ADMIN' " type="button" class="btn btn-primary"
+                                data-bs-toggle="modal" data-bs-target="#ModalAsignar">Asignar</button>
                         </div>
                     </div>
                 </div>
@@ -393,7 +427,8 @@
 
                     <div class="mb-3">
                         <label for="estadoSelect" class="form-label">Estado</label>
-                        <select class="form-select form-select-sm" [(ngModel)]="selectedEstado" aria-label="estadoSelect">
+                        <select class="form-select form-select-sm" [(ngModel)]="selectedEstado"
+                            aria-label="estadoSelect">
                             <option value="1">Pendiente</option>
                             <option value="2">En preparación</option>
                             <option value="3">Listo para entregar</option>
@@ -404,7 +439,8 @@
                 </div>
                 <div class="modal-footer">
                     <div class="w-100 d-flex justify-content-between">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ordenModal">Atras/Orden</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#ordenModal">Atras/Orden</button>
                         <div>
                             <button type="button" class="btn btn-success" (click)="guardarEstado()">Guardar</button>
                         </div>
@@ -427,7 +463,8 @@
 
                     <div class="mb-3">
                         <label for="estadoSelect" class="form-label">Panaderos</label>
-                        <select class="form-select form-select-sm" [(ngModel)]="selectedPanadero" aria-label="panaderoSelect">
+                        <select class="form-select form-select-sm" [(ngModel)]="selectedPanadero"
+                            aria-label="panaderoSelect">
                             <option *ngFor="let panadero of panaderos" [value]="panadero.id">{{panadero.email}}</option>
                         </select>
                     </div>
@@ -435,7 +472,8 @@
                 </div>
                 <div class="modal-footer">
                     <div class="w-100 d-flex justify-content-between">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ordenModal">Atras/Orden</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#ordenModal">Atras/Orden</button>
                         <div>
                             <button type="button" class="btn btn-success" (click)="asignarPanadero()">Guardar</button>
                         </div>

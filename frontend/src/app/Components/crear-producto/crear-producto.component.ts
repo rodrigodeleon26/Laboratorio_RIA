@@ -23,6 +23,9 @@ export class CrearProductoComponent implements OnInit {
   imagenBase64: string | ArrayBuffer | null = null;
   productoForm!: FormGroup;
 
+  alertMessage: string = '';
+  alertType: 'success' | 'danger' = 'success';
+
   constructor(
     private productoService: ProductosService,
     private insumosService: InsumosService,
@@ -101,8 +104,6 @@ export class CrearProductoComponent implements OnInit {
     }
   }
   
-
-
   onFileChange(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -119,6 +120,13 @@ export class CrearProductoComponent implements OnInit {
   enviarForm() {
     if (this.productoForm.invalid) {
       this.productoForm.markAllAsTouched();
+      return;
+    }
+
+    if (this.insumosProducto.length === 0 ) {
+      this.alertMessage = 'Debe agregar al menos un insumo al producto';
+      this.alertType = 'danger';
+      this.setAutoCloseAlert(5000);
       return;
     }
 
@@ -143,5 +151,11 @@ export class CrearProductoComponent implements OnInit {
         console.error(error);
       }
     });
+  }
+
+  setAutoCloseAlert(timeout: number) {
+    setTimeout(() => {
+      this.alertMessage = '';
+    }, timeout);
   }
 }
