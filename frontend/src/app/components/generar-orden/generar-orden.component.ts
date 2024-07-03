@@ -129,8 +129,14 @@ export class GenerarOrdenComponent implements OnInit {
       estado: 'PENDIENTE',
       importe: this.calcularTotalCarrito(),
       panaderoId: null,
-      clienteId: this.usuarioService.getId() // Suponiendo que tienes un método para obtener el ID del usuario autenticado
+      clienteId: 0 // Obtener el ID del cliente del servicio de usuarios
     };
+
+    this.usuarioService.user.subscribe(user => {
+      if (user){
+        orden.clienteId = user.id;
+      }
+    })
 
     // Construir los pedidos de la orden
     const pedidosOrden = this.carrito.map(item => {
