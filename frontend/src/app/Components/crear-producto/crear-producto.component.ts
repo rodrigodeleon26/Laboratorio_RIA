@@ -1,33 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Producto } from '../../models/producto';
 import { Insumo } from '../../models/insumo';
 import { ProductosService } from '../../services/productos/productos.service';
 import { InsumosService } from '../../services/insumos/insumos.service';
-import { Router } from '@angular/router';
 import { InsumoProducto } from '../../interfaces/InsumoProducto';
 
 @Component({
   selector: 'app-crear-producto',
   templateUrl: './crear-producto.component.html',
-  styleUrl: './crear-producto.component.scss'
+  styleUrls: ['./crear-producto.component.scss']
 })
-export class CrearProductoComponent {
-
-  constructor(private productoService: ProductosService, private insumosService: InsumosService, private router: Router) {}
+export class CrearProductoComponent implements OnInit {
 
   insumos: Insumo[] = [];
   insumosProducto: InsumoProducto[] = [];
+  insumosDisponibles: Insumo[] = [];
   mostrarInsumo = false;
   insumoSeleccionado = 0;
   cantidadInsumo = 0;
   imagenBase64: string | ArrayBuffer | null = null;
-  
+  productoForm!: FormGroup;
+
+  constructor(
+    private productoService: ProductosService,
+    private insumosService: InsumosService,
+    private router: Router,
+    private fb: FormBuilder
+  ) {}
+
   ngOnInit(): void {
-    if (typeof window !== 'undefined' && window.localStorage){
+    this.productoForm = this.fb.group({
+      nombre: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]],
+      precio: [0, [Validators.required, Validators.min(1)]],
+      imagen: [null, [Validators.required]],
+      insumoSeleccionado: ['0'],
+      cantidadInsumo: ['']
+    });
+
+    if (typeof window !== 'undefined' && window.localStorage) {
       this.insumosService.getInsumos().subscribe({
         next: (data) => {
           this.insumos = data;
-          console.log(data);
+          this.insumosDisponibles = [...this.insumos]; // Inicializa la lista de insumos disponibles
+          console.log('Insumos disponibles iniciales:', this.insumosDisponibles);
         },
         error: (error) => {
           console.error(error);
@@ -41,23 +59,31 @@ export class CrearProductoComponent {
   }
 
   confirmarInsumo() {
-    //si insumoSeleccionado no es correcto o ya esta en la lista de insumosProducto, no hacer nada
-    if (this.insumoSeleccionado == 0 || this.insumosProducto.find(insumo => insumo.insumoId === this.insumoSeleccionado || this.cantidadInsumo <= 0)) {
+    const insumoSeleccionado = +this.productoForm.get('insumoSeleccionado')!.value;
+    const cantidadInsumo = +this.productoForm.get('cantidadInsumo')!.value;
+  
+    if (insumoSeleccionado === 0 || cantidadInsumo <= 0 || this.insumosProducto.find(ip => ip.insumoId === insumoSeleccionado)) {
       return;
     }
-    if (this.cantidadInsumo <= 0) {
-      return;
-    }
-    //crear la relacion insumo con el producto y guardarla en el array
-      this.mostrarInsumo = false;
-      this.insumosProducto.push({
-        productoId: 0,
-        insumoId: this.insumoSeleccionado,
-        cantidad: this.cantidadInsumo 
-      });
-      this.insumoSeleccionado = 0; 
-      this.cantidadInsumo = 0;
+  
+    console.log('Agregando insumo:', insumoSeleccionado, 'Cantidad:', cantidadInsumo);
+    this.mostrarInsumo = false;
+    this.insumosProducto.push({
+      productoId: 0,
+      insumoId: insumoSeleccionado,
+      cantidad: cantidadInsumo 
+    });
+  
+    // Actualizar insumos disponibles
+    this.insumosDisponibles = this.insumosDisponibles.filter(insumo => insumo.id !== insumoSeleccionado);
+  
+    // Reseteando los valores en el formulario reactivo
+    this.productoForm.patchValue({
+      insumoSeleccionado: '0',
+      cantidadInsumo: ''
+    });
   }
+  
 
   getInsumoNombre(id: number): string {
     let insumo = this.insumos.find(insumo => insumo.id == id);
@@ -65,8 +91,17 @@ export class CrearProductoComponent {
   }
 
   eliminarInsumo(insumoId: number) {
-    this.insumosProducto = this.insumosProducto.filter(insumo => insumo.insumoId !== insumoId);
+    console.log('Eliminando insumo:', insumoId);
+    this.insumosProducto = this.insumosProducto.filter(ip => ip.insumoId !== insumoId);
+  
+    // Agregar el insumo eliminado de vuelta a insumosDisponibles
+    const insumoEliminado = this.insumos.find(insumo => insumo.id === insumoId);
+    if (insumoEliminado) {
+      this.insumosDisponibles.push(insumoEliminado);
+    }
   }
+  
+
 
   onFileChange(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -75,25 +110,25 @@ export class CrearProductoComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.imagenBase64 = reader.result;
-        console.log(this.imagenBase64);  // Para verificar la conversión
+        this.productoForm.patchValue({ imagen: this.imagenBase64 });
       };
       reader.readAsDataURL(file);
     }
   }
 
   enviarForm() {
-    let producto = new Producto();
-    producto.nombre = (document.getElementById('nombre') as HTMLInputElement).value;
-    producto.precio = parseFloat((document.getElementById('precio') as HTMLInputElement).value);
-    producto.descripcion = (document.getElementById('descripcion') as HTMLInputElement).value;
-    // Verificar que imagenBase64 es de tipo string antes de asignarla
-    if (typeof this.imagenBase64 === 'string') {
-      producto.imagen = this.imagenBase64;
-    } else {
-      producto.imagen = '';  // O manejar el caso donde la imagen no está disponible
+    if (this.productoForm.invalid) {
+      this.productoForm.markAllAsTouched();
+      return;
     }
 
-    let requestBody = {
+    const producto = new Producto();
+    producto.nombre = this.productoForm.value.nombre;
+    producto.descripcion = this.productoForm.value.descripcion;
+    producto.precio = this.productoForm.value.precio;
+    producto.imagen = this.imagenBase64 as string;
+
+    const requestBody = {
       producto: producto,
       insumosProducto: this.insumosProducto
     };
