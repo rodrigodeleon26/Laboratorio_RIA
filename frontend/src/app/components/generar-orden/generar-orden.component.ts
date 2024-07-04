@@ -124,8 +124,7 @@ export class GenerarOrdenComponent implements OnInit {
 
   private construirNuevaOrden(): any {
     const orden = {
-      fecha: new Date(),
-      fechaEntrega: this.fechaEntrega, // Agregar la fecha de entrega a la orden
+      fecha: this.fechaEntrega, // Agregar la fecha de entrega a la orden
       estado: 'PENDIENTE',
       importe: this.calcularTotalCarrito(),
       panaderoId: null,

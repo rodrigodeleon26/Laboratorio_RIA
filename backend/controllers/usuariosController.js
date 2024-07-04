@@ -31,7 +31,6 @@ const createDefaultUsers = async () => {
     { email: 'user@example.com', password: 'user123', role: 'USER', telefono: '456123789' },
     { email: 'user2@example.com' , password: 'user123', role: 'USER', telefono: '789456123'},
     { email: 'user3@example.com' , password: 'user123', role: 'USER', telefono: '987456321'},
-    { email: 'rd6209965@gmail.com', password: '123', role: 'USER', telefono: '123456789'}
   ];
 
   for (const user of defaultUsers) {
